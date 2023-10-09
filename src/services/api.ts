@@ -1,15 +1,15 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
-const startPage = async (): Promise<any> => {
+const wallets = async (): Promise<any> => {
   try {
-    const { data }: AxiosResponse<any> = await axios.get(
-      // `${process.env.REACT_APP_BASE_URL}`
-      `${process.env.REACT_APP_BASE_URL}`
+    const {data} = await axios.get(
+      `${process.env.REACT_APP_WALLETS_URL}`
     );
-    return data;
+    console.log("API DATA",data.data.result)
+    return data.data.result;
   } catch (error) {
-    console.log(error);
+    console.log("API ERR",error);
   }
 };
 
-export { startPage };
+export { wallets };

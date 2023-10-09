@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { startPage } from "services/api";
+import { wallets } from "services/api";
 import Header from "components/Header";
 import Operations from "components/Operations";
 import Keyboard from "components/Keyboard";
@@ -11,8 +11,13 @@ import Container from "components/Container";
 function App() {
   useEffect(() => {
     const getData = async () => {
-      const res = await startPage();
+      try {
+        const res = await wallets();
       console.log(res);
+      } catch (error) {
+        console.log(error)
+      }
+      
     };
     getData();
   }, []);
