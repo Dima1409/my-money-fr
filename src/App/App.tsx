@@ -3,6 +3,7 @@ import { wallets } from "services/api";
 import Header from "components/Header";
 import Operations from "components/Operations";
 import Keyboard from "components/Keyboard";
+import HistoryOperations from "components/HistoryOperations";
 // import Wallet from "components/Wallet";
 import Wallets from "components/Wallets";
 import Container from "components/Container";
@@ -13,11 +14,10 @@ function App() {
     const getData = async () => {
       try {
         const res = await wallets();
-      console.log(res);
+        console.log(res);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-      
     };
     getData();
   }, []);
@@ -33,6 +33,7 @@ function App() {
         <option>Card</option>
       </Wallet> */}
       <Keyboard />
+      <HistoryOperations></HistoryOperations>
     </Container>
   );
 }
