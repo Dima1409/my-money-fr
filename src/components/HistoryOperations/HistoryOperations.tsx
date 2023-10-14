@@ -32,8 +32,8 @@ const HistoryOperations: React.FC = () => {
         : operation.map(({ _id, add, sell, category, comment }) => {
             return (
               <Operation key={_id}>
-                {add ? `+${add}` : null}
-                {sell ? `-${sell}` : null},{category},{comment}
+                {add ? <span style={{backgroundColor: "green"}}>`income: ${add}`</span> : null}
+                {sell ? <span style={{backgroundColor: "red"}}>`expenses: ${sell}`</span> : null},{category},{comment}
               </Operation>
             );
           })}
