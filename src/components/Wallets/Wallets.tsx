@@ -27,11 +27,11 @@ const Wallets: React.FC = () => {
           : wall.map(({ _id, name, total }) => {
               return (
                 <Wallet key={_id}>
-                  {name}:
-                  {total}
+                  {name}:{total}
                 </Wallet>
               );
             })}
+        <div>{}</div>
       </WalletsWrapper>
     </>
   );

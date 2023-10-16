@@ -10,9 +10,9 @@ const Operations: React.FC = () => {
     <>
       <InfoOperation>Операції</InfoOperation>
       <OperationWrapper>
-        <Operation>Доходи</Operation>
-        <Operation>Витрати</Operation>
-        <Operation>Перекази</Operation>
+        <Operation to="/income">Доходи</Operation>
+        <Operation to="/expenses">Витрати</Operation>
+        <Operation to="/transfers">Перекази</Operation>
       </OperationWrapper>
     </>
   );

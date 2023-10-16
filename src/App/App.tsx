@@ -1,39 +1,22 @@
-import React, { useEffect } from "react";
-import { wallets } from "services/api";
-import Header from "components/Header";
-import Operations from "components/Operations";
-import Keyboard from "components/Keyboard";
-import HistoryOperations from "components/HistoryOperations";
-// import Wallet from "components/Wallet";
-import Wallets from "components/Wallets";
+import { lazy } from "react";
 import Container from "components/Container";
-// import logo from '../../src/assets/logo.svg';
+import { Route, Routes, Navigate } from "react-router-dom";
+
+const HomePage = lazy(() => import("../pages/HomePage"));
+const ExpensesPage = lazy(() => import("../pages/Expenses"));
+const IncomePage = lazy(() => import("../pages/Income"));
+const TransfersPage = lazy(() => import("../pages/Transfers"));
 
 function App() {
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const res = await wallets();
-        console.log(res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, []);
   return (
     <Container>
-      <Header>
-        <span>My Finance</span>
-      </Header>
-      <Operations></Operations>
-      <Wallets></Wallets>
-      {/* <Wallet>
-        <option>Cash</option>
-        <option>Card</option>
-      </Wallet> */}
-      <Keyboard />
-      <HistoryOperations></HistoryOperations>
+      <Routes>
+        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/income" element={<IncomePage />}></Route>
+        <Route path="/expenses" element={<ExpensesPage />}></Route>
+        <Route path="/transfers" element={<TransfersPage />}></Route>
+        <Route path="*" element={<Navigate to="/" replace />}></Route>
+      </Routes>
     </Container>
   );
 }
