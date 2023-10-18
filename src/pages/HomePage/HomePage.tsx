@@ -1,8 +1,7 @@
 import Header from "components/Header";
 import Operations from "components/Operations";
 import Wallets from "components/Wallets";
-import Keyboard from "components/Keyboard";
-import HistoryOperations from "components/HistoryOperations";
+import HistoryOperations from "components/HistoryOperations/AllOperations";
 
 const HomePage: React.FC = () => {
   return (
@@ -12,7 +11,6 @@ const HomePage: React.FC = () => {
       </Header>
       <Operations></Operations>
       <Wallets></Wallets>
-      <Keyboard />
       <HistoryOperations></HistoryOperations>
     </>
   );

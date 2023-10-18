@@ -8,11 +8,13 @@ const InfoOperation = styled.p`
 
 const OperationWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
   border: 1px solid aqua;
+  margin: 0 auto;
   margin-bottom: 10px;
   padding: 0;
+  max-width: 550px;
 `;
 const Operation = styled(NavLink)`
   padding: 4px;

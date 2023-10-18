@@ -31,7 +31,6 @@ const Wallets: React.FC = () => {
                 </Wallet>
               );
             })}
-        <div>{}</div>
       </WalletsWrapper>
     </>
   );

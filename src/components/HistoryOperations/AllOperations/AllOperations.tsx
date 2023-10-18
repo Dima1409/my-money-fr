@@ -4,7 +4,7 @@ import {
   Operation,
   Marker,
   OperationInfo,
-} from "./HistoryOperations.styled";
+} from "./AllOperations.styled";
 import { useState, useEffect } from "react";
 import { ISearchOperation } from "types/data";
 import { operations } from "services/api";
