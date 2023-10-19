@@ -1,5 +1,6 @@
 import { operations } from "services/api";
 import { ISearchOperation } from "types/data";
+import Loader from "components/Loader";
 import {
   OperationWrapper,
   OperationsHeader,
@@ -29,6 +30,7 @@ const TransfersOperations: React.FC = () => {
   return (
     <OperationWrapper>
       <OperationsHeader>Історія переказів</OperationsHeader>
+      {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
         : operation.map(({ _id, category, comment }) => {

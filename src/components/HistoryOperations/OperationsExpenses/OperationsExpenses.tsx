@@ -1,6 +1,7 @@
 import { operations } from "services/api";
 import { ISearchOperation } from "types/data";
 import { useEffect, useState } from "react";
+import Loader from "components/Loader";
 import {
   OperationWrapper,
   OperationsHeader,
@@ -31,6 +32,7 @@ const OperationsExpenses: React.FC = () => {
   return (
     <OperationWrapper>
       <OperationsHeader>Історія витрат</OperationsHeader>
+      {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
         : operation.map(({ _id, sell, category, comment }) => {

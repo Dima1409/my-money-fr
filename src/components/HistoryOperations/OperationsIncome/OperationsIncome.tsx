@@ -7,6 +7,7 @@ import {
   Marker,
   OperationInfo,
 } from "../AllOperations/AllOperations.styled";
+import Loader from "components/Loader";
 import { useEffect, useState } from "react";
 
 const OperationsIncome: React.FC = () => {
@@ -31,6 +32,7 @@ const OperationsIncome: React.FC = () => {
   return (
     <OperationWrapper>
       <OperationsHeader>Історія доходів</OperationsHeader>
+      {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
         : operation.map(({ _id, add, category, comment }) => {

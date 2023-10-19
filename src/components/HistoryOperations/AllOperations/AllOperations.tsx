@@ -7,6 +7,7 @@ import {
 } from "./AllOperations.styled";
 import { useState, useEffect } from "react";
 import { ISearchOperation } from "types/data";
+import Loader from "components/Loader";
 import { operations } from "services/api";
 
 const HistoryOperations: React.FC = () => {
@@ -29,6 +30,7 @@ const HistoryOperations: React.FC = () => {
   return (
     <OperationWrapper>
       <OperationsHeader>Історія операцій</OperationsHeader>
+      {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
         : operation.map(({ _id, add, sell, category, comment }) => {

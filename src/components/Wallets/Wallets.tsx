@@ -3,6 +3,7 @@ import { InfoWallets, WalletsWrapper, Wallet } from "./Wallets.styled";
 import { ISearchWallet } from "types/data";
 import { useEffect, useState } from "react";
 import { wallets } from "services/api";
+import Loader from "components/Loader";
 
 const Wallets: React.FC = () => {
   const [wall, setWall] = useState<ISearchWallet[] | undefined>();
@@ -22,6 +23,7 @@ const Wallets: React.FC = () => {
       <InfoWallets>Гаманці</InfoWallets>
 
       <WalletsWrapper>
+        {!wall ? <Loader type="spin" color="teal"></Loader> : null}
         {wall === undefined
           ? null
           : wall.map(({ _id, name, total }) => {

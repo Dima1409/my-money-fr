@@ -1,5 +1,6 @@
 import { lazy, Suspense, ReactNode } from "react";
 import Container from "components/Container";
+import Loader from "components/Loader";
 import { Route, Routes, Navigate } from "react-router-dom";
 
 const HomePage = lazy(() => import("../pages/HomePage"));
@@ -7,7 +8,7 @@ const ExpensesPage = lazy(() => import("../pages/Expenses"));
 const IncomePage = lazy(() => import("../pages/Income"));
 const TransfersPage = lazy(() => import("../pages/Transfers"));
 
-const LoadingFallback: React.FC = () => <div>Loading...</div>;
+const LoadingFallback: React.FC = () => <Loader type="spin" color="teal"/>;
 
 const LazyPage: React.FC<{ children: ReactNode }> = ({ children }) => (
   <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
