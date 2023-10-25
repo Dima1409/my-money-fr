@@ -3,7 +3,11 @@ export interface ISearchWallet {
   name: string;
   total: number;
 }
-
+export interface ISearchCategory {
+  _id: string;
+  add: [string];
+  sell: [string];
+}
 export interface ISearchOperation {
   _id: string;
   add: number;

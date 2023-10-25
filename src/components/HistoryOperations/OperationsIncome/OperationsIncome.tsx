@@ -35,7 +35,8 @@ const OperationsIncome: React.FC = () => {
       {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
-        : operation.map(({ _id, add, category, comment }) => {
+        : operation.map(({ _id, add, category, comment, createdAt }) => {
+          const date = new Date(createdAt);
             return (
               <Operation key={_id}>
                 {add ? (
@@ -48,6 +49,8 @@ const OperationsIncome: React.FC = () => {
                 ) : null}
                 <OperationInfo>Категорія: {category}</OperationInfo>
                 <OperationInfo>Коментар: {comment}</OperationInfo>
+                <OperationInfo>Дата: {date.getDate()}.{date.getMonth()+1}</OperationInfo>
+                <OperationInfo>Час: {date.getHours().toString().padStart(2,"0")}:{date.getMinutes().toString().padStart(2,"0")}:{date.getSeconds().toString().padStart(2,"0")}</OperationInfo>
               </Operation>
             );
           })}

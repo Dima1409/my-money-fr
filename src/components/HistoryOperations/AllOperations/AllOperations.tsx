@@ -11,7 +11,7 @@ import Loader from "components/Loader";
 import { operations } from "services/api";
 
 const HistoryOperations: React.FC = () => {
-  const [operation, setOperation] = useState<ISearchOperation[]>();
+  const [operation, setOperation] = useState<ISearchOperation[]>([]);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -33,7 +33,9 @@ const HistoryOperations: React.FC = () => {
       {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
-        : operation.map(({ _id, add, sell, category, comment }) => {
+        : operation.map(({ _id, add, sell, category, comment, createdAt }) => {
+          const date = new Date(createdAt);
+          
             return (
               <Operation key={_id}>
                 {add ? (
@@ -54,6 +56,8 @@ const HistoryOperations: React.FC = () => {
                 ) : null}
                 <OperationInfo>Категорія: {category}</OperationInfo>
                 <OperationInfo>Коментар: {comment}</OperationInfo>
+                <OperationInfo>Дата: {date.getDate()}.{date.getMonth()+1}</OperationInfo>
+                <OperationInfo>Час: {date.getHours().toString().padStart(2,"0")}:{date.getMinutes().toString().padStart(2,"0")}:{date.getSeconds().toString().padStart(2,"0")}</OperationInfo>
               </Operation>
             );
           })}

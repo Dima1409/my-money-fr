@@ -5,6 +5,7 @@ import {
   OperationWrapper,
   OperationsHeader,
   Operation,
+  OperationInfo
 } from "../AllOperations/AllOperations.styled";
 import { useEffect, useState } from "react";
 
@@ -33,11 +34,16 @@ const TransfersOperations: React.FC = () => {
       {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
-        : operation.map(({ _id, category, comment }) => {
+        : operation.map(({ _id, category, comment, createdAt }) => {
+          // const date = new Date(createdAt);
             return (
-              <Operation>
+              <><Operation>
                 
               </Operation>
+              {/* <OperationInfo>Дата: {date.getDate()}.{date.getMonth()+1}</OperationInfo>
+              <OperationInfo>Час: {date.getHours().toString().padStart(2,"0")}:{date.getMinutes().toString().padStart(2,"0")}:{date.getSeconds().toString().padStart(2,"0")}</OperationInfo> */}
+              </>
+              
             );
           })}
     </OperationWrapper>

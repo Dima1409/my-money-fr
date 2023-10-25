@@ -18,4 +18,14 @@ const operations = async (): Promise<any> => {
   }
 };
 
-export { wallets, operations };
+const categories = async (): Promise<any> => {
+  try {
+    const  {data}  = await axios.get(`${process.env.REACT_APP_CATEGORIES_URL}`);
+    console.log(data.data.results);
+    return data.data.results;
+  } catch (error) {
+    console.log("API ERR", error);
+  }
+};
+
+export { wallets, operations, categories };
