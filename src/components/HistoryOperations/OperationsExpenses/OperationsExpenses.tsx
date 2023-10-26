@@ -43,14 +43,14 @@ const OperationsExpenses: React.FC = () => {
                   <>
                     <Marker style={{ backgroundColor: "orange" }} />
                     <OperationInfo>
-                      Витрата: <span style={{ fontWeight: 600 }}>{sell}</span>
+                      <span style={{ fontWeight: 600 }}>{sell} грн,</span>
                     </OperationInfo>
                   </>
                 ) : null}
-                <OperationInfo>Категорія: {category}</OperationInfo>
-                <OperationInfo>Коментар: {comment}</OperationInfo>
+                <OperationInfo>{category},</OperationInfo>
+                <OperationInfo>{comment},</OperationInfo>
                 <OperationInfo>
-                  Дата: {date.getDate()}.{date.getMonth() + 1}
+                  {date.getDate()}.{date.getMonth() + 1},
                 </OperationInfo>
                 <OperationInfo>
                   Час: {date.getHours().toString().padStart(2, "0")}:

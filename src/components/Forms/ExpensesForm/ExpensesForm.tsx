@@ -1,18 +1,18 @@
-import { Form } from "./IncomeForm.styled";
+import { Form } from "../IncomeForm/IncomeForm.styled";
 import { wallets, categories } from "services/api";
 import { useEffect, useState } from "react";
-import { ISearchWallet, ISearchCategoryAdd } from "types/data";
+import { ISearchWallet, ISearchCategorySell } from "types/data";
 import Loader from "components/Loader";
 import Keyboard from "components/Keyboard";
 
-const IncomeForm: React.FC = () => {
+const ExpensesForm: React.FC = () => {
   const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
-  const [category, setCategory] = useState<ISearchCategoryAdd[] | undefined>();
+  const [category, setCategory] = useState<ISearchCategorySell[] | undefined>();
   useEffect(() => {
     const getData = async () => {
       try {
         const totalWallets: ISearchWallet[] = await wallets();
-        const totalCategories: ISearchCategoryAdd[] = await categories();
+        const totalCategories: ISearchCategorySell[] = await categories();
         setWallet(totalWallets);
         setCategory(totalCategories);
       } catch (error) {
@@ -37,7 +37,7 @@ const IncomeForm: React.FC = () => {
         <select>
           {category === undefined
             ? null
-            : category[0].add.map(({ _id, name }) => (
+            : category[1].sell.map(({ _id, name }) => (
                 <option key={_id.toString()}>{name}</option>
               ))}
         </select>
@@ -47,4 +47,4 @@ const IncomeForm: React.FC = () => {
   );
 };
 
-export default IncomeForm;
+export default ExpensesForm;

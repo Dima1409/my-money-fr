@@ -34,15 +34,15 @@ const HistoryOperations: React.FC = () => {
       {operation === undefined
         ? null
         : operation.map(({ _id, add, sell, category, comment, createdAt }) => {
-          const date = new Date(createdAt);
-          
+            const date = new Date(createdAt);
+
             return (
               <Operation key={_id}>
                 {add ? (
                   <>
                     <Marker style={{ backgroundColor: "green" }} />
                     <OperationInfo>
-                      Дохід: <span style={{ fontWeight: 600 }}>{add}</span>
+                      <span style={{ fontWeight: 600 }}>{add} грн,</span>
                     </OperationInfo>
                   </>
                 ) : null}
@@ -50,14 +50,24 @@ const HistoryOperations: React.FC = () => {
                   <>
                     <Marker style={{ backgroundColor: "red" }} />
                     <OperationInfo>
-                      Витрата: <span style={{ fontWeight: 600 }}>{sell}</span>
+                      <span style={{ fontWeight: 600 }}>{sell} грн,</span>
                     </OperationInfo>
                   </>
                 ) : null}
-                <OperationInfo>Категорія: {category}</OperationInfo>
-                <OperationInfo>Коментар: {comment}</OperationInfo>
-                <OperationInfo>Дата: {date.getDate()}.{date.getMonth()+1}</OperationInfo>
-                <OperationInfo>Час: {date.getHours().toString().padStart(2,"0")}:{date.getMinutes().toString().padStart(2,"0")}:{date.getSeconds().toString().padStart(2,"0")}</OperationInfo>
+                <OperationInfo style={{ textTransform: "uppercase" }}>
+                  {category},
+                </OperationInfo>
+                <OperationInfo style={{ fontStyle: "italic", color: "teal" }}>
+                  {comment},
+                </OperationInfo>
+                <OperationInfo>
+                  {date.getDate()}.{date.getMonth() + 1},
+                </OperationInfo>
+                <OperationInfo>
+                  {date.getHours().toString().padStart(2, "0")}:
+                  {date.getMinutes().toString().padStart(2, "0")}:
+                  {date.getSeconds().toString().padStart(2, "0")}
+                </OperationInfo>
               </Operation>
             );
           })}

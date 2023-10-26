@@ -20,8 +20,7 @@ const operations = async (): Promise<any> => {
 
 const categories = async (): Promise<any> => {
   try {
-    const  {data}  = await axios.get(`${process.env.REACT_APP_CATEGORIES_URL}`);
-    console.log(data.data.results);
+    const { data } = await axios.get(`${process.env.REACT_APP_CATEGORIES_URL}`);
     return data.data.results;
   } catch (error) {
     console.log("API ERR", error);

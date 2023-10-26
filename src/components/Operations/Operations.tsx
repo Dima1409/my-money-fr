@@ -12,7 +12,7 @@ const Operations: React.FC = () => {
       <OperationWrapper>
         <Operation to="/income">Доходи</Operation>
         <Operation to="/expenses">Витрати</Operation>
-        <Operation to="/transfers">Перекази</Operation>
+        {/* <Operation to="/transfers">Перекази</Operation> */}
       </OperationWrapper>
     </>
   );
