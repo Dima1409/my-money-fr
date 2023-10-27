@@ -18,6 +18,15 @@ const operations = async (): Promise<any> => {
   }
 };
 
+const deleteOperation = async (_id:String): Promise<any> => {
+  try {
+    const { data } = await axios.delete(`${process.env.REACT_APP_OPERATIONS_URL}/${_id}`);
+    return data.data.results;
+  } catch (error) {
+    console.log("API ERR", error);
+  }
+}
+
 const categories = async (): Promise<any> => {
   try {
     const { data } = await axios.get(`${process.env.REACT_APP_CATEGORIES_URL}`);
@@ -27,4 +36,4 @@ const categories = async (): Promise<any> => {
   }
 };
 
-export { wallets, operations, categories };
+export { wallets, operations, deleteOperation, categories };

@@ -1,4 +1,4 @@
-import { operations } from "services/api";
+import { operations, deleteOperation } from "services/api";
 import { ISearchOperation } from "types/data";
 import {
   OperationWrapper,
@@ -6,23 +6,29 @@ import {
   Operation,
   Marker,
   OperationInfo,
+  BtnDelete,
 } from "../AllOperations/AllOperations.styled";
 import Loader from "components/Loader";
 import { useEffect, useState } from "react";
 
 const OperationsIncome: React.FC = () => {
   const [operation, setOperation] = useState<ISearchOperation[]>();
+  const deleteOp = async (id: string) => {
+    await deleteOperation(id);
+    const newResult: ISearchOperation[] = await operations();
+    const sortedOperations = newResult
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      )
+      .filter((elem) => elem.add);
+    setOperation(sortedOperations);
+  };
   useEffect(() => {
     const getData = async () => {
       try {
         const operationsIncome: ISearchOperation[] = await operations();
-        const sortedOperations = operationsIncome
-          .sort(
-            (a, b) =>
-              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-          )
-          .filter((elem) => elem.add);
-        setOperation(sortedOperations);
+        setOperation(operationsIncome);
       } catch (error) {
         console.log(error);
       }
@@ -36,22 +42,33 @@ const OperationsIncome: React.FC = () => {
       {operation === undefined
         ? null
         : operation.map(({ _id, add, category, comment, createdAt }) => {
-          const date = new Date(createdAt);
+            const date = new Date(createdAt);
             return (
-              <Operation key={_id}>
+              <>
                 {add ? (
                   <>
-                    <Marker style={{ backgroundColor: "green" }} />
-                    <OperationInfo>
-                      <span style={{ fontWeight: 600 }}>{add} грн,</span>
-                    </OperationInfo>
+                    <Operation key={_id}>
+                      <Marker style={{ backgroundColor: "green" }} />
+                      <OperationInfo>
+                        <span style={{ fontWeight: 600 }}>{add} грн,</span>
+                      </OperationInfo>
+                      <OperationInfo>{category},</OperationInfo>
+                      <OperationInfo>{comment},</OperationInfo>
+                      <OperationInfo>
+                        {date.getDate()}.{date.getMonth() + 1},
+                      </OperationInfo>
+                      <OperationInfo>
+                        {date.getHours().toString().padStart(2, "0")}:
+                        {date.getMinutes().toString().padStart(2, "0")}:
+                        {date.getSeconds().toString().padStart(2, "0")}
+                      </OperationInfo>
+                      <BtnDelete onClick={() => deleteOp(_id)}>
+                        Видалити
+                      </BtnDelete>
+                    </Operation>
                   </>
                 ) : null}
-                <OperationInfo>{category},</OperationInfo>
-                <OperationInfo>{comment},</OperationInfo>
-                <OperationInfo>{date.getDate()}.{date.getMonth()+1},</OperationInfo>
-                <OperationInfo>{date.getHours().toString().padStart(2,"0")}:{date.getMinutes().toString().padStart(2,"0")}:{date.getSeconds().toString().padStart(2,"0")}</OperationInfo>
-              </Operation>
+              </>
             );
           })}
     </OperationWrapper>

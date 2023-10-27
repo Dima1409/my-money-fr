@@ -11,6 +11,7 @@ const OperationsHeader = styled.h2`
   text-align: center;
 `;
 const Operation = styled.li`
+  max-width: 600px;
   border: 1px solid gray;
   margin: 2px auto;
   margin-left: 12px;
@@ -30,5 +31,20 @@ const Marker = styled.div`
 const OperationInfo = styled.span`
   margin-right: 2px;
 `;
+const BtnDelete = styled.button`
+  position: absolute;
+  right: 0;
+  border: none;
+  background-color: red;
+  margin-left: 12px;
+  cursor: pointer;
+`;
 
-export { OperationWrapper, OperationsHeader, Operation, Marker, OperationInfo };
+export {
+  OperationWrapper,
+  OperationsHeader,
+  Operation,
+  Marker,
+  OperationInfo,
+  BtnDelete,
+};

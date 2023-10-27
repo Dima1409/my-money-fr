@@ -4,14 +4,25 @@ import {
   Operation,
   Marker,
   OperationInfo,
+  BtnDelete,
 } from "./AllOperations.styled";
 import { useState, useEffect } from "react";
 import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
-import { operations } from "services/api";
+import { operations, deleteOperation } from "services/api";
 
 const HistoryOperations: React.FC = () => {
   const [operation, setOperation] = useState<ISearchOperation[]>([]);
+  const deleteOp = async (id: string) => {
+    await deleteOperation(id);
+    const newResult: ISearchOperation[] = await operations();
+    const sortedOperations = newResult
+      .sort(
+        (a, b) =>
+          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      );
+    setOperation(sortedOperations);
+  };
   useEffect(() => {
     const getData = async () => {
       try {
@@ -27,6 +38,7 @@ const HistoryOperations: React.FC = () => {
     };
     getData();
   }, []);
+
   return (
     <OperationWrapper>
       <OperationsHeader>Історія операцій</OperationsHeader>
@@ -58,7 +70,7 @@ const HistoryOperations: React.FC = () => {
                   {category},
                 </OperationInfo>
                 <OperationInfo style={{ fontStyle: "italic", color: "teal" }}>
-                  {comment},
+                  {comment ? `${comment},` : null}
                 </OperationInfo>
                 <OperationInfo>
                   {date.getDate()}.{date.getMonth() + 1},
@@ -68,11 +80,11 @@ const HistoryOperations: React.FC = () => {
                   {date.getMinutes().toString().padStart(2, "0")}:
                   {date.getSeconds().toString().padStart(2, "0")}
                 </OperationInfo>
+                <BtnDelete onClick={() => deleteOp(_id)}>Видалити</BtnDelete>
               </Operation>
             );
           })}
     </OperationWrapper>
   );
 };
-
 export default HistoryOperations;
