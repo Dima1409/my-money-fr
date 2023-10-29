@@ -69,9 +69,13 @@ const HistoryOperations: React.FC = () => {
                 <OperationInfo style={{ textTransform: "uppercase" }}>
                   {category},
                 </OperationInfo>
-                <OperationInfo style={{ fontStyle: "italic", color: "teal" }}>
-                  {comment ? `${comment},` : null}
-                </OperationInfo>
+                {comment ? (
+                        <OperationInfo
+                          style={{ fontStyle: "italic", color: "teal" }}
+                        >
+                          {comment}
+                        </OperationInfo>
+                      ) : null}
                 <OperationInfo>
                   {date.getDate()}.{date.getMonth() + 1},
                 </OperationInfo>

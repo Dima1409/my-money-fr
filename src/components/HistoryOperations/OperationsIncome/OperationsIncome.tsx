@@ -17,18 +17,24 @@ const OperationsIncome: React.FC = () => {
     await deleteOperation(id);
     const newResult: ISearchOperation[] = await operations();
     const sortedOperations = newResult
+      .filter((elem) => elem.add)
       .sort(
         (a, b) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      )
-      .filter((elem) => elem.add);
+      );
     setOperation(sortedOperations);
   };
   useEffect(() => {
     const getData = async () => {
       try {
         const operationsIncome: ISearchOperation[] = await operations();
-        setOperation(operationsIncome);
+        const result = operationsIncome
+          .filter((elem) => elem.add)
+          .sort(
+            (a, b) =>
+              new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+          );
+        setOperation(result);
       } catch (error) {
         console.log(error);
       }
@@ -53,7 +59,13 @@ const OperationsIncome: React.FC = () => {
                         <span style={{ fontWeight: 600 }}>{add} грн,</span>
                       </OperationInfo>
                       <OperationInfo>{category},</OperationInfo>
-                      <OperationInfo>{comment},</OperationInfo>
+                      {comment ? (
+                        <OperationInfo
+                          style={{ fontStyle: "italic", color: "teal" }}
+                        >
+                          {comment}
+                        </OperationInfo>
+                      ) : null}
                       <OperationInfo>
                         {date.getDate()}.{date.getMonth() + 1},
                       </OperationInfo>

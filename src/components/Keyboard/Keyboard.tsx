@@ -3,18 +3,18 @@ import {
   KeyboardWrapper,
   InputElement,
   KeyElement,
-  BtnAct,
+  // BtnAct,
   KeyWrapper,
 } from "./Keyboard.styled";
 import * as math from "mathjs";
 
-const ClearButton: React.FC<{ handleClear: () => void }> = ({
-  handleClear,
-}) => <BtnAct onClick={handleClear}>Clear</BtnAct>;
+// const ClearButton: React.FC<{ handleClear: () => void }> = ({
+//   handleClear,
+// }) => <BtnAct onClick={handleClear}>Clear</BtnAct>;
 
-const ActButton: React.FC<{ handleSubmit: () => void }> = ({
-  handleSubmit,
-}) => <BtnAct onClick={handleSubmit}>Ok</BtnAct>;
+// const ActButton: React.FC<{ handleSubmit: () => void }> = ({
+//   handleSubmit,
+// }) => <BtnAct onClick={handleSubmit}>Ok</BtnAct>;
 
 const Input: React.FC<{ input: string }> = ({ input }) => (
   <InputElement>{input}</InputElement>
@@ -37,12 +37,12 @@ const Keyboard = () => {
   const handleEqual = () => {
     setInput(math.evaluate(input));
   };
-  const handleClear = () => {
-    setInput('');
-  };
-  const handleSubmit = () => {
-    setInput("Submit");
-  };
+  // const handleClear = () => {
+  //   setInput('');
+  // };
+  // const handleSubmit = () => {
+  //   setInput("Submit");
+  // };
 
   return (
     <KeyboardWrapper>
@@ -72,10 +72,10 @@ const Keyboard = () => {
           <Button handleClick={handleEqual}>=</Button>
           <Button handleClick={handleClick}>+</Button>
         </KeyWrapper>
-        <KeyWrapper>
+        {/* <KeyWrapper>
           <ClearButton handleClear={handleClear} />
           <ActButton handleSubmit={handleSubmit}></ActButton>
-        </KeyWrapper>
+        </KeyWrapper> */}
       </div>
     </KeyboardWrapper>
   );

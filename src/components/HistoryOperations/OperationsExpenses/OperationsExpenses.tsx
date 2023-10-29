@@ -54,7 +54,13 @@ const OperationsExpenses: React.FC = () => {
                         <span style={{ fontWeight: 600 }}>{sell} грн,</span>
                       </OperationInfo>
                       <OperationInfo>{category},</OperationInfo>
-                      <OperationInfo>{comment},</OperationInfo>
+                      {comment ? (
+                        <OperationInfo
+                          style={{ fontStyle: "italic", color: "teal" }}
+                        >
+                          {comment}
+                        </OperationInfo>
+                      ) : null}
                       <OperationInfo>
                         {date.getDate()}.{date.getMonth() + 1},
                       </OperationInfo>
