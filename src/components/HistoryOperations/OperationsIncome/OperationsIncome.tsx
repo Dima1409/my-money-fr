@@ -17,7 +17,7 @@ const OperationsIncome: React.FC = () => {
     await deleteOperation(id);
     const newResult: ISearchOperation[] = await operations();
     const sortedOperations = newResult
-      .filter((elem) => elem.add)
+      .filter((elem) => elem.type)
       .sort(
         (a, b) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -29,7 +29,7 @@ const OperationsIncome: React.FC = () => {
       try {
         const operationsIncome: ISearchOperation[] = await operations();
         const result = operationsIncome
-          .filter((elem) => elem.add)
+          .filter((elem) => elem.type)
           .sort(
             (a, b) =>
               new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -47,42 +47,44 @@ const OperationsIncome: React.FC = () => {
       {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
-        : operation.map(({ _id, add, category, comment, createdAt }) => {
-            const date = new Date(createdAt);
-            return (
-              <>
-                {add ? (
-                  <>
-                    <Operation key={_id}>
-                      <Marker style={{ backgroundColor: "green" }} />
-                      <OperationInfo>
-                        <span style={{ fontWeight: 600 }}>{add} грн,</span>
-                      </OperationInfo>
-                      <OperationInfo>{category},</OperationInfo>
-                      {comment ? (
-                        <OperationInfo
-                          style={{ fontStyle: "italic", color: "teal" }}
-                        >
-                          {comment}
+        : operation.map(
+            ({ _id, amount, type, category, comment, createdAt }) => {
+              const date = new Date(createdAt);
+              return (
+                <>
+                  {type ? (
+                    <>
+                      <Operation key={_id}>
+                        <Marker style={{ backgroundColor: "green" }} />
+                        <OperationInfo>
+                          <span style={{ fontWeight: 600 }}>{amount} грн,</span>
                         </OperationInfo>
-                      ) : null}
-                      <OperationInfo>
-                        {date.getDate()}.{date.getMonth() + 1},
-                      </OperationInfo>
-                      <OperationInfo>
-                        {date.getHours().toString().padStart(2, "0")}:
-                        {date.getMinutes().toString().padStart(2, "0")}:
-                        {date.getSeconds().toString().padStart(2, "0")}
-                      </OperationInfo>
-                      <BtnDelete onClick={() => deleteOp(_id)}>
-                        Видалити
-                      </BtnDelete>
-                    </Operation>
-                  </>
-                ) : null}
-              </>
-            );
-          })}
+                        <OperationInfo>{category},</OperationInfo>
+                        {comment ? (
+                          <OperationInfo
+                            style={{ fontStyle: "italic", color: "teal" }}
+                          >
+                            {comment}
+                          </OperationInfo>
+                        ) : null}
+                        <OperationInfo>
+                          {date.getDate()}.{date.getMonth() + 1},
+                        </OperationInfo>
+                        <OperationInfo>
+                          {date.getHours().toString().padStart(2, "0")}:
+                          {date.getMinutes().toString().padStart(2, "0")}:
+                          {date.getSeconds().toString().padStart(2, "0")}
+                        </OperationInfo>
+                        <BtnDelete onClick={() => deleteOp(_id)}>
+                          Видалити
+                        </BtnDelete>
+                      </Operation>
+                    </>
+                  ) : null}
+                </>
+              );
+            }
+          )}
     </OperationWrapper>
   );
 };

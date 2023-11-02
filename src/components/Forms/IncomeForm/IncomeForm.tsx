@@ -8,28 +8,30 @@ import {
   ISearchOperation,
 } from "types/data";
 import Loader from "components/Loader";
-import Keyboard from "components/Keyboard";
+// import Keyboard from "components/Keyboard";
 
 const IncomeForm: React.FC = () => {
-  // const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
+  const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
   const [operation, setOperation] = useState<ISearchOperation[] | undefined>();
   const [category, setCategory] = useState<ISearchCategoryAdd[] | undefined>();
   const [formData, setFormData] = useState({
+    wallet: wallet ? wallet[0].name : "",
     category: category ? category[0].add[0].name : "",
-    add: "",
+    amount: "",
+    type: true,
   });
   useEffect(() => {
     const getData = async () => {
       try {
-        // const totalWallets: ISearchWallet[] = await wallets();
+        const totalWallets: ISearchWallet[] = await wallets();
         const totalCategories: ISearchCategoryAdd[] = await categories();
         setCategory(totalCategories);
+        setWallet(totalWallets);
       } catch (error) {
         console.log(error);
       }
     };
     getData();
-    console.log("operation useEffect", operation);
   }, [operation]);
   const handleInputChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -43,12 +45,10 @@ const IncomeForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await addOperation(formData);
-      console.log("Operation added successfully", res);
+      await addOperation(formData);
       const operationsIncome: ISearchOperation[] = await operations();
-      console.log("operation income", operationsIncome);
       const result = operationsIncome
-        .filter((elem) => elem.add)
+        .filter((elem) => elem.type)
         .sort(
           (a, b) =>
             new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
@@ -56,9 +56,10 @@ const IncomeForm: React.FC = () => {
       setOperation(result);
 
       setFormData({
-        // wallet: wallet ? wallet[2].name : "",
+        wallet: wallet ? wallet[0].name : "",
         category: category ? category[0].add[0].name : "",
-        add: "",
+        amount: "",
+        type: true,
       });
     } catch (error) {
       console.log(error);
@@ -69,8 +70,8 @@ const IncomeForm: React.FC = () => {
       <Form onSubmit={handleSubmit}>
         {/* {!wallet ? <Loader type="spin" color="teal"></Loader> : null} */}
         {!category ? <Loader type="spin" color="teal"></Loader> : null}
-        <div>Гаманець Готівка</div>
-        {/* <select
+        <div>Гаманець</div>
+        <select
           name="wallet"
           onChange={handleInputChange}
           value={formData.wallet}
@@ -80,7 +81,8 @@ const IncomeForm: React.FC = () => {
             : wallet.map(({ _id, name }) => {
                 return <option key={_id}>{name}</option>;
               })}
-        </select> */}
+        </select>
+
         <div>Категорія</div>
         <select
           name="category"
@@ -98,10 +100,11 @@ const IncomeForm: React.FC = () => {
                 </option>
               ))}
         </select>
+        <div>Сума</div>
         <input
           type="text"
-          name="add"
-          value={formData.add}
+          name="amount"
+          value={formData.amount}
           onChange={handleInputChange}
         ></input>
         <button type="submit">ok</button>

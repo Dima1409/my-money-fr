@@ -16,11 +16,10 @@ const HistoryOperations: React.FC = () => {
   const deleteOp = async (id: string) => {
     await deleteOperation(id);
     const newResult: ISearchOperation[] = await operations();
-    const sortedOperations = newResult
-      .sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
+    const sortedOperations = newResult.sort(
+      (a, b) =>
+        new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+    );
     setOperation(sortedOperations);
   };
   useEffect(() => {
@@ -45,49 +44,51 @@ const HistoryOperations: React.FC = () => {
       {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
-        : operation.map(({ _id, add, sell, category, comment, createdAt }) => {
-            const date = new Date(createdAt);
+        : operation.map(
+            ({ _id, amount, type, category, comment, createdAt }) => {
+              const date = new Date(createdAt);
 
-            return (
-              <Operation key={_id}>
-                {add ? (
-                  <>
-                    <Marker style={{ backgroundColor: "green" }} />
-                    <OperationInfo>
-                      <span style={{ fontWeight: 600 }}>{add} грн,</span>
+              return (
+                <Operation key={_id}>
+                  {type ? (
+                    <>
+                      <Marker style={{ backgroundColor: "green" }} />
+                      <OperationInfo>
+                        <span style={{ fontWeight: 600 }}>{amount} грн,</span>
+                      </OperationInfo>
+                    </>
+                  ) : null}
+                  {!type ? (
+                    <>
+                      <Marker style={{ backgroundColor: "red" }} />
+                      <OperationInfo>
+                        <span style={{ fontWeight: 600 }}>{amount} грн,</span>
+                      </OperationInfo>
+                    </>
+                  ) : null}
+                  <OperationInfo style={{ textTransform: "uppercase" }}>
+                    {category},
+                  </OperationInfo>
+                  {comment ? (
+                    <OperationInfo
+                      style={{ fontStyle: "italic", color: "teal" }}
+                    >
+                      {comment}
                     </OperationInfo>
-                  </>
-                ) : null}
-                {sell ? (
-                  <>
-                    <Marker style={{ backgroundColor: "red" }} />
-                    <OperationInfo>
-                      <span style={{ fontWeight: 600 }}>{sell} грн,</span>
-                    </OperationInfo>
-                  </>
-                ) : null}
-                <OperationInfo style={{ textTransform: "uppercase" }}>
-                  {category},
-                </OperationInfo>
-                {comment ? (
-                        <OperationInfo
-                          style={{ fontStyle: "italic", color: "teal" }}
-                        >
-                          {comment}
-                        </OperationInfo>
-                      ) : null}
-                <OperationInfo>
-                  {date.getDate()}.{date.getMonth() + 1},
-                </OperationInfo>
-                <OperationInfo>
-                  {date.getHours().toString().padStart(2, "0")}:
-                  {date.getMinutes().toString().padStart(2, "0")}:
-                  {date.getSeconds().toString().padStart(2, "0")}
-                </OperationInfo>
-                <BtnDelete onClick={() => deleteOp(_id)}>Видалити</BtnDelete>
-              </Operation>
-            );
-          })}
+                  ) : null}
+                  <OperationInfo>
+                    {date.getDate()}.{date.getMonth() + 1},
+                  </OperationInfo>
+                  <OperationInfo>
+                    {date.getHours().toString().padStart(2, "0")}:
+                    {date.getMinutes().toString().padStart(2, "0")}:
+                    {date.getSeconds().toString().padStart(2, "0")}
+                  </OperationInfo>
+                  <BtnDelete onClick={() => deleteOp(_id)}>Видалити</BtnDelete>
+                </Operation>
+              );
+            }
+          )}
     </OperationWrapper>
   );
 };

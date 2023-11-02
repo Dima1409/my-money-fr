@@ -34,8 +34,8 @@ const addOperation = async (body: {}): Promise<any> => {
       `${process.env.REACT_APP_OPERATIONS_URL}/add`,
       body
     );
-    console.log(data.data);
-    return data.data;
+    console.log("data api add",data.data.addNew);
+    return data.data.addNew;
   } catch (error) {
     console.log("API ERR", error);
   }

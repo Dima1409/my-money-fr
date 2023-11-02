@@ -21,7 +21,7 @@ const OperationsExpenses: React.FC = () => {
         (a, b) =>
           new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
       )
-      .filter((elem) => elem.sell);
+      .filter((elem) => !elem.type);
     setOperation(sortedOperations);
     setOperation(newResult);
   };
@@ -42,42 +42,44 @@ const OperationsExpenses: React.FC = () => {
       {operation ? null : <Loader type="spin" color="teal"></Loader>}
       {operation === undefined
         ? null
-        : operation.map(({ _id, sell, category, comment, createdAt }) => {
-            const date = new Date(createdAt);
-            return (
-              <>
-                {sell ? (
-                  <>
-                    <Operation key={_id}>
-                      <Marker style={{ backgroundColor: "orange" }} />
-                      <OperationInfo>
-                        <span style={{ fontWeight: 600 }}>{sell} грн,</span>
-                      </OperationInfo>
-                      <OperationInfo>{category},</OperationInfo>
-                      {comment ? (
-                        <OperationInfo
-                          style={{ fontStyle: "italic", color: "teal" }}
-                        >
-                          {comment}
+        : operation.map(
+            ({ _id, amount, type, category, comment, createdAt }) => {
+              const date = new Date(createdAt);
+              return (
+                <>
+                  {!type ? (
+                    <>
+                      <Operation key={_id}>
+                        <Marker style={{ backgroundColor: "orange" }} />
+                        <OperationInfo>
+                          <span style={{ fontWeight: 600 }}>{amount} грн,</span>
                         </OperationInfo>
-                      ) : null}
-                      <OperationInfo>
-                        {date.getDate()}.{date.getMonth() + 1},
-                      </OperationInfo>
-                      <OperationInfo>
-                        Час: {date.getHours().toString().padStart(2, "0")}:
-                        {date.getMinutes().toString().padStart(2, "0")}:
-                        {date.getSeconds().toString().padStart(2, "0")}
-                      </OperationInfo>
-                      <BtnDelete onClick={() => deleteOp(_id)}>
-                        Видалити
-                      </BtnDelete>
-                    </Operation>
-                  </>
-                ) : null}
-              </>
-            );
-          })}
+                        <OperationInfo>{category},</OperationInfo>
+                        {comment ? (
+                          <OperationInfo
+                            style={{ fontStyle: "italic", color: "teal" }}
+                          >
+                            {comment}
+                          </OperationInfo>
+                        ) : null}
+                        <OperationInfo>
+                          {date.getDate()}.{date.getMonth() + 1},
+                        </OperationInfo>
+                        <OperationInfo>
+                          Час: {date.getHours().toString().padStart(2, "0")}:
+                          {date.getMinutes().toString().padStart(2, "0")}:
+                          {date.getSeconds().toString().padStart(2, "0")}
+                        </OperationInfo>
+                        <BtnDelete onClick={() => deleteOp(_id)}>
+                          Видалити
+                        </BtnDelete>
+                      </Operation>
+                    </>
+                  ) : null}
+                </>
+              );
+            }
+          )}
     </OperationWrapper>
   );
 };

@@ -5,7 +5,6 @@ import {
   OperationWrapper,
   OperationsHeader,
   Operation,
-  OperationInfo
 } from "../AllOperations/AllOperations.styled";
 import { useEffect, useState } from "react";
 
@@ -20,7 +19,7 @@ const TransfersOperations: React.FC = () => {
             (a, b) =>
               new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
           )
-          .filter((elem) => elem.add);
+          .filter((elem) => elem.type);
         setOperation(sortedOperations);
       } catch (error) {
         console.log(error);
@@ -35,15 +34,13 @@ const TransfersOperations: React.FC = () => {
       {operation === undefined
         ? null
         : operation.map(({ _id, category, comment, createdAt }) => {
-          // const date = new Date(createdAt);
+            // const date = new Date(createdAt);
             return (
-              <><Operation>
-                
-              </Operation>
-              {/* <OperationInfo>Дата: {date.getDate()}.{date.getMonth()+1}</OperationInfo>
+              <>
+                <Operation></Operation>
+                {/* <OperationInfo>Дата: {date.getDate()}.{date.getMonth()+1}</OperationInfo>
               <OperationInfo>Час: {date.getHours().toString().padStart(2,"0")}:{date.getMinutes().toString().padStart(2,"0")}:{date.getSeconds().toString().padStart(2,"0")}</OperationInfo> */}
               </>
-              
             );
           })}
     </OperationWrapper>

@@ -20,8 +20,8 @@ export interface ISearchCategorySell {
 
 export interface ISearchOperation {
   _id: string;
-  add: number;
-  sell: number;
+  amount: number;
+  type: boolean;
   category: string;
   comment: string;
   createdAt: string;
