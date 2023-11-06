@@ -9,7 +9,7 @@ import {
   BtnDelete,
 } from "../AllOperations/AllOperations.styled";
 import Loader from "components/Loader";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const OperationsIncome: React.FC = () => {
   const [operation, setOperation] = useState<ISearchOperation[]>();
@@ -42,18 +42,18 @@ const OperationsIncome: React.FC = () => {
     getData();
   }, []);
   return (
-    <OperationWrapper>
+    <>
       <OperationsHeader>Історія доходів</OperationsHeader>
-      {operation ? null : <Loader type="spin" color="teal"></Loader>}
-      {operation === undefined
-        ? null
-        : operation.map(
-            ({ _id, amount, type, category, comment, createdAt }) => {
-              const date = new Date(createdAt);
-              return (
-                <>
-                  {type ? (
-                    <>
+      <OperationWrapper>
+        {operation ? null : <Loader type="spin" color="teal"></Loader>}
+        {operation === undefined
+          ? null
+          : operation.map(
+              ({ _id, amount, type, category, comment, createdAt }) => {
+                const date = new Date(createdAt);
+                return (
+                  <React.Fragment key={_id}>
+                    {type ? (
                       <Operation key={_id}>
                         <Marker style={{ backgroundColor: "green" }} />
                         <OperationInfo>
@@ -79,13 +79,13 @@ const OperationsIncome: React.FC = () => {
                           Видалити
                         </BtnDelete>
                       </Operation>
-                    </>
-                  ) : null}
-                </>
-              );
-            }
-          )}
-    </OperationWrapper>
+                    ) : null}
+                  </React.Fragment>
+                );
+              }
+            )}
+      </OperationWrapper>
+    </>
   );
 };
 export default OperationsIncome;

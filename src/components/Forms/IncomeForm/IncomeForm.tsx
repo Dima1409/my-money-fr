@@ -54,7 +54,7 @@ const IncomeForm: React.FC = () => {
             new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
         );
       setOperation(result);
-
+      console.log(formData)
       setFormData({
         wallet: wallet ? wallet[0].name : "",
         category: category ? category[0].add[0].name : "",
@@ -68,7 +68,7 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {/* {!wallet ? <Loader type="spin" color="teal"></Loader> : null} */}
+        {!wallet ? <Loader type="spin" color="teal"></Loader> : null}
         {!category ? <Loader type="spin" color="teal"></Loader> : null}
         <div>Гаманець</div>
         <select
@@ -82,7 +82,6 @@ const IncomeForm: React.FC = () => {
                 return <option key={_id}>{name}</option>;
               })}
         </select>
-
         <div>Категорія</div>
         <select
           name="category"

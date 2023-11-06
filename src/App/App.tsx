@@ -8,7 +8,7 @@ const ExpensesPage = lazy(() => import("../pages/Expenses"));
 const IncomePage = lazy(() => import("../pages/Income"));
 const TransfersPage = lazy(() => import("../pages/Transfers"));
 
-const LoadingFallback: React.FC = () => <Loader type="spin" color="teal"/>;
+const LoadingFallback: React.FC = () => <Loader type="spin" color="teal" />;
 
 const LazyPage: React.FC<{ children: ReactNode }> = ({ children }) => (
   <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
@@ -18,7 +18,14 @@ function App() {
   return (
     <Container>
       <Routes>
-        <Route path="/" element={<HomePage />}></Route>
+        <Route
+          path="/"
+          element={
+            <LazyPage>
+              <HomePage />
+            </LazyPage>
+          }
+        ></Route>
         <Route
           path="/income"
           element={
