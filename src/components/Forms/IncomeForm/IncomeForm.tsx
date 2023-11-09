@@ -76,6 +76,9 @@ const IncomeForm: React.FC = () => {
           onChange={handleInputChange}
           value={formData.wallet}
         >
+          <option value="" disabled>
+            Оберіть гаманець
+          </option>
           {wallet === undefined
             ? null
             : wallet.map(({ _id, name }) => {
@@ -94,7 +97,7 @@ const IncomeForm: React.FC = () => {
           {category === undefined
             ? null
             : category[0].add.map(({ _id, name }) => (
-                <option key={_id.toString()} value={name}>
+                <option key={_id} value={name}>
                   {name}
                 </option>
               ))}
