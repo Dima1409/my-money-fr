@@ -5,7 +5,7 @@ import {
   OperationWrapper,
   OperationsHeader,
   Operation,
-} from "../AllOperations/AllOperations.styled";
+} from "../Operations/Operations.styled";
 import { useEffect, useState } from "react";
 
 const TransfersOperations: React.FC = () => {

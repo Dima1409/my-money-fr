@@ -1,8 +1,9 @@
 import React from "react";
 import GoHomeLink from "components/GoHomeLink";
-import OperationsIncome from "components/HistoryOperations/OperationsIncome";
+import Operations from "components/HistoryOperations/Operations";
 import { IncomeHeader } from "./Income.styled";
 import IncomeForm from "components/Forms/IncomeForm";
+import { OperationsHeader } from "components/HistoryOperations/Operations/Operations.styled";
 
 const Income: React.FC = () => {
   return (
@@ -10,7 +11,8 @@ const Income: React.FC = () => {
       <GoHomeLink></GoHomeLink>
       <IncomeHeader>Мої доходи</IncomeHeader>
       <IncomeForm></IncomeForm>
-      <OperationsIncome />
+      <OperationsHeader>Історія доходів</OperationsHeader>
+      <Operations type={true}/>
     </>
   );
 };

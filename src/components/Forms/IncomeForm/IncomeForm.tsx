@@ -1,38 +1,36 @@
-import { Form } from "./IncomeForm.styled";
-import { addOperation, operations } from "services/api";
-import { wallets, categories } from "services/api";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import {
-  ISearchWallet,
-  ISearchCategoryAdd,
-  ISearchOperation,
-} from "types/data";
+import { Form } from "./IncomeForm.styled";
+import { addOperation, wallets, categories } from "services/api";
+import { ISearchWallet, ISearchCategoryAdd } from "types/data";
 import Loader from "components/Loader";
-// import Keyboard from "components/Keyboard";
+
+const initialState = {
+  wallet: "",
+  category: "",
+  amount: 0,
+  type: true,
+};
 
 const IncomeForm: React.FC = () => {
   const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
-  const [operation, setOperation] = useState<ISearchOperation[] | undefined>();
   const [category, setCategory] = useState<ISearchCategoryAdd[] | undefined>();
-  const [formData, setFormData] = useState({
-    wallet: wallet ? wallet[0].name : "",
-    category: category ? category[0].add[0].name : "",
-    amount: "",
-    type: true,
-  });
+  const [formData, setFormData] = useState(initialState);
+
+  const getData = async () => {
+    try {
+      const totalWallets: ISearchWallet[] = await wallets();
+      const totalCategories: ISearchCategoryAdd[] = await categories();
+      setCategory(totalCategories);
+      setWallet(totalWallets);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const totalWallets: ISearchWallet[] = await wallets();
-        const totalCategories: ISearchCategoryAdd[] = await categories();
-        setCategory(totalCategories);
-        setWallet(totalWallets);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getData();
-  }, [operation]);
+  }, []);
+
   const handleInputChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
@@ -42,34 +40,21 @@ const IncomeForm: React.FC = () => {
       [name]: value,
     }));
   };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       await addOperation(formData);
-      const operationsIncome: ISearchOperation[] = await operations();
-      const result = operationsIncome
-        .filter((elem) => elem.type)
-        .sort(
-          (a, b) =>
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-        );
-      setOperation(result);
-      console.log(formData)
-      setFormData({
-        wallet: wallet ? wallet[0].name : "",
-        category: category ? category[0].add[0].name : "",
-        amount: "",
-        type: true,
-      });
+      setFormData(initialState);
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {!wallet ? <Loader type="spin" color="teal"></Loader> : null}
-        {!category ? <Loader type="spin" color="teal"></Loader> : null}
+        {(!wallet || !category) && <Loader type="spin" color="teal"></Loader>}
         <div>Гаманець</div>
         <select
           name="wallet"
@@ -79,11 +64,9 @@ const IncomeForm: React.FC = () => {
           <option value="" disabled>
             Оберіть гаманець
           </option>
-          {wallet === undefined
-            ? null
-            : wallet.map(({ _id, name }) => {
-                return <option key={_id}>{name}</option>;
-              })}
+          {wallet?.map(({ _id, name }) => (
+            <option key={_id}>{name}</option>
+          ))}
         </select>
         <div>Категорія</div>
         <select
@@ -94,24 +77,30 @@ const IncomeForm: React.FC = () => {
           <option value="" disabled>
             Оберіть категорію
           </option>
-          {category === undefined
-            ? null
-            : category[0].add.map(({ _id, name }) => (
-                <option key={_id} value={name}>
-                  {name}
-                </option>
-              ))}
+          {category?.[0]?.add.map(({ _id, name }) => (
+            <option key={_id} value={name}>
+              {name}
+            </option>
+          ))}
         </select>
         <div>Сума</div>
         <input
-          type="text"
+          type="number"
           name="amount"
           value={formData.amount}
           onChange={handleInputChange}
         ></input>
-        <button type="submit">ok</button>
+        <button
+          type="submit"
+          disabled={
+            formData.amount <= 0 ||
+            formData.category === "" ||
+            formData.wallet === ""
+          }
+        >
+          ok
+        </button>
       </Form>
-      {/* <Keyboard></Keyboard> */}
     </>
   );
 };

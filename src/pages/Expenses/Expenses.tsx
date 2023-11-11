@@ -1,14 +1,17 @@
 import { ExpensesHeader } from "./Expenses.styled";
 import GoHomeLink from "components/GoHomeLink";
-import OperationsExpenses from "components/HistoryOperations/OperationsExpenses";
+import Operations from "components/HistoryOperations/Operations";
 import Form from "components/Forms/ExpensesForm";
+import { OperationsHeader } from "components/HistoryOperations/Operations/Operations.styled";
+
 const Expenses: React.FC = () => {
   return (
     <>
       <GoHomeLink></GoHomeLink>
       <ExpensesHeader>Мої витрати</ExpensesHeader>
       <Form></Form>
-      <OperationsExpenses></OperationsExpenses>
+      <OperationsHeader>Історія витрат</OperationsHeader>
+      <Operations type={false} />
     </>
   );
 };
