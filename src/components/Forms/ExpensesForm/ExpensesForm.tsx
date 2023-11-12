@@ -1,14 +1,15 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "../IncomeForm/IncomeForm.styled";
-import { addOperation, wallets, categories } from "services/api";
+import { expenseOperation, wallets, categories } from "services/api";
 import { ISearchWallet, ISearchCategorySell } from "types/data";
 import Loader from "components/Loader";
 
 const initialState = {
   wallet: "",
   category: "",
-  amount: 0,
+  amount: "",
   type: false,
+  comment: "",
 };
 
 const IncomeForm: React.FC = () => {
@@ -44,7 +45,7 @@ const IncomeForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await addOperation(formData);
+      await expenseOperation(formData);
       setFormData(initialState);
     } catch (error) {
       console.log(error);
@@ -83,6 +84,13 @@ const IncomeForm: React.FC = () => {
             </option>
           ))}
         </select>
+        <div>Коментар</div>
+        <input
+          type="text"
+          name="comment"
+          value={formData.comment}
+          onChange={handleInputChange}
+        ></input>
         <div>Сума</div>
         <input
           type="number"
@@ -93,7 +101,7 @@ const IncomeForm: React.FC = () => {
         <button
           type="submit"
           disabled={
-            formData.amount <= 0 ||
+            formData.amount === "" ||
             formData.category === "" ||
             formData.wallet === ""
           }

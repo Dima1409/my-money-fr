@@ -64,7 +64,7 @@ const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
                     <OperationInfo
                       style={{ fontStyle: "italic", color: "teal" }}
                     >
-                      {comment}
+                      {comment},
                     </OperationInfo>
                   )}
                   <OperationInfo>

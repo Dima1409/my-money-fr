@@ -1,14 +1,15 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "./IncomeForm.styled";
-import { addOperation, wallets, categories } from "services/api";
+import { incomeOperation, wallets, categories } from "services/api";
 import { ISearchWallet, ISearchCategoryAdd } from "types/data";
 import Loader from "components/Loader";
 
 const initialState = {
   wallet: "",
   category: "",
-  amount: 0,
+  amount: "",
   type: true,
+  comment: "",
 };
 
 const IncomeForm: React.FC = () => {
@@ -44,8 +45,8 @@ const IncomeForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await addOperation(formData);
-      setFormData(initialState);
+      await incomeOperation(formData);
+      // setFormData(initialState);
     } catch (error) {
       console.log(error);
     }
@@ -54,52 +55,65 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {(!wallet || !category) && <Loader type="spin" color="teal"></Loader>}
-        <div>Гаманець</div>
-        <select
-          name="wallet"
-          onChange={handleInputChange}
-          value={formData.wallet}
-        >
-          <option value="" disabled>
-            Оберіть гаманець
-          </option>
-          {wallet?.map(({ _id, name }) => (
-            <option key={_id}>{name}</option>
-          ))}
-        </select>
-        <div>Категорія</div>
-        <select
-          name="category"
-          onChange={handleInputChange}
-          value={formData.category}
-        >
-          <option value="" disabled>
-            Оберіть категорію
-          </option>
-          {category?.[0]?.add.map(({ _id, name }) => (
-            <option key={_id} value={name}>
-              {name}
-            </option>
-          ))}
-        </select>
-        <div>Сума</div>
-        <input
-          type="number"
-          name="amount"
-          value={formData.amount}
-          onChange={handleInputChange}
-        ></input>
-        <button
-          type="submit"
-          disabled={
-            formData.amount <= 0 ||
-            formData.category === "" ||
-            formData.wallet === ""
-          }
-        >
-          ok
-        </button>
+        {!wallet || !category ? (
+          <Loader type="spin" color="teal"></Loader>
+        ) : (
+          <>
+            <div>Гаманець</div>
+            <select
+              name="wallet"
+              onChange={handleInputChange}
+              value={formData.wallet}
+            >
+              <option value="" disabled>
+                Оберіть гаманець
+              </option>
+              {wallet?.map(({ _id, name }) => (
+                <option key={_id}>{name}</option>
+              ))}
+            </select>
+            <div>Категорія</div>
+            <select
+              name="category"
+              onChange={handleInputChange}
+              value={formData.category}
+            >
+              <option value="" disabled>
+                Оберіть категорію
+              </option>
+              {category?.[0]?.add.map(({ _id, name }) => (
+                <option key={_id} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            <div>Коментар</div>
+            <input
+              type="text"
+              name="comment"
+              value={formData.comment}
+              onChange={handleInputChange}
+            ></input>
+            <div>Сума</div>
+            <input
+              type="number"
+              name="amount"
+              placeholder="0"
+              value={formData.amount}
+              onChange={handleInputChange}
+            ></input>
+            <button
+              type="submit"
+              disabled={
+                formData.amount === "" ||
+                formData.category === "" ||
+                formData.wallet === ""
+              }
+            >
+              ok
+            </button>
+          </>
+        )}
       </Form>
     </>
   );
