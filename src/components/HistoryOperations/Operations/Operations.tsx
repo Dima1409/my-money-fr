@@ -21,10 +21,12 @@ const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
   const getData = async () => {
     try {
       const result: ISearchOperation[] = await operations();
-      const sortedOperations = result.filter((elem)=>elem.type===type).sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
+      const sortedOperations = result
+        .filter((elem) => elem.type === type)
+        .sort(
+          (a, b) =>
+            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+        );
       setOperationsData(sortedOperations);
     } catch (error) {
       console.log(error);
@@ -40,7 +42,7 @@ const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
 
   useEffect(() => {
     getData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -49,31 +51,66 @@ const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
         {loading && <Loader type="spin" color="teal" />}
         {operationsData &&
           operationsData.map(
-            ({ _id, amount, type, category, comment, createdAt }) => {
+            ({ _id, amount, type, category, comment, createdAt, wallet }) => {
               const date = new Date(createdAt);
               return (
                 <Operation key={_id}>
                   <Marker style={{ backgroundColor: type ? "green" : "red" }} />
                   <OperationInfo>
-                    <span style={{ fontWeight: 600 }}>{amount} грн,</span>
+                    сума:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {amount}
+                    </span>
+                    ,
                   </OperationInfo>
-                  <OperationInfo style={{ textTransform: "uppercase" }}>
-                    {category},
+                  <OperationInfo>
+                    гаманець:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {wallet}
+                    </span>
+                    ,
+                  </OperationInfo>
+                  <OperationInfo>
+                    категорія:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {category}
+                    </span>
+                    ,
                   </OperationInfo>
                   {comment && (
-                    <OperationInfo
-                      style={{ fontStyle: "italic", color: "teal" }}
-                    >
-                      {comment},
+                    <OperationInfo>
+                      коментар:{" "}
+                      <span style={{ fontStyle: "italic", color: "teal" }}>
+                        {comment}
+                      </span>
+                      ,
                     </OperationInfo>
                   )}
                   <OperationInfo>
-                    {date.getDate()}.{date.getMonth() + 1},
+                    дата:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {date.getDate()}.{date.getMonth() + 1}.
+                      {date.getFullYear()}
+                    </span>
+                    ,
                   </OperationInfo>
                   <OperationInfo>
-                    {date.getHours().toString().padStart(2, "0")}:
-                    {date.getMinutes().toString().padStart(2, "0")}:
-                    {date.getSeconds().toString().padStart(2, "0")}
+                    час:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {date.getHours().toString().padStart(2, "0")}:
+                      {date.getMinutes().toString().padStart(2, "0")}:
+                      {date.getSeconds().toString().padStart(2, "0")}
+                    </span>
                   </OperationInfo>
                   <BtnDelete onClick={() => handleDelete(_id)}>
                     Видалити

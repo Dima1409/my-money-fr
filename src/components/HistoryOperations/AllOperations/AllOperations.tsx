@@ -53,27 +53,58 @@ const HistoryOperations: React.FC = () => {
                 <Operation key={_id}>
                   <Marker style={{ backgroundColor: type ? "green" : "red" }} />
                   <OperationInfo>
-                    <span style={{ fontWeight: 600 }}>{amount} грн,</span>
+                    сума:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {amount}
+                    </span>
+                    ,
                   </OperationInfo>
-                  <OperationInfo style={{ textTransform: "uppercase" }}>
-                    {category},
+                  <OperationInfo>
+                    категорія:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {category}
+                    </span>
+                    ,
                   </OperationInfo>
                   {comment && (
-                    <OperationInfo
-                      style={{ fontStyle: "italic", color: "teal" }}
-                    >
-                      {comment},
+                    <OperationInfo>
+                      коментар:{" "}
+                      <span
+                        style={{ textTransform: "uppercase", fontWeight: 600 }}
+                      >
+                        {comment}
+                      </span>
+                      ,
                     </OperationInfo>
                   )}
                   <OperationInfo>
-                    {date.getDate()}.{date.getMonth() + 1},
+                    дата:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {date.getDate()}.{date.getMonth() + 1}.
+                      {date.getFullYear()}
+                    </span>
+                    ,
                   </OperationInfo>
                   <OperationInfo>
-                    {date.getHours().toString().padStart(2, "0")}:
-                    {date.getMinutes().toString().padStart(2, "0")}:
-                    {date.getSeconds().toString().padStart(2, "0")}
+                    час:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {date.getHours().toString().padStart(2, "0")}:
+                      {date.getMinutes().toString().padStart(2, "0")}:
+                      {date.getSeconds().toString().padStart(2, "0")}
+                    </span>
                   </OperationInfo>
-                  <BtnDelete disabled={loading} onClick={() => handleDelete(_id)}>
+                  <BtnDelete
+                    disabled={loading}
+                    onClick={() => handleDelete(_id)}
+                  >
                     Видалити
                   </BtnDelete>
                 </Operation>

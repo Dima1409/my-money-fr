@@ -46,7 +46,7 @@ const IncomeForm: React.FC = () => {
     e.preventDefault();
     try {
       await incomeOperation(formData);
-      // setFormData(initialState);
+      setFormData(initialState);
     } catch (error) {
       console.log(error);
     }
@@ -72,6 +72,12 @@ const IncomeForm: React.FC = () => {
                 <option key={_id}>{name}</option>
               ))}
             </select>
+            <button
+              type="button"
+              onClick={() => console.log("Створити гаманець")}
+            >
+              +
+            </button>
             <div>Категорія</div>
             <select
               name="category"
@@ -87,6 +93,12 @@ const IncomeForm: React.FC = () => {
                 </option>
               ))}
             </select>
+            <button
+              type="button"
+              onClick={() => console.log("Створити категорію")}
+            >
+              +
+            </button>
             <div>Коментар</div>
             <input
               type="text"
