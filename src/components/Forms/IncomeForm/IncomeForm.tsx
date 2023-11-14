@@ -1,8 +1,16 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "./IncomeForm.styled";
 import { incomeOperation, wallets, categories } from "services/api";
-import { ISearchWallet, ISearchCategoryAdd } from "types/data";
+import {
+  ISearchWallet,
+  ISearchCategoryAdd,
+  ISearchCategorySell,
+} from "types/data";
 import Loader from "components/Loader";
+import useToggle from "hooks/useToggle";
+import Modal from "components/Modal";
+import WalletsList from "components/WalletsList";
+import CategoryList from "components/CategoryList";
 
 const initialState = {
   wallet: "",
@@ -14,14 +22,24 @@ const initialState = {
 
 const IncomeForm: React.FC = () => {
   const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
-  const [category, setCategory] = useState<ISearchCategoryAdd[] | undefined>();
+  const [categoryAdd, setCategoryAdd] = useState<
+    ISearchCategoryAdd[] | undefined
+  >();
+  const [categorySell, setCategorySell] = useState<
+    ISearchCategorySell[] | undefined
+  >();
   const [formData, setFormData] = useState(initialState);
+  const [showWalletList, setShowWalletList] = useState(false);
+  const [showCategoryList, setShowCategoryList] = useState(false);
+  const { isOpen, close, toggle } = useToggle();
 
   const getData = async () => {
     try {
       const totalWallets: ISearchWallet[] = await wallets();
-      const totalCategories: ISearchCategoryAdd[] = await categories();
-      setCategory(totalCategories);
+      const totalCategoriesAdd: ISearchCategoryAdd[] = await categories();
+      const totalCategoriesSell: ISearchCategorySell[] = await categories();
+      setCategoryAdd(totalCategoriesAdd);
+      setCategorySell(totalCategoriesSell);
       setWallet(totalWallets);
     } catch (error) {
       console.log(error);
@@ -55,7 +73,7 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {!wallet || !category ? (
+        {!wallet || !categoryAdd ? (
           <Loader type="spin" color="teal"></Loader>
         ) : (
           <>
@@ -73,10 +91,14 @@ const IncomeForm: React.FC = () => {
               ))}
             </select>
             <button
+              style={{ marginLeft: "12px" }}
               type="button"
-              onClick={() => console.log("Створити гаманець")}
+              onClick={() => {
+                setShowWalletList(true);
+                toggle();
+              }}
             >
-              +
+              edit
             </button>
             <div>Категорія</div>
             <select
@@ -87,17 +109,21 @@ const IncomeForm: React.FC = () => {
               <option value="" disabled>
                 Оберіть категорію
               </option>
-              {category?.[0]?.add.map(({ _id, name }) => (
+              {categoryAdd?.[0]?.add.map(({ _id, name }) => (
                 <option key={_id} value={name}>
                   {name}
                 </option>
               ))}
             </select>
             <button
+              style={{ marginLeft: "12px" }}
               type="button"
-              onClick={() => console.log("Створити категорію")}
+              onClick={() => {
+                setShowCategoryList(true);
+                toggle();
+              }}
             >
-              +
+              edit
             </button>
             <div>Коментар</div>
             <input
@@ -127,6 +153,25 @@ const IncomeForm: React.FC = () => {
           </>
         )}
       </Form>
+      {isOpen && (
+        <Modal
+          onClick={() => {
+            setShowWalletList(false);
+            setShowCategoryList(false);
+            close();
+          }}
+        >
+          {showWalletList && wallet && (
+            <WalletsList wallets={wallet}></WalletsList>
+          )}
+          {showCategoryList && categoryAdd && categorySell && (
+            <CategoryList
+              categoriesAdd={categoryAdd}
+              categoriesSell={categorySell}
+            ></CategoryList>
+          )}
+        </Modal>
+      )}
     </>
   );
 };

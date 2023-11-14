@@ -47,7 +47,7 @@ const HistoryOperations: React.FC = () => {
         {loading && <Loader type="spin" color="teal" />}
         {operationsData &&
           operationsData.map(
-            ({ _id, amount, type, category, comment, createdAt }) => {
+            ({ _id, amount, type, category, comment, createdAt, wallet }) => {
               const date = new Date(createdAt);
               return (
                 <Operation key={_id}>
@@ -58,6 +58,15 @@ const HistoryOperations: React.FC = () => {
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
                       {amount}
+                    </span>
+                    ,
+                  </OperationInfo>
+                  <OperationInfo>
+                    гаманець:{" "}
+                    <span
+                      style={{ textTransform: "uppercase", fontWeight: 600 }}
+                    >
+                      {wallet}
                     </span>
                     ,
                   </OperationInfo>
