@@ -9,6 +9,18 @@ const wallets = async (): Promise<any> => {
   }
 };
 
+const newWallet = async (body: {}): Promise<any> => {
+  try {
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_WALLETS_URL}/new`,
+      body
+    );
+    console.log(data);
+  } catch (error) {
+    console.log("Error adding new wallet");
+  }
+};
+
 const operations = async (): Promise<any> => {
   try {
     const { data } = await axios.get(`${process.env.REACT_APP_OPERATIONS_URL}`);
@@ -23,7 +35,7 @@ const deleteOperation = async (_id: String): Promise<any> => {
     const { data } = await axios.delete(
       `${process.env.REACT_APP_OPERATIONS_URL}/${_id}`
     );
-    console.log(data.data)
+    console.log(data.data);
     return data.data;
   } catch (error) {
     console.log("API ERR", error);
@@ -35,7 +47,7 @@ const incomeOperation = async (body: {}): Promise<any> => {
       `${process.env.REACT_APP_OPERATIONS_URL}/add`,
       body
     );
-    console.log("data api add",data);
+    console.log("data api add", data);
     return data.data.addNew;
   } catch (error) {
     console.log("API ERR", error);
@@ -47,7 +59,7 @@ const expenseOperation = async (body: {}): Promise<any> => {
       `${process.env.REACT_APP_OPERATIONS_URL}/sell`,
       body
     );
-    console.log("data api sell",data.data.sellCash);
+    console.log("data api sell", data.data.sellCash);
     return data.data.addNew;
   } catch (error) {
     console.log("API ERR", error);
@@ -62,4 +74,12 @@ const categories = async (): Promise<any> => {
   }
 };
 
-export { wallets, operations, deleteOperation, incomeOperation, expenseOperation, categories };
+export {
+  wallets,
+  newWallet,
+  operations,
+  deleteOperation,
+  incomeOperation,
+  expenseOperation,
+  categories,
+};
