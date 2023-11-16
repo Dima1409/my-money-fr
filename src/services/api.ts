@@ -21,6 +21,18 @@ const newWallet = async (body: {}): Promise<any> => {
   }
 };
 
+const deleteWallet = async (id: string): Promise<any> => {
+  try {
+    const {data} = await axios.delete(
+      `${process.env.REACT_APP_WALLETS_URL}/${id}`
+    );
+    console.log("Data from api delete", data);
+    return data;
+  } catch (error) {
+    console.log("API ERR", error);
+  }
+};
+
 const operations = async (): Promise<any> => {
   try {
     const { data } = await axios.get(`${process.env.REACT_APP_OPERATIONS_URL}`);
@@ -82,4 +94,5 @@ export {
   incomeOperation,
   expenseOperation,
   categories,
+  deleteWallet,
 };

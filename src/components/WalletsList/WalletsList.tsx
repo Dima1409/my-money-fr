@@ -1,5 +1,5 @@
 import { ISearchWallet } from "types/data";
-import { newWallet } from "services/api";
+import { newWallet, deleteWallet } from "services/api";
 import { useState, FormEvent, ChangeEvent } from "react";
 
 interface WalletsListProps {
@@ -11,6 +11,19 @@ const initialState = {
 
 const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
   const [formData, setFormData] = useState(initialState);
+  // const [walletsList, setWalletsList] = useState<ISearchWallet[]>();
+  // const [loading, setLoading] = useState(true);
+
+  // async function getData() {
+  //   try {
+  //     const result: ISearchWallet[] = await allWallets();
+  //     setWalletsList(result);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -18,6 +31,19 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const onDelete = async (id: string) => {
+    try {
+      await deleteWallet(id);
+      console.log(`Wallet with id: ${id} deleted`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onRename = async (id: string) => {
+    console.log(`Wallet with id:${id} renamed`);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -36,20 +62,8 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       {wallets.map(({ _id, name }) => (
         <div style={{ display: "flex" }} key={_id}>
           <span style={{ width: "220px" }}>{name}</span>
-          <button
-            onClick={() =>
-              console.log(`delete wallet with id:${_id} and name: ${name}`)
-            }
-          >
-            видалити
-          </button>
-          <button
-            onClick={() =>
-              console.log(`rename wallet with id:${_id} and name: ${name}`)
-            }
-          >
-            перейменувати
-          </button>
+          <button onClick={() => onDelete(_id)}>видалити</button>
+          <button onClick={() => onRename(_id)}>перейменувати</button>
         </div>
       ))}
       <form onSubmit={handleSubmit} style={{ display: "flex", margin: "10px" }}>
