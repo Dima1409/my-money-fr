@@ -23,7 +23,7 @@ const newWallet = async (body: {}): Promise<any> => {
 
 const deleteWallet = async (id: string): Promise<any> => {
   try {
-    const {data} = await axios.delete(
+    const { data } = await axios.delete(
       `${process.env.REACT_APP_WALLETS_URL}/${id}`
     );
     console.log("Data from api delete", data);
@@ -32,7 +32,18 @@ const deleteWallet = async (id: string): Promise<any> => {
     console.log("API ERR", error);
   }
 };
-
+const editWalletName = async (id: string, name: string): Promise<any> => {
+  try {
+    const { data } = await axios.patch(
+      `${process.env.REACT_APP_WALLETS_URL}/${id}`,
+      {name}
+    );
+    console.log("Data from api- renamed", data);
+    return data;
+  } catch (error) {
+    console.log("API ERR", error);
+  }
+};
 const operations = async (): Promise<any> => {
   try {
     const { data } = await axios.get(`${process.env.REACT_APP_OPERATIONS_URL}`);
@@ -95,4 +106,5 @@ export {
   expenseOperation,
   categories,
   deleteWallet,
+  editWalletName
 };

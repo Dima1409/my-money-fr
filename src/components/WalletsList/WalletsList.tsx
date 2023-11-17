@@ -1,5 +1,5 @@
 import { ISearchWallet } from "types/data";
-import { newWallet, deleteWallet } from "services/api";
+import { newWallet, deleteWallet, editWalletName } from "services/api";
 import { useState, FormEvent, ChangeEvent } from "react";
 
 interface WalletsListProps {
@@ -11,26 +11,15 @@ const initialState = {
 
 const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
   const [formData, setFormData] = useState(initialState);
-  // const [walletsList, setWalletsList] = useState<ISearchWallet[]>();
-  // const [loading, setLoading] = useState(true);
-
-  // async function getData() {
-  //   try {
-  //     const result: ISearchWallet[] = await allWallets();
-  //     setWalletsList(result);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+  const [editingWalletId, setEditingWalletId] = useState<string | null>(null);
+  const [editing, setEditing] = useState<boolean>(false);
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       [name]: value,
-    }));
+    });
   };
 
   const onDelete = async (id: string) => {
@@ -42,8 +31,27 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     }
   };
 
-  const onRename = async (id: string) => {
-    console.log(`Wallet with id:${id} renamed`);
+  const onRename = async (id: string, newName: string) => {
+    try {
+      await editWalletName(id, newName);
+      console.log(`Wallet with id:${id} renamed`);
+      onClose();
+    } catch (error) {}
+  };
+
+  const onClose = async () => {
+    setEditingWalletId(null);
+    setEditing(false);
+    setFormData(initialState);
+  };
+
+  const startEditing = (id: string) => {
+    setEditingWalletId(id);
+    setEditing(true);
+    const currentWallet = wallets.find((elem) => elem._id === id);
+    setFormData({
+      wallet: currentWallet?.name || "",
+    });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -61,23 +69,47 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       <h2>Мої гаманці</h2>
       {wallets.map(({ _id, name }) => (
         <div style={{ display: "flex" }} key={_id}>
-          <span style={{ width: "220px" }}>{name}</span>
-          <button onClick={() => onDelete(_id)}>видалити</button>
-          <button onClick={() => onRename(_id)}>перейменувати</button>
+          {editingWalletId === _id ? (
+            <>
+              <input
+                type="text"
+                name="wallet"
+                value={formData.wallet}
+                onChange={handleInputChange}
+              ></input>
+              <button onClick={() => onRename(_id, formData.wallet)}>
+                зберегти
+              </button>
+              <button onClick={() => onClose()}>закрити</button>
+            </>
+          ) : (
+            <>
+              <label style={{ width: "220px" }}>{name}</label>
+              <button onClick={() => onDelete(_id)}>видалити</button>
+              <button onClick={() => startEditing(_id)}>перейменувати</button>
+            </>
+          )}
         </div>
       ))}
-      <form onSubmit={handleSubmit} style={{ display: "flex", margin: "10px" }}>
-        <input
-          type="text"
-          name="wallet"
-          placeholder="new wallet..."
-          value={formData.wallet}
-          onChange={handleInputChange}
-        ></input>
-        <button type="submit" style={{ display: "block", margin: "0 auto" }}>
-          додати новий гаманець
-        </button>
-      </form>
+      {editing ? (
+        <div>редагування...</div>
+      ) : (
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", margin: "10px" }}
+        >
+          <input
+            type="text"
+            name="wallet"
+            placeholder="new wallet..."
+            value={formData.wallet}
+            onChange={handleInputChange}
+          ></input>
+          <button type="submit" style={{ display: "block", margin: "0 auto" }}>
+            додати новий гаманець
+          </button>
+        </form>
+      )}
     </>
   );
 };
