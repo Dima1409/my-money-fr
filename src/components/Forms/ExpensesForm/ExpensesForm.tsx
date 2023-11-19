@@ -1,26 +1,26 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "../IncomeForm/IncomeForm.styled";
 import { expenseOperation, wallets, categories } from "services/api";
-import { ISearchWallet, ISearchCategorySell } from "types/data";
+import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
 
 const initialState = {
   wallet: "",
   category: "",
   amount: "",
-  type: false,
+  type: "expenses",
   comment: "",
 };
 
 const IncomeForm: React.FC = () => {
   const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
-  const [category, setCategory] = useState<ISearchCategorySell[] | undefined>();
+  const [category, setCategory] = useState<ISearchCategory[] | undefined>();
   const [formData, setFormData] = useState(initialState);
 
   const getData = async () => {
     try {
       const totalWallets: ISearchWallet[] = await wallets();
-      const totalCategories: ISearchCategorySell[] = await categories();
+      const totalCategories: ISearchCategory[] = await categories();
       setCategory(totalCategories);
       setWallet(totalWallets);
     } catch (error) {
@@ -78,11 +78,13 @@ const IncomeForm: React.FC = () => {
           <option value="" disabled>
             Оберіть категорію
           </option>
-          {category?.[1]?.sell.map(({ _id, name }) => (
-            <option key={_id} value={name}>
-              {name}
-            </option>
-          ))}
+          {category
+            ?.filter((category) => category.type === "expenses")
+            .map(({ _id, name }) => (
+              <option key={_id} value={name}>
+                {name}
+              </option>
+            ))}
         </select>
         <div>Коментар</div>
         <input

@@ -3,20 +3,12 @@ export interface ISearchWallet {
   name: string;
   total: number;
 }
-export interface ISearchCategoryAdd {
+export interface ISearchCategory {
   _id: string;
-  add: Array<{
-    _id: string;
-    name: string;
-  }>;
+  name: string;
+  type: string;
 }
-export interface ISearchCategorySell {
-  _id: string;
-  sell: Array<{
-    _id: string;
-    name: string;
-  }>;
-}
+
 
 export interface ISearchOperation {
   _id: string;

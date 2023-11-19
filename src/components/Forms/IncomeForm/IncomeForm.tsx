@@ -1,11 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "./IncomeForm.styled";
 import { incomeOperation, wallets, categories } from "services/api";
-import {
-  ISearchWallet,
-  ISearchCategoryAdd,
-  ISearchCategorySell,
-} from "types/data";
+import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
 import useToggle from "hooks/useToggle";
 import Modal from "components/Modal";
@@ -16,17 +12,14 @@ const initialState = {
   wallet: "",
   category: "",
   amount: "",
-  type: true,
+  type: "income",
   comment: "",
 };
 
 const IncomeForm: React.FC = () => {
   const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
   const [categoryAdd, setCategoryAdd] = useState<
-    ISearchCategoryAdd[] | undefined
-  >();
-  const [categorySell, setCategorySell] = useState<
-    ISearchCategorySell[] | undefined
+    ISearchCategory[] | undefined
   >();
   const [formData, setFormData] = useState(initialState);
   const [showWalletList, setShowWalletList] = useState(false);
@@ -36,10 +29,8 @@ const IncomeForm: React.FC = () => {
   const getData = async () => {
     try {
       const totalWallets: ISearchWallet[] = await wallets();
-      const totalCategoriesAdd: ISearchCategoryAdd[] = await categories();
-      const totalCategoriesSell: ISearchCategorySell[] = await categories();
+      const totalCategoriesAdd: ISearchCategory[] = await categories();
       setCategoryAdd(totalCategoriesAdd);
-      setCategorySell(totalCategoriesSell);
       setWallet(totalWallets);
     } catch (error) {
       console.log(error);
@@ -109,11 +100,13 @@ const IncomeForm: React.FC = () => {
               <option value="" disabled>
                 Оберіть категорію
               </option>
-              {categoryAdd?.[0]?.add.map(({ _id, name }) => (
-                <option key={_id} value={name}>
-                  {name}
-                </option>
-              ))}
+              {categoryAdd
+                .filter((category) => category.type === "income")
+                .map(({ _id, name }) => (
+                  <option key={_id} value={name}>
+                    {name}
+                  </option>
+                ))}
             </select>
             <button
               style={{ marginLeft: "12px" }}
@@ -164,11 +157,8 @@ const IncomeForm: React.FC = () => {
           {showWalletList && wallet && (
             <WalletsList wallets={wallet}></WalletsList>
           )}
-          {showCategoryList && categoryAdd && categorySell && (
-            <CategoryList
-              categoriesAdd={categoryAdd}
-              categoriesSell={categorySell}
-            ></CategoryList>
+          {showCategoryList && categoryAdd && (
+            <CategoryList categoriesAdd={categoryAdd}></CategoryList>
           )}
         </Modal>
       )}
