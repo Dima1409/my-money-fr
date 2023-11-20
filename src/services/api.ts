@@ -120,6 +120,18 @@ const deleteCategory = async (id: string): Promise<any> => {
   }
 };
 
+const renameCategory = async (id: string, name: string): Promise<any> => {
+  try {
+    const { data } = await axios.patch(
+      `${process.env.REACT_APP_CATEGORIES_URL}/${id}`,
+      { name }
+    );
+    return data;
+  } catch (error) {
+    console.log("API ERR", error);
+  }
+};
+
 export {
   wallets,
   newWallet,
@@ -132,4 +144,5 @@ export {
   categories,
   createCategory,
   deleteCategory,
+  renameCategory
 };

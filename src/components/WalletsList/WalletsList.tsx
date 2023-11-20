@@ -25,6 +25,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
   const onDelete = async (id: string) => {
     try {
       await deleteWallet(id);
+      onClose();
       console.log(`Wallet with id: ${id} deleted`);
     } catch (error) {
       console.log(error);
@@ -36,7 +37,9 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       await editWalletName(id, newName);
       console.log(`Wallet with id:${id} renamed`);
       onClose();
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onClose = async () => {

@@ -12,7 +12,7 @@ const Income: React.FC = () => {
       <IncomeHeader>Мої доходи</IncomeHeader>
       <IncomeForm></IncomeForm>
       <OperationsHeader>Історія доходів</OperationsHeader>
-      <Operations type={true}/>
+      <Operations type={"income"}/>
     </>
   );
 };

@@ -13,7 +13,7 @@ export interface ISearchCategory {
 export interface ISearchOperation {
   _id: string;
   amount: number;
-  type: boolean;
+  type: string;
   category: string;
   comment: string;
   createdAt: string;

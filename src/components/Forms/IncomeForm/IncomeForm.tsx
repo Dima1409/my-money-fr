@@ -30,7 +30,10 @@ const IncomeForm: React.FC = () => {
     try {
       const totalWallets: ISearchWallet[] = await wallets();
       const totalCategoriesAdd: ISearchCategory[] = await categories();
-      setCategoryAdd(totalCategoriesAdd);
+      const incomeCategories = totalCategoriesAdd.filter(
+        (category) => category.type === "income"
+      );
+      setCategoryAdd(incomeCategories);
       setWallet(totalWallets);
     } catch (error) {
       console.log(error);
@@ -158,7 +161,10 @@ const IncomeForm: React.FC = () => {
             <WalletsList wallets={wallet}></WalletsList>
           )}
           {showCategoryList && categoryAdd && (
-            <CategoryList categoriesAdd={categoryAdd}></CategoryList>
+            <CategoryList
+              categories={categoryAdd}
+              typeOfCategory="income"
+            ></CategoryList>
           )}
         </Modal>
       )}

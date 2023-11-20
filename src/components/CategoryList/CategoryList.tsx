@@ -1,22 +1,29 @@
 import { ISearchCategory } from "types/data";
 import { useState } from "react";
 import { ChangeEvent, FormEvent } from "react";
-import { createCategory, deleteCategory } from "../../services/api";
+import {
+  createCategory,
+  deleteCategory,
+  renameCategory,
+} from "../../services/api";
 
 interface CategoryListProps {
-  categoriesAdd: ISearchCategory[];
+  categories: ISearchCategory[];
+  typeOfCategory: string;
 }
 const initialState = {
   category: "",
+  type: "",
 };
 
 const CategoryList: React.FC<CategoryListProps> = ({
-  categoriesAdd,
+  categories,
+  typeOfCategory,
 }) => {
   const [formData, setFormData] = useState(initialState);
-  // const [editingCategoryId, setEditingCategoryId] = useState<string | null>(
-  //   null
-  // );
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(
+    null
+  );
   const [editing, setEditing] = useState<boolean>(false);
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +31,40 @@ const CategoryList: React.FC<CategoryListProps> = ({
     setFormData({
       ...formData,
       [name]: value,
+    });
+  };
+
+  const onDelete = async (id: string) => {
+    try {
+      await deleteCategory(id);
+      onClose();
+      console.log(`Category with id: ${id} deleted`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onRename = async (id: string, newName: string) => {
+    try {
+      await renameCategory(id, newName);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onClose = async () => {
+    setEditingCategoryId(null);
+    setEditing(false);
+    setFormData(initialState);
+  };
+
+  const startEditing = (id: string) => {
+    setEditingCategoryId(id);
+    setEditing(true);
+    const currentCategory = categories.find((elem) => elem._id === id);
+    setFormData({
+      category: currentCategory?.name || "",
+      type: typeOfCategory,
     });
   };
 
@@ -37,29 +78,36 @@ const CategoryList: React.FC<CategoryListProps> = ({
     }
   };
 
-  const onDelete = async (id: string) => {
-    try {
-      await deleteCategory(id);
-      console.log(`Wallet with id: ${id} deleted`);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
-      <h2>Категорії доходів</h2>
-      {categoriesAdd.map(({ _id, name, type }) => (
+      <h2>Мої категорії</h2>
+      {categories.map(({ _id, name }) => (
         <div style={{ display: "flex" }} key={_id}>
-          <span style={{ width: "200px" }}>{name}</span>
-          <button onClick={() => onDelete(_id)}>видалити</button>
-          <button
-            onClick={() =>
-              console.log(`rename category with id:${_id} and name: ${name}`)
-            }
-          >
-            перейменувати
-          </button>
+          {editingCategoryId === _id ? (
+            <>
+              <input
+                type="text"
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+              ></input>
+              <input
+                type="text"
+                name="type"
+                value={typeOfCategory}
+              ></input>
+              <button onClick={() => onRename(_id, formData.category)}>
+                зберегти
+              </button>
+              <button onClick={() => onClose()}>закрити</button>
+            </>
+          ) : (
+            <>
+              <label style={{ width: "220px" }}>{name}</label>
+              <button onClick={() => onDelete(_id)}>видалити</button>
+              <button onClick={() => startEditing(_id)}>перейменувати</button>
+            </>
+          )}
         </div>
       ))}
       {editing ? (
@@ -77,7 +125,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
             onChange={handleInputChange}
           ></input>
           <button type="submit" style={{ display: "block", margin: "0 auto" }}>
-            додати новий гаманець
+            додати нову категорію
           </button>
         </form>
       )}

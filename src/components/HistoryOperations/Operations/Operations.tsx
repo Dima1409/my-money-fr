@@ -11,7 +11,7 @@ import {
 } from "./Operations.styled";
 
 interface OperationsProps {
-  type: boolean;
+  type: string;
 }
 
 const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
@@ -55,7 +55,7 @@ const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
               const date = new Date(createdAt);
               return (
                 <Operation key={_id}>
-                  <Marker style={{ backgroundColor: type ? "green" : "red" }} />
+                  <Marker style={{ backgroundColor: type==="income" ? "green" : "red" }} />
                   <OperationInfo>
                     сума:{" "}
                     <span

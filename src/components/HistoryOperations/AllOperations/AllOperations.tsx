@@ -51,7 +51,7 @@ const HistoryOperations: React.FC = () => {
               const date = new Date(createdAt);
               return (
                 <Operation key={_id}>
-                  <Marker style={{ backgroundColor: type ? "green" : "red" }} />
+                  <Marker style={{ backgroundColor: type==="income" ? "green" : "red" }} />
                   <OperationInfo>
                     сума:{" "}
                     <span
