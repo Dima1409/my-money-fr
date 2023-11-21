@@ -7,7 +7,7 @@ const HomePage: React.FC = () => {
   return (
     <>
       <Header>
-        <span>My Finance</span>
+        <span>Мої гроші</span>
       </Header>
       <Operations></Operations>
       <Wallets></Wallets>

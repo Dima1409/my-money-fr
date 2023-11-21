@@ -18,7 +18,7 @@ const initialState = {
 
 const IncomeForm: React.FC = () => {
   const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
-  const [categoryAdd, setCategoryAdd] = useState<
+  const [categoryIncome, setCategoryIncome] = useState<
     ISearchCategory[] | undefined
   >();
   const [formData, setFormData] = useState(initialState);
@@ -29,11 +29,11 @@ const IncomeForm: React.FC = () => {
   const getData = async () => {
     try {
       const totalWallets: ISearchWallet[] = await wallets();
-      const totalCategoriesAdd: ISearchCategory[] = await categories();
-      const incomeCategories = totalCategoriesAdd.filter(
+      const totalCategoriesIncomes: ISearchCategory[] = await categories();
+      const incomeCategories = totalCategoriesIncomes.filter(
         (category) => category.type === "income"
       );
-      setCategoryAdd(incomeCategories);
+      setCategoryIncome(incomeCategories);
       setWallet(totalWallets);
     } catch (error) {
       console.log(error);
@@ -67,7 +67,7 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {!wallet || !categoryAdd ? (
+        {!wallet || !categoryIncome ? (
           <Loader type="spin" color="teal"></Loader>
         ) : (
           <>
@@ -103,7 +103,7 @@ const IncomeForm: React.FC = () => {
               <option value="" disabled>
                 Оберіть категорію
               </option>
-              {categoryAdd
+              {categoryIncome
                 .filter((category) => category.type === "income")
                 .map(({ _id, name }) => (
                   <option key={_id} value={name}>
@@ -160,9 +160,9 @@ const IncomeForm: React.FC = () => {
           {showWalletList && wallet && (
             <WalletsList wallets={wallet}></WalletsList>
           )}
-          {showCategoryList && categoryAdd && (
+          {showCategoryList && categoryIncome && (
             <CategoryList
-              categories={categoryAdd}
+              categories={categoryIncome}
               typeOfCategory="income"
             ></CategoryList>
           )}
