@@ -71,7 +71,10 @@ const CategoryList: React.FC<CategoryListProps> = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await createCategory(formData);
+      await createCategory({
+        category: formData.category,
+        type: typeOfCategory,
+      });
       setFormData(initialState);
     } catch (error) {
       console.log(error);
@@ -90,11 +93,6 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-              ></input>
-              <input
-                type="text"
-                name="type"
-                value={typeOfCategory}
               ></input>
               <button onClick={() => onRename(_id, formData.category)}>
                 зберегти
