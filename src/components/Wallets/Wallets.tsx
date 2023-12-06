@@ -2,7 +2,7 @@ import React from "react";
 import { InfoWallets, WalletsWrapper, Wallet } from "./Wallets.styled";
 import { ISearchWallet } from "types/data";
 import { useEffect, useState } from "react";
-import { wallets } from "services/api";
+import { wallets } from "service/api";
 import Loader from "components/Loader";
 
 const Wallets: React.FC = () => {

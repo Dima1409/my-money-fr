@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { operations, deleteOperation } from "services/api";
+import { operations, deleteOperation } from "service/api";
 import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
 import {

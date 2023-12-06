@@ -5,7 +5,7 @@ import {
   createCategory,
   deleteCategory,
   renameCategory,
-} from "../../services/api";
+} from "../../service/api";
 
 interface CategoryListProps {
   categories: ISearchCategory[];

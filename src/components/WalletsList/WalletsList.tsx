@@ -1,5 +1,5 @@
 import { ISearchWallet } from "types/data";
-import { newWallet, deleteWallet, editWalletName } from "services/api";
+import { newWallet, deleteWallet, editWalletName } from "service/api";
 import { useState, FormEvent, ChangeEvent } from "react";
 
 interface WalletsListProps {

@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "./IncomeForm.styled";
-import { incomeOperation, wallets, categories } from "services/api";
+import { incomeOperation, wallets, categories } from "service/api";
 import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
 import useToggle from "hooks/useToggle";

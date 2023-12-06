@@ -1,4 +1,4 @@
-import { operations } from "services/api";
+import { operations } from "service/api";
 import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
 import {
