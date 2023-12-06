@@ -1,21 +1,17 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 
-const RegisterForm: React.FC = () => {
-  const [name, setName] = useState<string>("");
+const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [show, setShow] = useState<boolean>(true);
 
-  const showHidePassword = () => {
+  const hideShowPassword = () => {
     setShow(!show);
   };
 
   const inputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
     switch (name) {
-      case "name":
-        setName(value);
-        break;
       case "email":
         setEmail(value);
         break;
@@ -30,24 +26,13 @@ const RegisterForm: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    console.log({ name, email, password });
-    // dispatch
+    //dispatch
     form.reset();
   };
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
-        <div>Register form</div>
-      <label>
-        Name
-        <input
-          type="text"
-          name="name"
-          value={name}
-          onChange={inputChange}
-          required
-        ></input>
-      </label>
+      <div>Login form</div>
       <label>
         Email
         <input
@@ -67,19 +52,15 @@ const RegisterForm: React.FC = () => {
           onChange={inputChange}
           required
         ></input>
-        <button
-          type="button"
-          aria-label="Toggle password visibility"
-          onClick={showHidePassword}
-        >
+        <button type="button" onClick={hideShowPassword}>
           {show ? "hide" : "show"}
         </button>
       </label>
-      <button type="submit" disabled={!name || !email || !password}>
-        Register
+      <button type="submit" disabled={!email || !password}>
+        LogIn
       </button>
     </form>
   );
 };
 
-export default RegisterForm;
+export default LoginForm;
