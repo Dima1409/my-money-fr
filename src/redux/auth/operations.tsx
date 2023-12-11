@@ -86,4 +86,20 @@ const updateUserAvatar = createAsyncThunk(
   }
 );
 
-export { register, login, logout, deleteAvatar, updateUserAvatar };
+const refreshUser = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  const persistedToken = state.auth.token;
+
+  if (persistedToken === null) {
+    return thunkAPI.rejectWithValue("Unable to fetch user");
+  }
+  try {
+    setAuthHeader(persistedToken);
+    const response = await axios.get("/auth/current");
+    return response.data;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+export { register, login, logout, deleteAvatar, updateUserAvatar, refreshUser };

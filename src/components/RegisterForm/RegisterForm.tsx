@@ -37,7 +37,8 @@ const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
-        <div>Register form</div>
+      <div>Register form</div>
+      <div></div>
       <label>
         Name
         <input
@@ -48,6 +49,7 @@ const RegisterForm: React.FC = () => {
           required
         ></input>
       </label>
+      <div></div>
       <label>
         Email
         <input
@@ -58,6 +60,7 @@ const RegisterForm: React.FC = () => {
           required
         ></input>
       </label>
+      <div></div>
       <label>
         Password
         <input

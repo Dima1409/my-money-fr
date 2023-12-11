@@ -5,6 +5,7 @@ import {
   logout,
   updateUserAvatar,
   deleteAvatar,
+  refreshUser,
 } from "./operations";
 
 const initialState = {
@@ -16,6 +17,7 @@ const initialState = {
   token: null,
   isLoggedIn: false,
   isPending: false,
+  isRefreshing: false,
   error: null,
 };
 
@@ -29,16 +31,19 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isLoggedIn = true;
       state.isPending = false;
+      state.isRefreshing = false;
       state.error = null;
     };
 
     const handlePending = (state: typeof initialState) => {
       state.isPending = true;
+      state.isRefreshing = true;
     };
 
     const handleRejected = (state: typeof initialState, action: any) => {
       state.error = action.payload.error;
       state.isPending = false;
+      state.isRefreshing = false;
     };
 
     builder
@@ -57,16 +62,19 @@ const authSlice = createSlice({
       })
       .addCase(updateUserAvatar.fulfilled, handleFulfilled)
       .addCase(deleteAvatar.fulfilled, handleFulfilled)
+      .addCase(refreshUser.fulfilled, handleFulfilled)
       .addCase(register.pending, handlePending)
       .addCase(login.pending, handlePending)
       .addCase(logout.pending, handlePending)
       .addCase(updateUserAvatar.pending, handlePending)
       .addCase(deleteAvatar.pending, handlePending)
+      .addCase(refreshUser.pending, handlePending)
       .addCase(register.rejected, handleRejected)
       .addCase(login.rejected, handleRejected)
       .addCase(logout.rejected, handleRejected)
       .addCase(updateUserAvatar.rejected, handleRejected)
-      .addCase(deleteAvatar.rejected, handleRejected);
+      .addCase(deleteAvatar.rejected, handleRejected)
+      .addCase(refreshUser.rejected, handleRejected);
   },
 });
 

@@ -1,9 +1,13 @@
 import { useState, ChangeEvent, FormEvent } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "redux/auth/operations";
+
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [show, setShow] = useState<boolean>(true);
+  const dispatch = useDispatch();
 
   const hideShowPassword = () => {
     setShow(!show);
@@ -26,7 +30,10 @@ const LoginForm: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    //dispatch
+    // dispatch(login({
+    //   email: (form.elements.namedItem("email") as HTMLInputElement).value,
+    //   password: (form.elements.namedItem("password") as HTMLInputElement).value,
+    // }) as any)
     form.reset();
   };
 
