@@ -1,13 +1,13 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
-import { login } from "redux/auth/operations";
-
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { login } from "../../redux/auth/operations";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [show, setShow] = useState<boolean>(true);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   const hideShowPassword = () => {
     setShow(!show);
@@ -29,32 +29,36 @@ const LoginForm: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    // dispatch(login({
-    //   email: (form.elements.namedItem("email") as HTMLInputElement).value,
-    //   password: (form.elements.namedItem("password") as HTMLInputElement).value,
-    // }) as any)
-    form.reset();
+    dispatch(
+      login({
+        email: email,
+        password: password,
+      })
+    );
+    setEmail("");
+    setPassword("");
   };
 
   return (
     <form onSubmit={handleSubmit} autoComplete="off">
       <div>Login form</div>
-      <label>
+      <label htmlFor="email">
         Email
         <input
           type="text"
           name="email"
+          id="email"
           value={email}
           onChange={inputChange}
           required
         ></input>
       </label>
-      <label>
+      <label htmlFor="password">
         Password
         <input
           type={show ? "text" : "password"}
           name="password"
+          id="password"
           value={password}
           onChange={inputChange}
           required
