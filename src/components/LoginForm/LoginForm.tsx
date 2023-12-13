@@ -40,7 +40,7 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
+    <form onSubmit={handleSubmit}>
       <div>Login form</div>
       <label htmlFor="email">
         Email

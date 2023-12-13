@@ -28,7 +28,7 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     const handleFulfilled = (state: typeof initialState, action: any) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
+      state.token = action.payload.data.user;
       state.isLoggedIn = true;
       state.isPending = false;
       state.isRefreshing = false;
@@ -62,7 +62,14 @@ const authSlice = createSlice({
       })
       .addCase(updateUserAvatar.fulfilled, handleFulfilled)
       .addCase(deleteAvatar.fulfilled, handleFulfilled)
-      .addCase(refreshUser.fulfilled, handleFulfilled)
+      .addCase(refreshUser.fulfilled, (state: typeof initialState, action: any) => {
+        state.user = action.payload.user;
+      state.token = action.payload.data.user;
+      state.isLoggedIn = true;
+      state.isPending = false;
+      state.isRefreshing = false;
+      state.error = null;
+      })
       .addCase(register.pending, handlePending)
       .addCase(login.pending, handlePending)
       .addCase(logout.pending, handlePending)

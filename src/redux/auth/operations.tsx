@@ -9,9 +9,15 @@ const clearAuthHeader = () => {
   API.defaults.headers.common.Authorization = "";
 };
 
+interface RegisterCredentials {
+  email: string;
+  name: string;
+  password: string;
+}
+
 const register = createAsyncThunk(
   "auth/register",
-  async (credentials, thunkAPI) => {
+  async (credentials: RegisterCredentials, thunkAPI) => {
     try {
       const response = await API.post("/auth/register", credentials);
       setAuthHeader(response.data.token);
@@ -32,7 +38,7 @@ const login = createAsyncThunk(
   async (credentials: LoginCredentials, thunkAPI) => {
     try {
       const response = await API.post("/auth/login", credentials);
-      setAuthHeader(response.data.token);
+      setAuthHeader(response.data.data.user);
       return response.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -94,7 +100,7 @@ const updateUserAvatar = createAsyncThunk(
 );
 
 const refreshUser = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
-  const state: any = thunkAPI.getState();
+  const state: any = thunkAPI.getState();;
   const persistedToken = state.auth.token;
 
   if (persistedToken === null) {
