@@ -6,7 +6,7 @@ import { login } from "../../redux/auth/operations";
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [show, setShow] = useState<boolean>(true);
+  const [show, setShow] = useState<boolean>(false);
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   const hideShowPassword = () => {

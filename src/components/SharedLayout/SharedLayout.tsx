@@ -2,9 +2,11 @@ import { Link, Outlet } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../../redux/auth/operations";
 import { ThunkDispatch } from "@reduxjs/toolkit";
+import useAuth from "hooks/useAuth";
 
 const SharedLayout: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const { isLoggedIn } = useAuth();
   return (
     <>
       <div>Welcome to MYMoney</div>
@@ -12,12 +14,16 @@ const SharedLayout: React.FC = () => {
         <li style={{ margin: "8px" }}>
           <Link to="/">Home</Link>
         </li>
+        {isLoggedIn && (
+          <>
+            <li style={{ margin: "8px" }}>
+              <Link to="/register">Register</Link>
+            </li>
+          </>
+        )}
         <li style={{ margin: "8px" }}>
           <Link to="/login">Login</Link>
-        </li>
-        <li style={{ margin: "8px" }}>
-          <Link to="/register">Register</Link>
-        </li>
+        </li>{" "}
         <li style={{ margin: "8px" }}>
           <Link to="/income">Income</Link>
         </li>
@@ -28,7 +34,8 @@ const SharedLayout: React.FC = () => {
           <Link to="transfers">Transfers</Link>
         </li> */}
       </ul>
-      <button onClick={() => dispatch(logout())}>Logout</button>
+      {isLoggedIn && <button onClick={() => dispatch(logout())}>Logout</button>}
+
       <Outlet></Outlet>
     </>
   );
