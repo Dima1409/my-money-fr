@@ -27,10 +27,10 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     const handleFulfilled = (state: typeof initialState, action: any) => {
-      state.user.email = action.payload.data.user.email;
-      state.user.name = action.payload.data.user.name;
-      state.user.avatarURL = action.payload.data.user.avatarURL;
-      state.token = action.payload.data.user.token;
+      state.user.email = action.payload.user.email;
+      state.user.name = action.payload.user.name;
+      state.user.avatarURL = action.payload.user.avatarURL;
+      state.token = action.payload.user.token;
       state.isLoggedIn = true;
       state.isPending = false;
       state.isRefreshing = false;
@@ -64,7 +64,16 @@ const authSlice = createSlice({
       })
       .addCase(updateUserAvatar.fulfilled, handleFulfilled)
       .addCase(deleteAvatar.fulfilled, handleFulfilled)
-      .addCase(refreshUser.fulfilled, handleFulfilled)
+      .addCase(refreshUser.fulfilled, (state, action) => {
+        state.user.email = action.payload.email;
+        state.user.name = action.payload.name;
+        state.user.avatarURL = action.payload.avatarURL;
+        // state.token = action.payload.data.user;
+        state.isLoggedIn = true;
+        state.isPending = false;
+        state.isRefreshing = false;
+        state.error = null;
+      })
       .addCase(register.pending, handlePending)
       .addCase(login.pending, handlePending)
       .addCase(logout.pending, handlePending)

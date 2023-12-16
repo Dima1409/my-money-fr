@@ -38,8 +38,9 @@ const login = createAsyncThunk(
   async (credentials: LoginCredentials, thunkAPI) => {
     try {
       const response = await API.post("/auth/login", credentials);
+      // console.log("RESPONSE LOGIN", response.data);
       setAuthHeader(response.data.data.user);
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -99,20 +100,19 @@ const updateUserAvatar = createAsyncThunk(
   }
 );
 
-const refreshUser = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
+const refreshUser = createAsyncThunk("/auth/current", async (_, thunkAPI) => {
   const state: any = thunkAPI.getState();
   const persistedToken = state.auth.token;
-  console.log("token", persistedToken);
+  console.log("Token!!!", persistedToken);
 
   if (persistedToken === null) {
     return thunkAPI.rejectWithValue("Unable to fetch user");
   }
   try {
     setAuthHeader(persistedToken);
-    const response = await API.get("/auth/refresh");
-    console.log("response refresh", response);
-    console.log(response.data);
-    return response.data;
+    const response = await API.get("/auth/current");
+    console.log(response.data.data);
+    return response.data.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message);
   }
