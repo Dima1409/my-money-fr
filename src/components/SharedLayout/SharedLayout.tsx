@@ -9,21 +9,29 @@ const SharedLayout: React.FC = () => {
   const { isLoggedIn } = useAuth();
   return (
     <>
-      <div>Welcome to MYMoney</div>
-      <ul style={{ display: "flex", flexDirection: "column" }}>
+      <ul
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          listStyle: "none",
+          margin: 0,
+        }}
+      >
         <li style={{ margin: "8px" }}>
           <Link to="/">Home</Link>
         </li>
-        {isLoggedIn && (
+        {!isLoggedIn && (
           <>
             <li style={{ margin: "8px" }}>
               <Link to="/register">Register</Link>
             </li>
           </>
         )}
-        <li style={{ margin: "8px" }}>
-          <Link to="/login">Login</Link>
-        </li>{" "}
+        {!isLoggedIn && (
+          <li style={{ margin: "8px" }}>
+            <Link to="/login">Login</Link>
+          </li>
+        )}
         <li style={{ margin: "8px" }}>
           <Link to="/income">Income</Link>
         </li>
@@ -35,7 +43,6 @@ const SharedLayout: React.FC = () => {
         </li> */}
       </ul>
       {isLoggedIn && <button onClick={() => dispatch(logout())}>Logout</button>}
-
       <Outlet></Outlet>
     </>
   );

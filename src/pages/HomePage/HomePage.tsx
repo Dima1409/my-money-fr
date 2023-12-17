@@ -1,4 +1,3 @@
-import Header from "components/Header";
 import UserMenu from "components/UserMenu";
 import useAuth from "hooks/useAuth";
 // import Operations from "components/Operations";
@@ -6,27 +5,10 @@ import useAuth from "hooks/useAuth";
 // import AllOperations from "components/HistoryOperations/AllOperations";
 
 const HomePage: React.FC = () => {
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn } = useAuth();
   return (
     <>
-      <Header>
-        <span>Мої гроші</span>
-      </Header>
-      {/* {isLoggedIn && <UserMenu></UserMenu>} */}
-      {isLoggedIn && <div>Name: {user.name}</div>}
-      {isLoggedIn && <div>Email: {user.email}</div>}
-      {isLoggedIn && (
-        <img
-          src={user.avatarURL}
-          alt="User Avatar"
-          className="user-avatar"
-          width={250}
-        />
-      )}
-
-      {/* <Operations></Operations>
-      <Wallets></Wallets>
-      <AllOperations /> */}
+      {isLoggedIn && <UserMenu/>}
     </>
   );
 };

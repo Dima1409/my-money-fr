@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
-import { operations, deleteOperation } from "service/api";
+import { useDispatch } from "react-redux";
+// import { operations, deleteOperation } from "service/api";
+import { getAllOperations } from "redux/operations/operations";
+import useSelectors from "../../../hooks/useOperations";
+import useAuth from "../../../hooks/useAuth";
 import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
 import {
@@ -12,46 +16,51 @@ import {
 
 const HistoryOperations: React.FC = () => {
   const [operationsData, setOperationsData] = useState<ISearchOperation[]>();
-  const [loading, setLoading] = useState(true);
+  const {isLoading, isError} = useSelectors();
+  const {isLoggedIn} = useAuth();
+  const dispatch = useDispatch();
 
-  const getData = async () => {
-    try {
-      const result: ISearchOperation[] = await operations();
-      const sortedOperations = result.sort(
-        (a, b) =>
-          new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-      );
-      setOperationsData(sortedOperations);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const getData = async () => {
+  //   try {
+  //     const result: ISearchOperation[] = await getAllOperations();
+  //     const sortedOperations = result.sort(
+  //       (a, b) =>
+  //         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+  //     );
+  //     setOperationsData(sortedOperations);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const handleDelete = async (id: string) => {
-    setLoading(true);
-    await deleteOperation(id);
-    getData();
-    setLoading(false);
-  };
+  // const handleDelete = async (id: string) => {
+  //   setLoading(true);
+  //   await deleteOperation(id);
+  //   getData();
+  //   setLoading(false);
+  // };
 
   useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatch(getAllOperations());
+  }, [dispatch]);
 
   return (
     <>
       <OperationWrapper>
-        {loading && <Loader type="spin" color="teal" />}
+        {isLoading && <Loader type="spin" color="teal" />}
         {operationsData &&
           operationsData.map(
             ({ _id, amount, type, category, comment, createdAt, wallet }) => {
               const date = new Date(createdAt);
               return (
                 <Operation key={_id}>
-                  <Marker style={{ backgroundColor: type==="income" ? "green" : "red" }} />
+                  <Marker
+                    style={{
+                      backgroundColor: type === "income" ? "green" : "red",
+                    }}
+                  />
                   <OperationInfo>
                     сума:{" "}
                     <span
@@ -110,12 +119,12 @@ const HistoryOperations: React.FC = () => {
                       {date.getSeconds().toString().padStart(2, "0")}
                     </span>
                   </OperationInfo>
-                  <BtnDelete
+                  {/* <BtnDelete
                     disabled={loading}
                     onClick={() => handleDelete(_id)}
                   >
                     Видалити
-                  </BtnDelete>
+                  </BtnDelete> */}
                 </Operation>
               );
             }
