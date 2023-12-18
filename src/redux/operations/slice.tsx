@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getAllOperations, incomeOperations } from "./operations";
+import {
+  getAllOperations,
+  incomeOperations,
+  expensesOperation,
+} from "./operations";
 
 interface Operation {
   amount: number;
@@ -24,13 +28,6 @@ const initialState: OperationsState = {
 const handlePending = (state: OperationsState) => {
   state.isLoading = true;
 };
-
-// const handleFulfilled = (state: OperationsState, action: any) => {
-//   state.operations = action.payload;
-//   state.isLoading = false;
-//   state.error = null;
-// };
-
 const handleRejected = (state: OperationsState, action: any) => {
   state.isLoading = false;
   state.error = action.payload;
@@ -58,10 +55,20 @@ const OperationsSlice = createSlice({
           state.operations.push(action.payload);
         }
       )
+      .addCase(
+        expensesOperation.fulfilled,
+        (state: OperationsState, action: PayloadAction<Operation>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.operations.push(action.payload);
+        }
+      )
       .addCase(getAllOperations.pending, handlePending)
       .addCase(incomeOperations.pending, handlePending)
+      .addCase(expensesOperation.pending, handlePending)
       .addCase(getAllOperations.rejected, handleRejected)
-      .addCase(incomeOperations.rejected, handleRejected);
+      .addCase(incomeOperations.rejected, handleRejected)
+      .addCase(expensesOperation.rejected, handleRejected);
   },
 });
 
