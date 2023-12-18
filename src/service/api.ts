@@ -49,7 +49,7 @@ const operations = async (): Promise<any> => {
     const { data } = await axios.get(`${process.env.REACT_APP_OPERATIONS_URL}`);
     return data.data.results;
   } catch (error) {
-    console.log("API ERR", error);
+    console.log("API ERREE", error);
   }
 };
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 // import { operations, deleteOperation } from "service/api";
-import { getAllOperations } from "redux/operations/operations";
+import { getAllOperations } from "../../../redux/operations/operations";
 import useSelectors from "../../../hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
 import { ISearchOperation } from "types/data";
@@ -14,45 +14,28 @@ import {
   BtnDelete,
 } from "../Operations/Operations.styled";
 
+import { ThunkDispatch } from 'redux-thunk';
+
 const HistoryOperations: React.FC = () => {
-  const [operationsData, setOperationsData] = useState<ISearchOperation[]>();
-  const {isLoading, isError} = useSelectors();
-  const {isLoggedIn} = useAuth();
-  const dispatch = useDispatch();
+  // const [operationsData, setOperationsData] = useState<ISearchOperation[]>();
 
-  // const getData = async () => {
-  //   try {
-  //     const result: ISearchOperation[] = await getAllOperations();
-  //     const sortedOperations = result.sort(
-  //       (a, b) =>
-  //         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-  //     );
-  //     setOperationsData(sortedOperations);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
-  // const handleDelete = async (id: string) => {
-  //   setLoading(true);
-  //   await deleteOperation(id);
-  //   getData();
-  //   setLoading(false);
-  // };
+  const { isLoading, isError, operations } = useSelectors();
+  console.log("OPERATIONS", operations);
+  const { isLoggedIn } = useAuth();
+  // const dispatch = useDispatch();
+  const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
   useEffect(() => {
-    dispatch(getAllOperations());
-  }, [dispatch]);
+    dispatchTyped(getAllOperations());
+  }, [dispatchTyped]);
 
   return (
     <>
       <OperationWrapper>
         {isLoading && <Loader type="spin" color="teal" />}
-        {operationsData &&
-          operationsData.map(
-            ({ _id, amount, type, category, comment, createdAt, wallet }) => {
+        {isLoggedIn && operations &&
+          operations.map(
+            ({ _id, amount, type, category, comment, createdAt, wallet }: ISearchOperation) => {
               const date = new Date(createdAt);
               return (
                 <Operation key={_id}>
@@ -120,7 +103,7 @@ const HistoryOperations: React.FC = () => {
                     </span>
                   </OperationInfo>
                   {/* <BtnDelete
-                    disabled={loading}
+                    disabled={isLoading}
                     onClick={() => handleDelete(_id)}
                   >
                     Видалити
@@ -134,3 +117,24 @@ const HistoryOperations: React.FC = () => {
   );
 };
 export default HistoryOperations;
+
+// const getData = async () => {
+//   try {
+//     const result: ISearchOperation[] = await getAllOperations();
+//     const sortedOperations = result.sort(
+//       (a, b) =>
+//         new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+//     );
+//     setOperationsData(sortedOperations);
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+
+  // const handleDelete = async (id: string) => {
+  //   setLoading(true);
+  //   await deleteOperation(id);
+  //   getData();
+  //   setLoading(false);
+  // };

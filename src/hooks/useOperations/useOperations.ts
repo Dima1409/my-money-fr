@@ -3,7 +3,7 @@ import {
   selectOperations,
   selectLoading,
   selectError,
-} from "redux/operations/selectors";
+} from "../../redux/operations/selectors";
 
 const useOperationsSelectors = () => {
   const isLoading = useSelector(selectLoading);

@@ -68,7 +68,6 @@ const authSlice = createSlice({
         state.user.email = action.payload.email;
         state.user.name = action.payload.name;
         state.user.avatarURL = action.payload.avatarURL;
-        // state.token = action.payload.data.user;
         state.isLoggedIn = true;
         state.isPending = false;
         state.isRefreshing = false;

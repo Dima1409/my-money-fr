@@ -1,23 +1,37 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getAllOperations } from "./operations";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getAllOperations, incomeOperations } from "./operations";
 
-const initialState = {
+interface Operation {
+  amount: number;
+  type: string;
+  wallet: string;
+  category: string;
+  comment: string;
+}
+
+interface OperationsState {
+  operations: Operation[];
+  isLoading: boolean;
+  error: string | null;
+}
+
+const initialState: OperationsState = {
   operations: [],
   isLoading: false,
   error: null,
 };
 
-const handlePending = (state: typeof initialState) => {
+const handlePending = (state: OperationsState) => {
   state.isLoading = true;
 };
 
-const handleFulfilled = (state: typeof initialState, action: any) => {
-  state.operations = action.payload.data;
-  state.isLoading = false;
-  state.error = null;
-};
+// const handleFulfilled = (state: OperationsState, action: any) => {
+//   state.operations = action.payload;
+//   state.isLoading = false;
+//   state.error = null;
+// };
 
-const handleRejected = (state: typeof initialState, action: any) => {
+const handleRejected = (state: OperationsState, action: any) => {
   state.isLoading = false;
   state.error = action.payload;
 };
@@ -28,9 +42,26 @@ const OperationsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getAllOperations.fulfilled, handleFulfilled)
+      .addCase(
+        getAllOperations.fulfilled,
+        (state: OperationsState, action: PayloadAction<Operation[]>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.operations = action.payload;
+        }
+      )
+      .addCase(
+        incomeOperations.fulfilled,
+        (state: OperationsState, action: PayloadAction<Operation>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.operations.push(action.payload);
+        }
+      )
       .addCase(getAllOperations.pending, handlePending)
-      .addCase(getAllOperations.rejected, handleRejected);
+      .addCase(incomeOperations.pending, handlePending)
+      .addCase(getAllOperations.rejected, handleRejected)
+      .addCase(incomeOperations.rejected, handleRejected);
   },
 });
 
