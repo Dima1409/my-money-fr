@@ -12,6 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import { authReducer } from "./auth/slice";
 import { operationsReducer } from "./operations/slice";
+import { walletsReducer } from "./wallets/slice";
 
 const authPersistConfig = {
   key: "author",
@@ -22,6 +23,7 @@ const authPersistConfig = {
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
   operations: operationsReducer,
+  wallets: walletsReducer,
 });
 
 export const store = configureStore({

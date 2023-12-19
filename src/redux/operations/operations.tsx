@@ -1,6 +1,19 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "Services/AxiosConfig";
 
+interface operationsCredentials {
+  id: string;
+  amount: number;
+  type: string;
+  wallet: string;
+  category: string;
+  comment: string;
+}
+
+interface operationDelete {
+  id: string;
+}
+
 const getAllOperations = createAsyncThunk("operations", async (_, thunkAPI) => {
   try {
     const response = await API.get("/operation");
@@ -9,14 +22,6 @@ const getAllOperations = createAsyncThunk("operations", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(error.message);
   }
 });
-
-interface operationsCredentials {
-  amount: number;
-  type: string;
-  wallet: string;
-  category: string;
-  comment: string;
-}
 
 const incomeOperations = createAsyncThunk(
   "/operation/add",
@@ -44,4 +49,22 @@ const expensesOperation = createAsyncThunk(
   }
 );
 
-export { getAllOperations, incomeOperations, expensesOperation };
+const deleteOperation = createAsyncThunk(
+  "/operation/delete",
+  async (id: operationDelete, thunkAPI) => {
+    try {
+      const response = await API.delete(`/operation/${id}`);
+      console.log(response);
+      return response.data;
+    } catch (error: any) {
+      throw thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export {
+  getAllOperations,
+  incomeOperations,
+  expensesOperation,
+  deleteOperation,
+};
