@@ -11,7 +11,7 @@ const Expenses: React.FC = () => {
       <ExpensesHeader>Мої витрати</ExpensesHeader>
       <Form></Form>
       <OperationsHeader>Історія витрат</OperationsHeader>
-      <Operations type={'expenses'} />
+      <Operations type={'expense'} />
     </>
   );
 };

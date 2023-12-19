@@ -33,7 +33,7 @@ const SharedLayout: React.FC = () => {
           </li>
         )}
         <li style={{ margin: "8px" }}>
-          <Link to="/income">Income</Link>
+          <Link to="/incomes">Income</Link>
         </li>
         <li style={{ margin: "8px" }}>
           <Link to="/expenses">Expenses</Link>

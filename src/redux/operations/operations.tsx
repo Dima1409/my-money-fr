@@ -10,11 +10,8 @@ interface operationsCredentials {
   comment: string;
 }
 
-interface operationDelete {
-  id: string;
-}
 
-const getAllOperations = createAsyncThunk("operations", async (_, thunkAPI) => {
+const getAllOperations = createAsyncThunk("operation", async (_, thunkAPI) => {
   try {
     const response = await API.get("/operation");
     return response.data.data.result;
@@ -51,9 +48,9 @@ const expensesOperation = createAsyncThunk(
 
 const deleteOperation = createAsyncThunk(
   "/operation/delete",
-  async (id: operationDelete, thunkAPI) => {
+  async (credentials: operationsCredentials, thunkAPI) => {
     try {
-      const response = await API.delete(`/operation/${id}`);
+      const response = await API.delete(`/operation/${credentials.id}`);
       console.log(response);
       return response.data;
     } catch (error: any) {

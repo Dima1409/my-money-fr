@@ -15,10 +15,6 @@ interface Operation {
   comment: string;
 }
 
-interface DeleteOperation {
-  id: string;
-}
-
 interface OperationsState {
   operations: Operation[];
   isLoading: boolean;
@@ -71,7 +67,7 @@ const OperationsSlice = createSlice({
       )
       .addCase(
         deleteOperation.fulfilled,
-        (state: OperationsState, action: PayloadAction<DeleteOperation>) => {
+        (state: OperationsState, action: PayloadAction<Operation>) => {
           state.isLoading = false;
           state.error = null;
           const index = state.operations.findIndex(

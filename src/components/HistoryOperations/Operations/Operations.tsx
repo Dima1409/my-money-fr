@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { operations, deleteOperation } from "service/api";
+import { useEffect } from "react";
 import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
 import {
@@ -9,53 +8,54 @@ import {
   OperationInfo,
   BtnDelete,
 } from "./Operations.styled";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import {
+  getAllOperations,
+  deleteOperation,
+} from "../../../redux/operations/operations";
+import useSelectors from "../../../hooks/useOperations";
 
 interface OperationsProps {
   type: string;
 }
 
 const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
-  const [operationsData, setOperationsData] = useState<ISearchOperation[]>();
-  const [loading, setLoading] = useState(true);
+  const { operations, isLoading, isError } = useSelectors();
+  const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
-  const getData = async () => {
-    try {
-      const result: ISearchOperation[] = await operations();
-      const sortedOperations = result
-        .filter((elem) => elem.type === type)
-        .sort(
-          (a, b) =>
-            new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
-        );
-      setOperationsData(sortedOperations);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    await deleteOperation(id);
-    getData();
+  const handleDelete = async (id: any) => {
+    dispatchTyped(deleteOperation(id));
   };
 
   useEffect(() => {
-    getData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    dispatchTyped(getAllOperations());
+  }, [dispatchTyped]);
 
   return (
     <>
       <OperationWrapper>
-        {loading && <Loader type="spin" color="teal" />}
-        {operationsData &&
-          operationsData.map(
-            ({ _id, amount, type, category, comment, createdAt, wallet }) => {
+        {isError ? <div>Error page</div> : null}
+        {isLoading && <Loader type="spin" color="teal" />}
+        {operations &&
+          operations.map(
+            ({
+              _id,
+              amount,
+              type,
+              category,
+              comment,
+              createdAt,
+              wallet,
+            }: ISearchOperation) => {
               const date = new Date(createdAt);
               return (
                 <Operation key={_id}>
-                  <Marker style={{ backgroundColor: type==="income" ? "green" : "red" }} />
+                  <Marker
+                    style={{
+                      backgroundColor: type === "income" ? "green" : "red",
+                    }}
+                  />
                   <OperationInfo>
                     сума:{" "}
                     <span

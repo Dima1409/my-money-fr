@@ -8,10 +8,6 @@ interface Wallets {
   owner: string;
 }
 
-interface DeleteWallets {
-  id: string;
-}
-
 const getAllWallets = createAsyncThunk("/wallets", async (_, thunkAPI) => {
   try {
     const response = await API.get("/wallets");
@@ -37,9 +33,9 @@ const createNewWallets = createAsyncThunk(
 
 const deleteWallet = createAsyncThunk(
   "/wallets/delete",
-  async (id: DeleteWallets, thunkAPI) => {
+  async (credentials: Wallets, thunkAPI) => {
     try {
-      const response = await API.delete(`/wallets/${id}`);
+      const response = await API.delete(`/wallets/${credentials.id}`);
       console.log("Delete wallets in operations", response);
       return response.data;
     } catch (error: any) {

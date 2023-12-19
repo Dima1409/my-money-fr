@@ -64,7 +64,7 @@ const App: React.FC = () => {
             }
           ></Route>
           <Route
-            path="income"
+            path="incomes"
             element={
               <Routs.PrivateRoute
                 component={() => (

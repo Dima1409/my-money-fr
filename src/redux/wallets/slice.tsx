@@ -13,10 +13,6 @@ interface Wallets {
   owner: string;
 }
 
-interface DeleteWallets {
-  id: string;
-}
-
 interface WalletsState {
   wallets: Wallets[];
   isLoading: boolean;
@@ -69,7 +65,7 @@ const WalletsSlice = createSlice({
       )
       .addCase(
         deleteWallet.fulfilled,
-        (state: WalletsState, action: PayloadAction<DeleteWallets>) => {
+        (state: WalletsState, action: PayloadAction<Wallets>) => {
           state.isLoading = false;
           state.error = null;
           const index = state.wallets.findIndex(
