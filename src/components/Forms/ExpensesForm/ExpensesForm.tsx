@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "../IncomeForm/IncomeForm.styled";
-import { expenseOperation, wallets, categories } from "service/api";
+
 import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
 import useToggle from "hooks/useToggle";
@@ -8,41 +8,45 @@ import Modal from "components/Modal";
 import WalletsList from "components/WalletsList";
 import CategoryList from "components/CategoryList";
 
+import useOperations from "hooks/useOperations";
+import useWallets from "hooks/useWallets";
+import useCategory from "hooks/useCategory";
+
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { getAll } from "../../../redux/categories/operations";
+import { expensesOperation } from "../../../redux/operations/operations";
+
 const initialState = {
   wallet: "",
   category: "",
   amount: "",
-  type: "expenses",
+  type: "expense",
   comment: "",
 };
 
 const ExpenseForm: React.FC = () => {
-  const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
-  const [categoryExpense, setCategoryExpense] = useState<
-    ISearchCategory[] | undefined
-  >();
+  const { isLoading, isError } = useOperations();
+  const {
+    isError: walletError,
+    isLoading: walletLoading,
+    wallets,
+  } = useWallets();
+  const {
+    categories,
+    isLoading: categoriesLoading,
+    isError: categoriesError,
+  } = useCategory();
+  const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+
   const [formData, setFormData] = useState(initialState);
   const [showWalletList, setShowWalletList] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const { isOpen, close, toggle } = useToggle();
 
-  const getData = async () => {
-    try {
-      const totalWallets: ISearchWallet[] = await wallets();
-      const totalCategoriesExpenses: ISearchCategory[] = await categories();
-      const expensesCategories = totalCategoriesExpenses.filter(
-        (category) => category.type === "expenses"
-      );
-      setCategoryExpense(expensesCategories);
-      setWallet(totalWallets);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    getData();
-  }, []);
+    dispatchTyped(getAll());
+  }, [dispatchTyped]);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -57,7 +61,7 @@ const ExpenseForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await expenseOperation(formData);
+      dispatchTyped(expensesOperation(formData));
       setFormData(initialState);
     } catch (error) {
       console.log(error);
@@ -67,7 +71,7 @@ const ExpenseForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {!wallet || !categoryExpense ? (
+        {isLoading || walletLoading || categoriesLoading ? (
           <Loader type="spin" color="teal"></Loader>
         ) : (
           <>
@@ -80,7 +84,7 @@ const ExpenseForm: React.FC = () => {
               <option value="" disabled>
                 Оберіть гаманець
               </option>
-              {wallet?.map(({ _id, name }) => (
+              {wallets?.map(({ _id, name }: ISearchWallet) => (
                 <option key={_id}>{name}</option>
               ))}
             </select>
@@ -103,9 +107,11 @@ const ExpenseForm: React.FC = () => {
               <option value="" disabled>
                 Оберіть категорію
               </option>
-              {categoryExpense
-                .filter((category) => category.type === "expenses")
-                .map(({ _id, name }) => (
+              {categories
+                .filter(
+                  (category: ISearchCategory) => category.type === "expense"
+                )
+                .map(({ _id, name }: ISearchCategory) => (
                   <option key={_id} value={name}>
                     {name}
                   </option>
@@ -157,13 +163,13 @@ const ExpenseForm: React.FC = () => {
             close();
           }}
         >
-          {showWalletList && wallet && (
-            <WalletsList wallets={wallet}></WalletsList>
+          {showWalletList && wallets && (
+            <WalletsList wallets={wallets}></WalletsList>
           )}
-          {showCategoryList && categoryExpense && (
+          {showCategoryList && categories && (
             <CategoryList
-              categories={categoryExpense}
-              typeOfCategory="expenses"
+              categories={categories}
+              typeOfCategory="expense"
             ></CategoryList>
           )}
         </Modal>

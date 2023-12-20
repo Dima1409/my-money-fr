@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "Services/AxiosConfig";
-import { strict } from "assert";
 
 interface operationsCredentials {
   id?: string;
@@ -37,9 +36,8 @@ const expensesOperation = createAsyncThunk(
   "/operation/sell",
   async (credentials: operationsCredentials, thunkAPI) => {
     try {
-      const response = await API.post("operations/sell", credentials);
-      console.log("Sell operation in operations", response);
-      return response.data.data;
+      const response = await API.post("/operation/sell", credentials);
+      return response.data.data.result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }

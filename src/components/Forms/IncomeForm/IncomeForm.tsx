@@ -1,6 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "./IncomeForm.styled";
-import { incomeOperation } from "service/api";
 
 import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
@@ -27,7 +26,7 @@ const initialState = {
 };
 
 const IncomeForm: React.FC = () => {
-  const { operations, isLoading, isError } = useOperations();
+  const { isLoading, isError } = useOperations();
   const {
     isError: walletError,
     isLoading: walletLoading,
