@@ -1,7 +1,7 @@
 import UserMenu from "components/UserMenu";
 import useAuth from "hooks/useAuth";
 // import Operations from "components/Operations";
-// import Wallets from "components/Wallets";
+import Wallets from "../../components/Wallets";
 import AllOperations from "components/HistoryOperations/AllOperations";
 
 const HomePage: React.FC = () => {
@@ -11,6 +11,7 @@ const HomePage: React.FC = () => {
       {isLoggedIn && (
         <>
           <UserMenu />
+          <Wallets />
           <AllOperations />
         </>
       )}

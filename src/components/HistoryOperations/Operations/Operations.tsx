@@ -14,14 +14,14 @@ import {
   getAllOperations,
   deleteOperation,
 } from "../../../redux/operations/operations";
-import useSelectors from "../../../hooks/useOperations";
+import useOperations from "hooks/useOperations";
 
 interface OperationsProps {
   type: string;
 }
 
 const HistoryOperations: React.FC<OperationsProps> = ({ type }) => {
-  const { operations, isLoading, isError } = useSelectors();
+  const { operations, isLoading, isError } = useOperations();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
   const handleDelete = async (id: any) => {

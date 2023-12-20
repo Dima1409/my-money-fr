@@ -1,38 +1,36 @@
 import React from "react";
 import { InfoWallets, WalletsWrapper, Wallet } from "./Wallets.styled";
 import { ISearchWallet } from "types/data";
-import { useEffect, useState } from "react";
-import { wallets } from "service/api";
+import { useEffect } from "react";
 import Loader from "components/Loader";
+import { useDispatch } from "react-redux";
+import { getAllWallets } from "../../redux/wallets/operations";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import useWallets from "hooks/useWallets";
 
 const Wallets: React.FC = () => {
-  const [wall, setWall] = useState<ISearchWallet[] | undefined>();
+  const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+  const { isLoading, isError, wallets } = useWallets();
+  console.log(wallets);
+
   useEffect(() => {
-    const getData = async () => {
-      try {
-        const res: ISearchWallet[] = await wallets();
-        setWall(res);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getData();
-  }, []);
+    dispatchTyped(getAllWallets());
+  }, [dispatchTyped]);
+
   return (
     <>
       <InfoWallets>Гаманці</InfoWallets>
 
       <WalletsWrapper>
-        {!wall ? <Loader type="spin" color="teal"></Loader> : null}
-        {wall === undefined
-          ? null
-          : wall.map(({ _id, name, total }) => {
-              return (
-                <Wallet key={_id}>
-                  {name}:{total}
-                </Wallet>
-              );
-            })}
+        {isError ? <div>Error page</div> : null}
+        {isLoading ? <Loader type="spin" color="teal"></Loader> : null}
+        {wallets.map(({ _id, name, total }: ISearchWallet) => {
+          return (
+            <Wallet key={_id}>
+              {name}:{total}
+            </Wallet>
+          );
+        })}
       </WalletsWrapper>
     </>
   );

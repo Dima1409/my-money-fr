@@ -1,15 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "Services/AxiosConfig";
+import { strict } from "assert";
 
 interface operationsCredentials {
-  id: string;
-  amount: number;
+  id?: string;
+  amount: string;
   type: string;
   wallet: string;
   category: string;
   comment: string;
 }
-
 
 const getAllOperations = createAsyncThunk("operation", async (_, thunkAPI) => {
   try {
@@ -25,8 +25,8 @@ const incomeOperations = createAsyncThunk(
   async (credentials: operationsCredentials, thunkAPI) => {
     try {
       const response = await API.post("/operation/add", credentials);
-      console.log("Add operation in operations", response);
-      return response.data.data;
+      console.log("Add operation in operations", response.data.data.result);
+      return response.data.data.result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -51,8 +51,8 @@ const deleteOperation = createAsyncThunk(
   async (credentials: operationsCredentials, thunkAPI) => {
     try {
       const response = await API.delete(`/operation/${credentials.id}`);
-      console.log(response);
-      return response.data;
+      console.log("Delete operations in operations", response.data.data);
+      return response.data.data;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);
     }

@@ -11,8 +11,7 @@ interface Wallets {
 const getAllWallets = createAsyncThunk("/wallets", async (_, thunkAPI) => {
   try {
     const response = await API.get("/wallets");
-    console.log("Response getAllWallets in operations", response);
-    return response.data;
+    return response.data.data.result;
   } catch (error: any) {
     throw thunkAPI.rejectWithValue(error.message);
   }

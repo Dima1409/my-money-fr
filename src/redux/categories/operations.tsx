@@ -10,8 +10,7 @@ interface Category {
 const getAll = createAsyncThunk("/categories", async (_, thunkAPI) => {
   try {
     const response = await API.get("/categories");
-    console.log("Categories in operations", response);
-    return response.data;
+    return response.data.data.results;
   } catch (error: any) {
     throw thunkAPI.rejectWithValue(error.message);
   }

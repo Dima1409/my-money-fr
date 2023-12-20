@@ -4,7 +4,7 @@ import {
   getAllOperations,
   deleteOperation,
 } from "../../../redux/operations/operations";
-import useSelectors from "../../../hooks/useOperations";
+import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
 import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
@@ -19,7 +19,7 @@ import {
 import { ThunkDispatch } from "redux-thunk";
 
 const HistoryOperations: React.FC = () => {
-  const { isLoading, isError, operations } = useSelectors();
+  const { isLoading, isError, operations } = useOperations();
   console.log("OPERATIONS", operations);
   const { isLoggedIn } = useAuth();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
@@ -28,9 +28,9 @@ const HistoryOperations: React.FC = () => {
     dispatchTyped(getAllOperations());
   }, [dispatchTyped]);
 
-  const handleDelete = async (id: any) => {
-    dispatchTyped(deleteOperation(id));
-  };
+  // const handleDelete = async (id: any) => {
+  //   dispatchTyped(deleteOperation(id));
+  // };
 
   return (
     <>
@@ -115,12 +115,12 @@ const HistoryOperations: React.FC = () => {
                       {date.getSeconds().toString().padStart(2, "0")}
                     </span>
                   </OperationInfo>
-                  <BtnDelete
+                  {/* <BtnDelete
                     disabled={isLoading}
-                    onClick={() => handleDelete(_id)}
+                    onClick={() => dispatchTyped(deleteOperation(_id))}
                   >
                     Видалити
-                  </BtnDelete>
+                  </BtnDelete> */}
                 </Operation>
               );
             }

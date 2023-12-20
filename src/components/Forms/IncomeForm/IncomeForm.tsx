@@ -1,12 +1,22 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { Form } from "./IncomeForm.styled";
-import { incomeOperation, wallets, categories } from "service/api";
+import { incomeOperation } from "service/api";
+
 import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
 import useToggle from "hooks/useToggle";
 import Modal from "components/Modal";
 import WalletsList from "components/WalletsList";
 import CategoryList from "components/CategoryList";
+
+import useOperations from "hooks/useOperations";
+import useWallets from "hooks/useWallets";
+import useCategory from "hooks/useCategory";
+
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { getAll } from "../../../redux/categories/operations";
+import { incomeOperations } from "../../../redux/operations/operations";
 
 const initialState = {
   wallet: "",
@@ -17,32 +27,27 @@ const initialState = {
 };
 
 const IncomeForm: React.FC = () => {
-  const [wallet, setWallet] = useState<ISearchWallet[] | undefined>();
-  const [categoryIncome, setCategoryIncome] = useState<
-    ISearchCategory[] | undefined
-  >();
+  const { operations, isLoading, isError } = useOperations();
+  const {
+    isError: walletError,
+    isLoading: walletLoading,
+    wallets,
+  } = useWallets();
+  const {
+    categories,
+    isLoading: categoriesLoading,
+    isError: categoriesError,
+  } = useCategory();
+  const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+
   const [formData, setFormData] = useState(initialState);
   const [showWalletList, setShowWalletList] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const { isOpen, close, toggle } = useToggle();
 
-  const getData = async () => {
-    try {
-      const totalWallets: ISearchWallet[] = await wallets();
-      const totalCategoriesIncomes: ISearchCategory[] = await categories();
-      const incomeCategories = totalCategoriesIncomes.filter(
-        (category) => category.type === "income"
-      );
-      setCategoryIncome(incomeCategories);
-      setWallet(totalWallets);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    getData();
-  }, []);
+    dispatchTyped(getAll());
+  }, [dispatchTyped]);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
@@ -57,7 +62,7 @@ const IncomeForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      await incomeOperation(formData);
+      dispatchTyped(incomeOperations(formData));
       setFormData(initialState);
     } catch (error) {
       console.log(error);
@@ -67,7 +72,7 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {!wallet || !categoryIncome ? (
+        {isLoading || walletLoading || categoriesLoading ? (
           <Loader type="spin" color="teal"></Loader>
         ) : (
           <>
@@ -80,7 +85,7 @@ const IncomeForm: React.FC = () => {
               <option value="" disabled>
                 Оберіть гаманець
               </option>
-              {wallet?.map(({ _id, name }) => (
+              {wallets?.map(({ _id, name }: ISearchWallet) => (
                 <option key={_id}>{name}</option>
               ))}
             </select>
@@ -103,9 +108,11 @@ const IncomeForm: React.FC = () => {
               <option value="" disabled>
                 Оберіть категорію
               </option>
-              {categoryIncome
-                .filter((category) => category.type === "income")
-                .map(({ _id, name }) => (
+              {categories
+                .filter(
+                  (category: ISearchCategory) => category.type === "income"
+                )
+                .map(({ _id, name }: ISearchCategory) => (
                   <option key={_id} value={name}>
                     {name}
                   </option>
@@ -157,12 +164,12 @@ const IncomeForm: React.FC = () => {
             close();
           }}
         >
-          {showWalletList && wallet && (
-            <WalletsList wallets={wallet}></WalletsList>
+          {showWalletList && wallets && (
+            <WalletsList wallets={wallets}></WalletsList>
           )}
-          {showCategoryList && categoryIncome && (
+          {showCategoryList && categories && (
             <CategoryList
-              categories={categoryIncome}
+              categories={categories}
               typeOfCategory="income"
             ></CategoryList>
           )}
