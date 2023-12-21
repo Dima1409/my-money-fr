@@ -24,7 +24,6 @@ const incomeOperations = createAsyncThunk(
   async (credentials: operationsCredentials, thunkAPI) => {
     try {
       const response = await API.post("/operation/add", credentials);
-      console.log("Add operation in operations", response.data.data.result);
       return response.data.data.result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
@@ -46,11 +45,11 @@ const expensesOperation = createAsyncThunk(
 
 const deleteOperation = createAsyncThunk(
   "/operation/delete",
-  async (credentials: operationsCredentials, thunkAPI) => {
+  async (id: operationsCredentials, thunkAPI) => {
     try {
-      const response = await API.delete(`/operation/${credentials.id}`);
-      console.log("Delete operations in operations", response.data.data);
-      return response.data.data;
+      const response = await API.delete(`/operation/${id}`);
+      console.log("Delete operations in operations", response.data.data.result);
+      return response.data.data.result;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);
     }

@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   getAllOperations,
-  deleteOperation,
+  // deleteOperation,
 } from "../../../redux/operations/operations";
 import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
@@ -13,14 +13,13 @@ import {
   Operation,
   Marker,
   OperationInfo,
-  BtnDelete,
+  // BtnDelete,
 } from "../Operations/Operations.styled";
 
 import { ThunkDispatch } from "redux-thunk";
 
 const HistoryOperations: React.FC = () => {
   const { isLoading, isError, operations } = useOperations();
-  console.log("OPERATIONS", operations);
   const { isLoggedIn } = useAuth();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 

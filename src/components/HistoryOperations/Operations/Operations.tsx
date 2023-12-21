@@ -15,13 +15,16 @@ import {
   deleteOperation,
 } from "../../../redux/operations/operations";
 import useOperations from "hooks/useOperations";
+// import { Spinner } from "components/Loader/Loader.styled";
 
 const Operations: React.FC<any> = ({ operationsType }) => {
   const { isLoading, isError } = useOperations();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
-  const handleDelete = async (id: any) => {
-    dispatchTyped(deleteOperation(id));
+  const handleDelete = (id: any) => {
+    dispatchTyped(deleteOperation(id)).then(() =>
+      dispatchTyped(getAllOperations())
+    );
   };
 
   useEffect(() => {
@@ -32,7 +35,7 @@ const Operations: React.FC<any> = ({ operationsType }) => {
     <>
       <OperationWrapper>
         {isError ? <div>Error page</div> : null}
-        {isLoading && <Loader type="spin" color="teal" />}
+        {/* {isLoading && <Loader type="spin" color="teal" />} */}
         {operationsType.map(
           ({
             _id,
@@ -96,9 +99,13 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                     {date.getSeconds().toString().padStart(2, "0")}
                   </span>
                 </OperationInfo>
-                <BtnDelete onClick={() => handleDelete(_id)}>
-                  Видалити
-                </BtnDelete>
+                {isLoading ? (
+                  <Loader type="spin" color="teal" />
+                ) : (
+                  <BtnDelete onClick={() => handleDelete(_id)}>
+                    Видалити
+                  </BtnDelete>
+                )}
               </Operation>
             );
           }

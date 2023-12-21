@@ -11,7 +11,6 @@ import useWallets from "hooks/useWallets";
 const Wallets: React.FC = () => {
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const { isLoading, isError, wallets } = useWallets();
-  console.log(wallets);
 
   useEffect(() => {
     dispatchTyped(getAllWallets());
