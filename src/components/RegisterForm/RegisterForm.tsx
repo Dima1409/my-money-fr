@@ -1,10 +1,14 @@
 import { useState, ChangeEvent, FormEvent } from "react";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
+import { register } from "../../redux/auth/operations";
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [show, setShow] = useState<boolean>(true);
+  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   const showHidePassword = () => {
     setShow(!show);
@@ -29,10 +33,16 @@ const RegisterForm: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.currentTarget;
-    console.log({ name, email, password });
-    // dispatch
-    form.reset();
+    dispatch(
+      register({
+        email,
+        name,
+        password,
+      })
+    );
+    setEmail("");
+    setName("");
+    setPassword("");
   };
 
   return (
@@ -64,7 +74,7 @@ const RegisterForm: React.FC = () => {
       <label>
         Password
         <input
-          type={show ? "text" : "password"}
+          type={!show ? "text" : "password"}
           name="password"
           value={password}
           onChange={inputChange}
@@ -75,7 +85,7 @@ const RegisterForm: React.FC = () => {
           aria-label="Toggle password visibility"
           onClick={showHidePassword}
         >
-          {show ? "hide" : "show"}
+          {!show ? "hide" : "show"}
         </button>
       </label>
       <button type="submit" disabled={!name || !email || !password}>

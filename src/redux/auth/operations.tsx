@@ -21,7 +21,7 @@ const register = createAsyncThunk(
     try {
       const response = await API.post("/auth/register", credentials);
       setAuthHeader(response.data.data.user);
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -109,6 +109,7 @@ const refreshUser = createAsyncThunk("/auth/current", async (_, thunkAPI) => {
   try {
     setAuthHeader(persistedToken);
     const response = await API.get("/auth/current");
+    console.log("REFRESH OPERATIONS", response.data.data.result);
     return response.data.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message);

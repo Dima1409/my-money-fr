@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import {
   getAllOperations,
-  // deleteOperation,
+  deleteOperation,
 } from "../../../redux/operations/operations";
 import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
@@ -13,7 +13,7 @@ import {
   Operation,
   Marker,
   OperationInfo,
-  // BtnDelete,
+  BtnDelete,
 } from "../Operations/Operations.styled";
 
 import { ThunkDispatch } from "redux-thunk";
@@ -28,7 +28,9 @@ const HistoryOperations: React.FC = () => {
   }, [dispatchTyped]);
 
   // const handleDelete = async (id: any) => {
-  //   dispatchTyped(deleteOperation(id));
+  //   dispatchTyped(deleteOperation(id)).then(() =>
+  //     dispatchTyped(getAllOperations())
+  //   );
   // };
 
   return (
@@ -116,7 +118,7 @@ const HistoryOperations: React.FC = () => {
                   </OperationInfo>
                   {/* <BtnDelete
                     disabled={isLoading}
-                    onClick={() => dispatchTyped(deleteOperation(_id))}
+                    onClick={() => handleDelete(_id)}
                   >
                     Видалити
                   </BtnDelete> */}
