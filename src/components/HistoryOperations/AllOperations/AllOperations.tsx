@@ -27,11 +27,11 @@ const HistoryOperations: React.FC = () => {
     dispatchTyped(getAllOperations());
   }, [dispatchTyped]);
 
-  // const handleDelete = async (id: any) => {
-  //   dispatchTyped(deleteOperation(id)).then(() =>
-  //     dispatchTyped(getAllOperations())
-  //   );
-  // };
+  const handleDelete = async (id: any) => {
+    dispatchTyped(deleteOperation(id)).then(() =>
+      dispatchTyped(getAllOperations())
+    );
+  };
 
   return (
     <>
@@ -116,12 +116,12 @@ const HistoryOperations: React.FC = () => {
                       {date.getSeconds().toString().padStart(2, "0")}
                     </span>
                   </OperationInfo>
-                  {/* <BtnDelete
+                  <BtnDelete
                     disabled={isLoading}
                     onClick={() => handleDelete(_id)}
                   >
                     Видалити
-                  </BtnDelete> */}
+                  </BtnDelete>
                 </Operation>
               );
             }

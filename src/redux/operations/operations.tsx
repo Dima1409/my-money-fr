@@ -48,7 +48,6 @@ const deleteOperation = createAsyncThunk(
   async (id: operationsCredentials, thunkAPI) => {
     try {
       const response = await API.delete(`/operation/${id}`);
-      console.log("Delete operations in operations", response.data.data.result);
       return response.data.data.result;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);

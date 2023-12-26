@@ -1,14 +1,14 @@
 import React from "react";
-import GoHomeLink from "components/GoHomeLink";
 import Operations from "components/HistoryOperations/Operations";
 import { IncomeHeader } from "./Income.styled";
 import IncomeForm from "components/Forms/IncomeForm";
 import { OperationsHeader } from "components/HistoryOperations/Operations/Operations.styled";
 import { ISearchOperation } from "types/data";
 import useOperations from "hooks/useOperations";
+import Loader from "components/Loader";
 
 const Income: React.FC = () => {
-  const { operations } = useOperations();
+  const { isLoading, operations } = useOperations();
 
   const incomeOperations: ISearchOperation[] = operations.filter(
     (elem: ISearchOperation) => elem.type === "income"
@@ -21,8 +21,7 @@ const Income: React.FC = () => {
 
   return (
     <>
-      <GoHomeLink></GoHomeLink>
-      <IncomeHeader>Мої доходи</IncomeHeader>
+      <IncomeHeader>Доходи</IncomeHeader>
       <IncomeForm></IncomeForm>
       <OperationsHeader>Історія доходів</OperationsHeader>
       <Operations operationsType={sortedIncomeOperations}></Operations>

@@ -1,5 +1,4 @@
 import { ExpensesHeader } from "./Expenses.styled";
-import GoHomeLink from "components/GoHomeLink";
 import Operations from "components/HistoryOperations/Operations";
 import ExpenseForm from "components/Forms/ExpensesForm/ExpensesForm";
 import { OperationsHeader } from "components/HistoryOperations/Operations/Operations.styled";
@@ -19,8 +18,7 @@ const Expenses: React.FC = () => {
 
   return (
     <>
-      <GoHomeLink></GoHomeLink>
-      <ExpensesHeader>Мої витрати</ExpensesHeader>
+      <ExpensesHeader>Витрати</ExpensesHeader>
       <ExpenseForm></ExpenseForm>
       <OperationsHeader>Історія витрат</OperationsHeader>
       <Operations operationsType={sortedExpenseOperation} />

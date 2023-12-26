@@ -17,7 +17,6 @@ const Link = styled(NavLink)`
   display: block;
   text-decoration: none;
   padding: 6px;
-  width: 100%;
   color: white;
   &:hover {
     cursor: pointer;

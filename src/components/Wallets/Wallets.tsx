@@ -22,7 +22,7 @@ const Wallets: React.FC = () => {
 
       <WalletsWrapper>
         {isError ? <div>Error page</div> : null}
-        {isLoading ? <Loader type="spin" color="teal"></Loader> : null}
+        {isLoading && <Loader type="spin" color="teal"></Loader>}
         {wallets.map(({ _id, name, total }: ISearchWallet) => {
           return (
             <Wallet key={_id}>

@@ -71,7 +71,7 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {isLoading || walletLoading || categoriesLoading ? (
+        { walletLoading || categoriesLoading ? (
           <Loader type="spin" color="teal"></Loader>
         ) : (
           <>
