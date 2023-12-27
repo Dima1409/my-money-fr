@@ -4,7 +4,6 @@ import Loader from "components/Loader";
 import {
   OperationWrapper,
   Operation,
-  Marker,
   OperationInfo,
   BtnDelete,
 } from "./Operations.styled";
@@ -48,28 +47,25 @@ const Operations: React.FC<any> = ({ operationsType }) => {
           }: ISearchOperation) => {
             const date = new Date(createdAt);
             return (
-              <Operation key={_id}>
-                <Marker
-                  style={{
-                    backgroundColor: type === "income" ? "green" : "red",
-                  }}
-                />
+              <Operation
+                key={_id}
+                style={{
+                  backgroundColor: type === "income" ? "lightgreen" : "tomato",
+                }}
+              >
                 <OperationInfo>
-                  сума:{" "}
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
-                    {amount}
+                    {amount} грн
                   </span>
                   ,
                 </OperationInfo>
                 <OperationInfo>
-                  гаманець:{" "}
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
                     {wallet}
                   </span>
                   ,
                 </OperationInfo>
                 <OperationInfo>
-                  категорія:{" "}
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
                     {category}
                   </span>
@@ -77,7 +73,6 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                 </OperationInfo>
                 {comment && (
                   <OperationInfo>
-                    коментар:{" "}
                     <span style={{ fontStyle: "italic", color: "teal" }}>
                       {comment}
                     </span>
@@ -85,14 +80,12 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                   </OperationInfo>
                 )}
                 <OperationInfo>
-                  дата:{" "}
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
                     {date.getDate()}.{date.getMonth() + 1}.{date.getFullYear()}
                   </span>
                   ,
                 </OperationInfo>
                 <OperationInfo>
-                  час:{" "}
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
                     {date.getHours().toString().padStart(2, "0")}:
                     {date.getMinutes().toString().padStart(2, "0")}:

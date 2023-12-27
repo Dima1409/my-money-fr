@@ -59,16 +59,14 @@ const HistoryOperations: React.FC = () => {
                   }}
                 >
                   <OperationInfo>
-                    сума:{" "}
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
-                      {amount}
+                      {amount} грн
                     </span>
                     ,
                   </OperationInfo>
                   <OperationInfo>
-                    гаманець:{" "}
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
@@ -77,7 +75,6 @@ const HistoryOperations: React.FC = () => {
                     ,
                   </OperationInfo>
                   <OperationInfo>
-                    категорія:{" "}
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
@@ -87,7 +84,6 @@ const HistoryOperations: React.FC = () => {
                   </OperationInfo>
                   {comment && (
                     <OperationInfo>
-                      коментар:{" "}
                       <span
                         style={{ textTransform: "uppercase", fontWeight: 600 }}
                       >
@@ -97,7 +93,6 @@ const HistoryOperations: React.FC = () => {
                     </OperationInfo>
                   )}
                   <OperationInfo>
-                    дата:{" "}
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
@@ -107,7 +102,6 @@ const HistoryOperations: React.FC = () => {
                     ,
                   </OperationInfo>
                   <OperationInfo>
-                    час:{" "}
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >

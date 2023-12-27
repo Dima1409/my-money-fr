@@ -11,23 +11,25 @@ const OperationsHeader = styled.h2`
 `;
 const Operation = styled.li`
   max-width: 600px;
-  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 10px 4px;
   margin: 6px auto;
   font-size: 14px;
   position: relative;
 `;
-const Marker = styled.div`
-  position: absolute;
-  display: block;
-  top: 50%;
-  left: -15px;
-  transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-`;
-const OperationInfo = styled.div`
+// const Marker = styled.div`
+//   position: absolute;
+//   display: block;
+//   top: 50%;
+//   left: -15px;
+//   transform: translateY(-50%);
+//   width: 10px;
+//   height: 10px;
+//   border-radius: 50%;
+// `;
+const OperationInfo = styled.span`
   margin-right: 2px;
+  padding: 4px;
 `;
 const BtnDelete = styled.button`
   position: absolute;
@@ -35,8 +37,9 @@ const BtnDelete = styled.button`
   top: 50%;
   transform: translateY(-50%);
   border: none;
-  padding: 12px;
-  background-color: red;
+  border-radius: 2px;
+  padding: 2px;
+  background-color: orange;
   cursor: pointer;
 `;
 
@@ -44,7 +47,6 @@ export {
   OperationWrapper,
   OperationsHeader,
   Operation,
-  Marker,
   OperationInfo,
   BtnDelete,
 };
