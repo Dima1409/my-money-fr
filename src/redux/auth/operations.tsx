@@ -38,6 +38,7 @@ const login = createAsyncThunk(
   async (credentials: LoginCredentials, thunkAPI) => {
     try {
       const response = await API.post("/auth/login", credentials);
+      console.log(response.data.data);
       setAuthHeader(response.data.data.user);
       return response.data.data;
     } catch (error: any) {

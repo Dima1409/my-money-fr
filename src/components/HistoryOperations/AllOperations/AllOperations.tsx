@@ -11,7 +11,6 @@ import Loader from "components/Loader";
 import {
   OperationWrapper,
   Operation,
-  Marker,
   OperationInfo,
   BtnDelete,
 } from "../Operations/Operations.styled";
@@ -52,12 +51,13 @@ const HistoryOperations: React.FC = () => {
             }: ISearchOperation) => {
               const date = new Date(createdAt);
               return (
-                <Operation key={_id}>
-                  <Marker
-                    style={{
-                      backgroundColor: type === "income" ? "green" : "red",
-                    }}
-                  />
+                <Operation
+                  key={_id}
+                  style={{
+                    backgroundColor:
+                      type === "income" ? "lightgreen" : "tomato",
+                  }}
+                >
                   <OperationInfo>
                     сума:{" "}
                     <span

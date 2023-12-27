@@ -21,15 +21,17 @@ const Wallets: React.FC = () => {
       <InfoWallets>Гаманці</InfoWallets>
 
       <WalletsWrapper>
-        {isError ? <div>Error page</div> : null}
+        {isError && <div>Page error</div>}
         {isLoading && <Loader type="spin" color="teal"></Loader>}
-        {wallets.map(({ _id, name, total }: ISearchWallet) => {
-          return (
-            <Wallet key={_id}>
-              {name}:{total}
-            </Wallet>
-          );
-        })}
+        {wallets &&
+          !isError &&
+          wallets.map(({ _id, name, total }: ISearchWallet) => {
+            return (
+              <Wallet key={_id}>
+                {name}:{total}
+              </Wallet>
+            );
+          })}
       </WalletsWrapper>
     </>
   );

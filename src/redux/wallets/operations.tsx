@@ -8,7 +8,7 @@ interface Wallets {
   owner: string;
 }
 
-const getAllWallets = createAsyncThunk("/wallets", async (_, thunkAPI) => {
+const getAllWallets = createAsyncThunk("wallets", async (_, thunkAPI) => {
   try {
     const response = await API.get("/wallets");
     return response.data.data.result;
