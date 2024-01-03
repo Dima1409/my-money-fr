@@ -26,17 +26,8 @@ const initialState = {
 };
 
 const IncomeForm: React.FC = () => {
-  const { isLoading, isError } = useOperations();
-  const {
-    isError: walletError,
-    isLoading: walletLoading,
-    wallets,
-  } = useWallets();
-  const {
-    categories,
-    isLoading: categoriesLoading,
-    isError: categoriesError,
-  } = useCategory();
+  const { wallets } = useWallets();
+  const { categories } = useCategory();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
   const [formData, setFormData] = useState(initialState);
@@ -71,89 +62,83 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        { walletLoading || categoriesLoading ? (
-          <Loader type="spin" color="teal"></Loader>
-        ) : (
-          <>
-            <div>Гаманець</div>
-            <select
-              name="wallet"
-              onChange={handleInputChange}
-              value={formData.wallet}
-            >
-              <option value="" disabled>
-                Оберіть гаманець
-              </option>
-              {wallets?.map(({ _id, name }: ISearchWallet) => (
-                <option key={_id}>{name}</option>
+        <>
+          <div>Гаманець</div>
+          <select
+            name="wallet"
+            onChange={handleInputChange}
+            value={formData.wallet}
+          >
+            <option value="" disabled>
+              Оберіть гаманець
+            </option>
+            {wallets?.map(({ _id, name }: ISearchWallet) => (
+              <option key={_id}>{name}</option>
+            ))}
+          </select>
+          <button
+            style={{ marginLeft: "12px" }}
+            type="button"
+            onClick={() => {
+              setShowWalletList(true);
+              toggle();
+            }}
+          >
+            edit
+          </button>
+          <div>Категорія</div>
+          <select
+            name="category"
+            onChange={handleInputChange}
+            value={formData.category}
+          >
+            <option value="" disabled>
+              Оберіть категорію
+            </option>
+            {categories
+              .filter((category: ISearchCategory) => category.type === "income")
+              .map(({ _id, name }: ISearchCategory) => (
+                <option key={_id} value={name}>
+                  {name}
+                </option>
               ))}
-            </select>
-            <button
-              style={{ marginLeft: "12px" }}
-              type="button"
-              onClick={() => {
-                setShowWalletList(true);
-                toggle();
-              }}
-            >
-              edit
-            </button>
-            <div>Категорія</div>
-            <select
-              name="category"
-              onChange={handleInputChange}
-              value={formData.category}
-            >
-              <option value="" disabled>
-                Оберіть категорію
-              </option>
-              {categories
-                .filter(
-                  (category: ISearchCategory) => category.type === "income"
-                )
-                .map(({ _id, name }: ISearchCategory) => (
-                  <option key={_id} value={name}>
-                    {name}
-                  </option>
-                ))}
-            </select>
-            <button
-              style={{ marginLeft: "12px" }}
-              type="button"
-              onClick={() => {
-                setShowCategoryList(true);
-                toggle();
-              }}
-            >
-              edit
-            </button>
-            <div>Коментар</div>
-            <input
-              type="text"
-              name="comment"
-              value={formData.comment}
-              onChange={handleInputChange}
-            ></input>
-            <div>Сума</div>
-            <input
-              type="number"
-              name="amount"
-              placeholder="0"
-              value={formData.amount}
-              onChange={handleInputChange}
-            ></input>
-            <button
-              type="submit"
-              disabled={
-                formData.amount === "" ||
-                formData.category === "" ||
-                formData.wallet === ""
-              }
-            >
-              ok
-            </button>
-          </>
-        )}
+          </select>
+          <button
+            style={{ marginLeft: "12px" }}
+            type="button"
+            onClick={() => {
+              setShowCategoryList(true);
+              toggle();
+            }}
+          >
+            edit
+          </button>
+          <div>Коментар</div>
+          <input
+            type="text"
+            name="comment"
+            value={formData.comment}
+            onChange={handleInputChange}
+          ></input>
+          <div>Сума</div>
+          <input
+            type="number"
+            name="amount"
+            placeholder="0"
+            value={formData.amount}
+            onChange={handleInputChange}
+          ></input>
+          <button
+            type="submit"
+            disabled={
+              formData.amount === "" ||
+              formData.category === "" ||
+              formData.wallet === ""
+            }
+          >
+            ok
+          </button>
+        </>
       </Form>
       {isOpen && (
         <Modal

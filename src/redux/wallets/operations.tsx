@@ -2,10 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "Services/AxiosConfig";
 
 interface Wallets {
-  id: string;
   name: string;
   total: number;
-  owner: string;
 }
 
 const getAllWallets = createAsyncThunk("wallets", async (_, thunkAPI) => {
@@ -23,7 +21,7 @@ const createNewWallets = createAsyncThunk(
     try {
       const response = await API.post("/wallets/new", credentials);
       console.log("Create new wallet in operations", response);
-      return response.data;
+      return response.data.data.result;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);
     }
@@ -34,9 +32,9 @@ const deleteWallet = createAsyncThunk(
   "/wallets/delete",
   async (credentials: Wallets, thunkAPI) => {
     try {
-      const response = await API.delete(`/wallets/${credentials.id}`);
+      const response = await API.delete(`/wallets/${credentials}`);
       console.log("Delete wallets in operations", response);
-      return response.data;
+      return response.data.data;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);
     }
@@ -48,7 +46,7 @@ const editWallet = createAsyncThunk(
   async (credentials: Wallets, thunkAPI) => {
     try {
       const response = await API.patch(
-        `/wallets/${credentials.id}`,
+        `/wallets/${credentials}`,
         credentials
       );
       console.log("Edit wallet in operations", response);

@@ -6,8 +6,8 @@ import {
 } from "../../../redux/operations/operations";
 import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
-import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
+import { ISearchOperation } from "types/data";
 import {
   OperationWrapper,
   Operation,
@@ -18,7 +18,7 @@ import {
 import { ThunkDispatch } from "redux-thunk";
 
 const HistoryOperations: React.FC = () => {
-  const { isLoading, isError, operations } = useOperations();
+  const { isLoading, operations } = useOperations();
   const { isLoggedIn } = useAuth();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
@@ -35,8 +35,6 @@ const HistoryOperations: React.FC = () => {
   return (
     <>
       <OperationWrapper>
-        {isError ? <div>Error page</div> : null}
-        {isLoading && <Loader type="spin" color="teal" />}
         {isLoggedIn &&
           operations &&
           operations.map(
@@ -59,63 +57,72 @@ const HistoryOperations: React.FC = () => {
                   }}
                 >
                   <OperationInfo>
+                    Категорія:
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
-                      {amount} грн
+                      {" "}
+                      {category}
                     </span>
                     ,
                   </OperationInfo>
                   <OperationInfo>
+                    Гаманець:
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
+                      {" "}
                       {wallet}
                     </span>
                     ,
                   </OperationInfo>
                   <OperationInfo>
+                    Сума:
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
-                      {category}
+                      {" "}
+                      {amount} грн
                     </span>
                     ,
                   </OperationInfo>
                   {comment && (
                     <OperationInfo>
-                      <span
-                        style={{ textTransform: "uppercase", fontWeight: 600 }}
-                      >
+                      Коментар:
+                      <span style={{ fontStyle: "italic", color: "teal" }}>
+                        {" "}
                         {comment}
                       </span>
                       ,
                     </OperationInfo>
                   )}
                   <OperationInfo>
+                    Дата операції:
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
-                      {date.getDate()}.{date.getMonth() + 1}.
-                      {date.getFullYear()}
+                      {" "}
+                      {date.getDate().toString().padStart(2, "0")}.
+                      {date.getMonth() + 1}.{date.getFullYear()}
                     </span>
                     ,
                   </OperationInfo>
                   <OperationInfo>
+                    Час операції:
                     <span
                       style={{ textTransform: "uppercase", fontWeight: 600 }}
                     >
+                      {" "}
                       {date.getHours().toString().padStart(2, "0")}:
                       {date.getMinutes().toString().padStart(2, "0")}:
                       {date.getSeconds().toString().padStart(2, "0")}
                     </span>
                   </OperationInfo>
-                  <BtnDelete
-                    disabled={isLoading}
-                    onClick={() => handleDelete(_id)}
-                  >
-                    Видалити
-                  </BtnDelete>
+                  {isLoading ? (
+                  <Loader type="spin" color="teal" />
+                ) : (
+                  <BtnDelete onClick={() => handleDelete(_id)}>х</BtnDelete>
+                )}
                 </Operation>
               );
             }

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { ISearchOperation } from "types/data";
 import Loader from "components/Loader";
 import {
@@ -6,6 +5,7 @@ import {
   Operation,
   OperationInfo,
   BtnDelete,
+  OperationSort,
 } from "./Operations.styled";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
@@ -14,11 +14,10 @@ import {
   deleteOperation,
 } from "../../../redux/operations/operations";
 import useOperations from "hooks/useOperations";
-// import { Spinner } from "components/Loader/Loader.styled";
 
 const Operations: React.FC<any> = ({ operationsType }) => {
-  const { isLoading, isError } = useOperations();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+  const { isLoading } = useOperations();
 
   const handleDelete = (id: any) => {
     dispatchTyped(deleteOperation(id)).then(() =>
@@ -26,15 +25,13 @@ const Operations: React.FC<any> = ({ operationsType }) => {
     );
   };
 
-  useEffect(() => {
-    dispatchTyped(getAllOperations());
-  }, [dispatchTyped]);
+  // useEffect(() => {
+  //   dispatchTyped(getAllOperations());
+  // }, [dispatchTyped]);
 
   return (
     <>
       <OperationWrapper>
-        {isError ? <div>Error page</div> : null}
-        {/* {isLoading && <Loader type="spin" color="teal" />} */}
         {operationsType.map(
           ({
             _id,
@@ -54,39 +51,52 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                 }}
               >
                 <OperationInfo>
+                  Категорія:
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
-                    {amount} грн
+                    {" "}
+                    {category}
                   </span>
                   ,
                 </OperationInfo>
                 <OperationInfo>
+                  Гаманець:
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
+                    {" "}
                     {wallet}
                   </span>
                   ,
                 </OperationInfo>
                 <OperationInfo>
+                  Сума:
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
-                    {category}
+                    {" "}
+                    {amount} грн
                   </span>
                   ,
                 </OperationInfo>
                 {comment && (
                   <OperationInfo>
+                    Коментар:
                     <span style={{ fontStyle: "italic", color: "teal" }}>
+                      {" "}
                       {comment}
                     </span>
                     ,
                   </OperationInfo>
                 )}
                 <OperationInfo>
+                  Дата операції:
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
-                    {date.getDate()}.{date.getMonth() + 1}.{date.getFullYear()}
+                    {" "}
+                    {date.getDate().toString().padStart(2, "0")}.
+                    {date.getMonth() + 1}.{date.getFullYear()}
                   </span>
                   ,
                 </OperationInfo>
                 <OperationInfo>
+                  Час операції:
                   <span style={{ textTransform: "uppercase", fontWeight: 600 }}>
+                    {" "}
                     {date.getHours().toString().padStart(2, "0")}:
                     {date.getMinutes().toString().padStart(2, "0")}:
                     {date.getSeconds().toString().padStart(2, "0")}
@@ -95,9 +105,7 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                 {isLoading ? (
                   <Loader type="spin" color="teal" />
                 ) : (
-                  <BtnDelete onClick={() => handleDelete(_id)}>
-                    Видалити
-                  </BtnDelete>
+                  <BtnDelete onClick={() => handleDelete(_id)}>х</BtnDelete>
                 )}
               </Operation>
             );

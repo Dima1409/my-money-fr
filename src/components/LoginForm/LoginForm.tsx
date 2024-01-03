@@ -2,6 +2,14 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { login } from "../../redux/auth/operations";
+import {
+  Form,
+  FormHeader,
+  FormLabel,
+  FormInput,
+  ButtonShow,
+  ButtonSubmit,
+} from "./LoginForm.styled";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -40,37 +48,37 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>Login form</div>
-      <label htmlFor="email">
+    <Form onSubmit={handleSubmit}>
+      <FormHeader>Login form</FormHeader>
+      <FormLabel htmlFor="email">
         Email
-        <input
+        <FormInput
           type="text"
           name="email"
           id="email"
           value={email}
           onChange={inputChange}
           required
-        ></input>
-      </label>
-      <label htmlFor="password">
+        ></FormInput>
+      </FormLabel>
+      <FormLabel htmlFor="password">
         Password
-        <input
+        <FormInput
           type={show ? "text" : "password"}
           name="password"
           id="password"
           value={password}
           onChange={inputChange}
           required
-        ></input>
-        <button type="button" onClick={hideShowPassword}>
-          {show ? "hide" : "show"}
-        </button>
-      </label>
-      <button type="submit" disabled={!email || !password}>
+        ></FormInput>
+        <ButtonShow type="button" onClick={hideShowPassword}>
+          {show ? "!" : "i"}
+        </ButtonShow>
+      </FormLabel>
+      <ButtonSubmit type="submit" disabled={!email || !password}>
         LogIn
-      </button>
-    </form>
+      </ButtonSubmit>
+    </Form>
   );
 };
 

@@ -27,18 +27,29 @@ const Operation = styled.li`
 //   height: 10px;
 //   border-radius: 50%;
 // `;
+
+const OperationSort = styled.div`
+display: flex;
+`
+
 const OperationInfo = styled.span`
+display: block;
+  font-size: 10px;
   margin-right: 2px;
   padding: 4px;
 `;
 const BtnDelete = styled.button`
   position: absolute;
-  right: 2%;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
-  border-radius: 2px;
-  padding: 2px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width:20px;
+  height: 20px;
+  border-radius: 50%;
   background-color: orange;
   cursor: pointer;
 `;
@@ -46,6 +57,7 @@ const BtnDelete = styled.button`
 export {
   OperationWrapper,
   OperationsHeader,
+  OperationSort,
   Operation,
   OperationInfo,
   BtnDelete,

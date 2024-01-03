@@ -1,15 +1,25 @@
 import { ISearchWallet } from "types/data";
-import { newWallet, deleteWallet, editWalletName } from "service/api";
+// import { newWallet, deleteWallet, editWalletName } from "service/api";
+import {
+  createNewWallets,
+  deleteWallet,
+  editWallet,
+  getAllWallets,
+} from "../../redux/wallets/operations";
 import { useState, FormEvent, ChangeEvent } from "react";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "@reduxjs/toolkit";
 
 interface WalletsListProps {
   wallets: ISearchWallet[];
 }
 const initialState = {
-  wallet: "",
+  name: "",
+  total: 0,
 };
 
 const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
+  const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const [formData, setFormData] = useState(initialState);
   const [editingWalletId, setEditingWalletId] = useState<string | null>(null);
   const [editing, setEditing] = useState<boolean>(false);
@@ -22,25 +32,33 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     });
   };
 
-  const onDelete = async (id: string) => {
-    try {
-      await deleteWallet(id);
-      onClose();
-      console.log(`Wallet with id: ${id} deleted`);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleDelete = (id: any) => {
+    dispatchTyped(deleteWallet(id)).then(() => dispatchTyped(getAllWallets()));
   };
 
-  const onRename = async (id: string, newName: string) => {
-    try {
-      await editWalletName(id, newName);
-      console.log(`Wallet with id:${id} renamed`);
-      onClose();
-    } catch (error) {
-      console.log(error);
-    }
+  // const {name, total} = formData;
+  // const obj = {
+  //   name,
+  //   total
+  // }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatchTyped(createNewWallets(formData)).then(() =>
+      dispatchTyped(getAllWallets())
+    );
+    setFormData(initialState);
   };
+
+  // const onRename = async (id: string, newName: string) => {
+  //   try {
+  //     await editWalletName(id, newName);
+  //     console.log(`Wallet with id:${id} renamed`);
+  //     onClose();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   const onClose = async () => {
     setEditingWalletId(null);
@@ -48,24 +66,14 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     setFormData(initialState);
   };
 
-  const startEditing = (id: string) => {
-    setEditingWalletId(id);
-    setEditing(true);
-    const currentWallet = wallets.find((elem) => elem._id === id);
-    setFormData({
-      wallet: currentWallet?.name || "",
-    });
-  };
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      await newWallet(formData);
-      setFormData(initialState);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const startEditing = (id: string) => {
+  //   setEditingWalletId(id);
+  //   setEditing(true);
+  //   const currentWallet = wallets.find((elem) => elem._id === id);
+  //   setFormData({
+  //     name: currentWallet?.name || "",
+  //   });
+  // };
 
   return (
     <>
@@ -77,19 +85,19 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
               <input
                 type="text"
                 name="wallet"
-                value={formData.wallet}
+                // value={formData.wallet}
                 onChange={handleInputChange}
               ></input>
-              <button onClick={() => onRename(_id, formData.wallet)}>
+              {/* <button onClick={() => onRename(_id, formData.wallet)}>
                 зберегти
-              </button>
+              </button> */}
               <button onClick={() => onClose()}>закрити</button>
             </>
           ) : (
             <>
               <label style={{ width: "220px" }}>{name}</label>
-              <button onClick={() => onDelete(_id)}>видалити</button>
-              <button onClick={() => startEditing(_id)}>перейменувати</button>
+              <button onClick={() => handleDelete(_id)}>видалити</button>
+              {/* <button onClick={() => startEditing(_id)}>перейменувати</button> */}
             </>
           )}
         </div>
@@ -103,9 +111,9 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
         >
           <input
             type="text"
-            name="wallet"
+            name="name"
             placeholder="new wallet..."
-            value={formData.wallet}
+            value={formData.name}
             onChange={handleInputChange}
           ></input>
           <button type="submit" style={{ display: "block", margin: "0 auto" }}>

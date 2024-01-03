@@ -9,7 +9,6 @@ export interface ISearchCategory {
   type: string;
 }
 
-
 export interface ISearchOperation {
   _id: string;
   amount: number;

@@ -2,12 +2,20 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { register } from "../../redux/auth/operations";
+import {
+  Form,
+  FormHeader,
+  FormLabel,
+  FormInput,
+  ButtonShow,
+  ButtonSubmit,
+} from "components/LoginForm/LoginForm.styled";
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
-  const [show, setShow] = useState<boolean>(true);
+  const [show, setShow] = useState<boolean>(false);
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
   const showHidePassword = () => {
@@ -46,52 +54,49 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} autoComplete="off">
-      <div>Register form</div>
-      <div></div>
-      <label>
+    <Form onSubmit={handleSubmit} autoComplete="off">
+      <FormHeader>Register form</FormHeader>
+      <FormLabel>
         Name
-        <input
+        <FormInput
           type="text"
           name="name"
           value={name}
           onChange={inputChange}
           required
-        ></input>
-      </label>
-      <div></div>
-      <label>
+        ></FormInput>
+      </FormLabel>
+      <FormLabel>
         Email
-        <input
+        <FormInput
           type="text"
           name="email"
           value={email}
           onChange={inputChange}
           required
-        ></input>
-      </label>
-      <div></div>
-      <label>
+        ></FormInput>
+      </FormLabel>
+      <FormLabel>
         Password
-        <input
+        <FormInput
           type={!show ? "text" : "password"}
           name="password"
           value={password}
           onChange={inputChange}
           required
-        ></input>
-        <button
+        ></FormInput>
+        <ButtonShow
           type="button"
           aria-label="Toggle password visibility"
           onClick={showHidePassword}
         >
-          {!show ? "hide" : "show"}
-        </button>
-      </label>
-      <button type="submit" disabled={!name || !email || !password}>
+          {!show ? "i" : "!"}
+        </ButtonShow>
+      </FormLabel>
+      <ButtonSubmit type="submit" disabled={!name || !email || !password}>
         Register
-      </button>
-    </form>
+      </ButtonSubmit>
+    </Form>
   );
 };
 

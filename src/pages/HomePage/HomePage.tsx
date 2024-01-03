@@ -8,6 +8,7 @@ const HomePage: React.FC = () => {
   const { isLoggedIn } = useAuth();
   return (
     <>
+    <div>Вітаємо в менеджері фінансів</div>
       {isLoggedIn && (
         <>
           <UserMenu />

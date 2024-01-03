@@ -24,16 +24,19 @@ const SharedLayout: React.FC = () => {
             </NavListItem>
           </>
         )}
-        <NavListItem>
-          <Link to="/incomes">Income</Link>
-        </NavListItem>
-        <NavListItem>
-          <Link to="/expenses">Expenses</Link>
-        </NavListItem>
+
         {isLoggedIn && (
-          <NavListItem>
-            <button onClick={() => dispatch(logout())}>Logout</button>
-          </NavListItem>
+          <>
+            <NavListItem>
+              <Link to="/incomes">Income</Link>
+            </NavListItem>
+            <NavListItem>
+              <Link to="/expenses">Expenses</Link>
+            </NavListItem>
+            <NavListItem>
+              <button onClick={() => dispatch(logout())}>Logout</button>
+            </NavListItem>
+          </>
         )}
       </NavList>
 

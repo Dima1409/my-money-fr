@@ -5,10 +5,14 @@ import IncomeForm from "components/Forms/IncomeForm";
 import { OperationsHeader } from "components/HistoryOperations/Operations/Operations.styled";
 import { ISearchOperation } from "types/data";
 import useOperations from "hooks/useOperations";
+import useCategory from "hooks/useCategory";
+import useWallets from "hooks/useWallets";
 import Loader from "components/Loader";
 
 const Income: React.FC = () => {
-  const { isLoading, operations } = useOperations();
+  const { isLoading: operationsLoading, operations } = useOperations();
+  const { isLoading: walletsLoading, wallets } = useWallets();
+  const { isLoading: categoriesLoading, categories } = useCategory();
 
   const incomeOperations: ISearchOperation[] = operations.filter(
     (elem: ISearchOperation) => elem.type === "income"
@@ -22,9 +26,29 @@ const Income: React.FC = () => {
   return (
     <>
       <IncomeHeader>Доходи</IncomeHeader>
-      <IncomeForm></IncomeForm>
+      {walletsLoading && categoriesLoading ? (
+        <Loader type="spin" color="teal" />
+      ) : (
+        <>
+          {wallets && categories ? (
+            <IncomeForm></IncomeForm>
+          ) : (
+            <div>Error page</div>
+          )}
+        </>
+      )}
       <OperationsHeader>Історія доходів</OperationsHeader>
-      <Operations operationsType={sortedIncomeOperations}></Operations>
+      {operationsLoading ? (
+        <Loader type="spin" color="teal" />
+      ) : (
+        <>
+          {operations ? (
+            <Operations operationsType={sortedIncomeOperations}></Operations>
+          ) : (
+            <div>errorpage</div>
+          )}
+        </>
+      )}
     </>
   );
 };

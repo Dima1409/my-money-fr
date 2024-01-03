@@ -3,7 +3,7 @@ import LoginForm from "components/LoginForm";
 const LoginPage: React.FC = () => {
   return (
     <>
-      <div>Login Page</div>
+      <div>Ввійдіть у вже існуючий аккаунт</div>
       <LoginForm></LoginForm>
     </>
   );
