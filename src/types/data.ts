@@ -1,7 +1,7 @@
 export interface ISearchWallet {
-  _id: string;
+  _id: string | null;
   name: string;
-  total: number;
+  total?: number;
 }
 export interface ISearchCategory {
   _id: string;

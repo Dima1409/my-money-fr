@@ -6,19 +6,21 @@ import {
   editWallet,
   getAllWallets,
 } from "../../redux/wallets/operations";
+import useWallets from "hooks/useWallets";
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
+import Loader from "components/Loader";
 
 interface WalletsListProps {
   wallets: ISearchWallet[];
 }
 const initialState = {
   name: "",
-  total: 0,
 };
 
 const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
+  const { isLoading } = useWallets();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const [formData, setFormData] = useState(initialState);
   const [editingWalletId, setEditingWalletId] = useState<string | null>(null);
@@ -36,12 +38,6 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     dispatchTyped(deleteWallet(id)).then(() => dispatchTyped(getAllWallets()));
   };
 
-  // const {name, total} = formData;
-  // const obj = {
-  //   name,
-  //   total
-  // }
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatchTyped(createNewWallets(formData)).then(() =>
@@ -50,58 +46,61 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     setFormData(initialState);
   };
 
-  // const onRename = async (id: string, newName: string) => {
-  //   try {
-  //     await editWalletName(id, newName);
-  //     console.log(`Wallet with id:${id} renamed`);
-  //     onClose();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const onRename = async () => {
+    const id = editingWalletId || "";
+    dispatchTyped(editWallet({ id, name: formData.name })).then(() =>
+      dispatchTyped(getAllWallets())
+    );
+    onClose();
+  };
 
   const onClose = async () => {
-    setEditingWalletId(null);
     setEditing(false);
+    setEditingWalletId(null);
     setFormData(initialState);
   };
 
-  // const startEditing = (id: string) => {
-  //   setEditingWalletId(id);
-  //   setEditing(true);
-  //   const currentWallet = wallets.find((elem) => elem._id === id);
-  //   setFormData({
-  //     name: currentWallet?.name || "",
-  //   });
-  // };
+  const startEditing = (id: string) => {
+    setEditingWalletId(id);
+    setEditing(true);
+    const currentWallet = wallets.find((elem) => elem._id === id);
+    setFormData({
+      name: currentWallet?.name || "",
+    });
+  };
 
   return (
     <>
       <h2>Мої гаманці</h2>
-      {wallets.map(({ _id, name }) => (
-        <div style={{ display: "flex" }} key={_id}>
-          {editingWalletId === _id ? (
-            <>
-              <input
-                type="text"
-                name="wallet"
-                // value={formData.wallet}
-                onChange={handleInputChange}
-              ></input>
-              {/* <button onClick={() => onRename(_id, formData.wallet)}>
-                зберегти
-              </button> */}
-              <button onClick={() => onClose()}>закрити</button>
-            </>
-          ) : (
-            <>
-              <label style={{ width: "220px" }}>{name}</label>
-              <button onClick={() => handleDelete(_id)}>видалити</button>
-              {/* <button onClick={() => startEditing(_id)}>перейменувати</button> */}
-            </>
-          )}
-        </div>
-      ))}
+      {isLoading ? (
+        <Loader type="spin" color="red" />
+      ) : (
+        wallets.map(({ _id, name }) => (
+          <div style={{ display: "flex" }} key={_id}>
+            {editingWalletId === _id ? (
+              <>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                ></input>
+                <button onClick={() => onRename()}>зберегти</button>
+                <button onClick={() => onClose()}>закрити</button>
+              </>
+            ) : (
+              <>
+                <label style={{ width: "220px" }}>{name}</label>
+                <button onClick={() => handleDelete(_id)}>видалити</button>
+                <button onClick={() => _id && startEditing(_id)}>
+                  перейменувати
+                </button>
+              </>
+            )}
+          </div>
+        ))
+      )}
+
       {editing ? (
         <div>редагування...</div>
       ) : (

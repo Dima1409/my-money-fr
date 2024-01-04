@@ -2,8 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import API from "Services/AxiosConfig";
 
 interface Wallets {
-  name: string;
-  total: number;
+  id?: string;
+  name?: string;
+  total?: number;
 }
 
 const getAllWallets = createAsyncThunk("wallets", async (_, thunkAPI) => {
@@ -45,12 +46,11 @@ const editWallet = createAsyncThunk(
   "/wallets/edit",
   async (credentials: Wallets, thunkAPI) => {
     try {
-      const response = await API.patch(
-        `/wallets/${credentials}`,
-        credentials
-      );
+      const response = await API.patch(`/wallets/${credentials.id}`, {
+        name: credentials.name,
+      });
       console.log("Edit wallet in operations", response);
-      return response.data;
+      return response.data.data.result;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);
     }
