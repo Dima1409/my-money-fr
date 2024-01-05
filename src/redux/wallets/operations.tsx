@@ -3,7 +3,7 @@ import API from "Services/AxiosConfig";
 
 interface Wallets {
   id?: string;
-  name?: string;
+  name: string;
   total?: number;
 }
 

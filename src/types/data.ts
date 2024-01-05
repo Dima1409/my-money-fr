@@ -4,9 +4,9 @@ export interface ISearchWallet {
   total?: number;
 }
 export interface ISearchCategory {
-  _id: string;
+  _id: string | null;
   name: string;
-  type: string;
+  type?: string;
 }
 
 export interface ISearchOperation {

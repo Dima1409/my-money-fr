@@ -1,5 +1,4 @@
 import { ISearchWallet } from "types/data";
-// import { newWallet, deleteWallet, editWalletName } from "service/api";
 import {
   createNewWallets,
   deleteWallet,
