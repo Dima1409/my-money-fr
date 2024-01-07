@@ -26,16 +26,14 @@ const initialState = {
 };
 
 const ExpenseForm: React.FC = () => {
-  const { isLoading, isError } = useOperations();
+  const { isLoading } = useOperations();
   const {
-    isError: walletError,
     isLoading: walletLoading,
     wallets,
   } = useWallets();
   const {
     categories,
     isLoading: categoriesLoading,
-    isError: categoriesError,
   } = useCategory();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
@@ -72,7 +70,7 @@ const ExpenseForm: React.FC = () => {
     <>
       <Form onSubmit={handleSubmit}>
         {isLoading || walletLoading || categoriesLoading ? (
-          <Loader type="spin" color="teal"></Loader>
+          <Loader type="spin"></Loader>
         ) : (
           <>
             <div>Гаманець</div>

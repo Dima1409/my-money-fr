@@ -14,7 +14,7 @@ const LoginPage = lazy(() => import("../pages/LoginPage"));
 const ExpensesPage = lazy(() => import("../pages/Expenses"));
 const IncomePage = lazy(() => import("../pages/Income"));
 
-const LoadingFallback: React.FC = () => <Loader type="spin" color="teal" />;
+const LoadingFallback: React.FC = () => <Loader type="spin"/>;
 
 const LazyPage: React.FC<{ children: ReactNode }> = ({ children }) => (
   <Suspense fallback={<LoadingFallback />}>{children}</Suspense>

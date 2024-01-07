@@ -2,7 +2,6 @@ import React from "react";
 import Operations from "components/HistoryOperations/Operations";
 import { IncomeHeader } from "./Income.styled";
 import IncomeForm from "components/Forms/IncomeForm";
-import { OperationsHeader } from "components/HistoryOperations/Operations/Operations.styled";
 import { ISearchOperation } from "types/data";
 import useOperations from "hooks/useOperations";
 import useCategory from "hooks/useCategory";
@@ -27,7 +26,7 @@ const Income: React.FC = () => {
     <>
       <IncomeHeader>Доходи</IncomeHeader>
       {walletsLoading && categoriesLoading ? (
-        <Loader type="spin" color="teal" />
+        <Loader type="spin"/>
       ) : (
         <>
           {wallets && categories ? (
@@ -37,9 +36,9 @@ const Income: React.FC = () => {
           )}
         </>
       )}
-      <OperationsHeader>Історія доходів</OperationsHeader>
+      <IncomeHeader>Історія доходів</IncomeHeader>
       {operationsLoading ? (
-        <Loader type="spin" color="teal" />
+        <Loader type="spin"/>
       ) : (
         <>
           {operations ? (

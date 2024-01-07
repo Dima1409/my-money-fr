@@ -1,8 +1,10 @@
 import styled from "styled-components";
+import { theme } from "theme/theme";
 
 const IncomeHeader = styled.h2`
+  color: ${theme.colors.incomeHeader};
   text-align: center;
-  font-size: 24px;
+  font-size: ${theme.fontSizes.extraBold};
 `;
 
 export { IncomeHeader };

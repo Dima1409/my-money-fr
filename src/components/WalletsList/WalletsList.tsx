@@ -72,7 +72,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     <>
       <h2>Мої гаманці</h2>
       {isLoading ? (
-        <Loader type="spin" color="red" />
+        <Loader type="spin"/>
       ) : (
         wallets.map(({ _id, name }) => (
           <div style={{ display: "flex" }} key={_id}>

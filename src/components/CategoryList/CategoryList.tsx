@@ -80,7 +80,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
     <>
       <h2>Мої категорії</h2>
       {isLoading ? (
-        <Loader type="spin" color="teal" />
+        <Loader type="spin"/>
       ) : (
         categories.map(({ _id, name }) => (
           <div style={{ display: "flex" }} key={_id}>

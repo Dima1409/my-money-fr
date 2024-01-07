@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
 import {
   getAllOperations,
   deleteOperation,
@@ -12,10 +13,26 @@ import {
   OperationWrapper,
   Operation,
   OperationInfo,
+  OperationResult,
   BtnDelete,
 } from "../Operations/Operations.styled";
+import { theme } from "theme/theme";
+import { IconType } from "react-icons";
+import { RiDeleteBinLine } from "react-icons/ri";
 
-import { ThunkDispatch } from "redux-thunk";
+interface CustomIconProps {
+  icon: IconType;
+  size?: string;
+  color?: string;
+}
+
+export const CustomIcon: React.FC<CustomIconProps> = ({
+  icon: Icon,
+  size = "20px",
+  color = `${theme.colors.accent}`,
+}) => {
+  return <Icon size={size} color={color} />;
+};
 
 const HistoryOperations: React.FC = () => {
   const { isLoading, operations } = useOperations();
@@ -53,76 +70,48 @@ const HistoryOperations: React.FC = () => {
                   key={_id}
                   style={{
                     backgroundColor:
-                      type === "income" ? "lightgreen" : "tomato",
+                      type === "income"
+                        ? `${theme.colors.green}`
+                        : `${theme.colors.red}`,
                   }}
                 >
                   <OperationInfo>
-                    Категорія:
-                    <span
-                      style={{ textTransform: "uppercase", fontWeight: 600 }}
-                    >
-                      {" "}
-                      {category}
-                    </span>
-                    ,
+                    Категорія: <OperationResult>{category}</OperationResult>
                   </OperationInfo>
                   <OperationInfo>
-                    Гаманець:
-                    <span
-                      style={{ textTransform: "uppercase", fontWeight: 600 }}
-                    >
-                      {" "}
-                      {wallet}
-                    </span>
-                    ,
+                    Гаманець: <OperationResult>{wallet}</OperationResult>
                   </OperationInfo>
                   <OperationInfo>
-                    Сума:
-                    <span
-                      style={{ textTransform: "uppercase", fontWeight: 600 }}
-                    >
-                      {" "}
-                      {amount} грн
-                    </span>
-                    ,
+                    Сума: <OperationResult>{amount} грн</OperationResult>
                   </OperationInfo>
                   {comment && (
                     <OperationInfo>
-                      Коментар:
-                      <span style={{ fontStyle: "italic", color: "teal" }}>
-                        {" "}
-                        {comment}
-                      </span>
-                      ,
+                      Коментар: <OperationResult>{comment}</OperationResult>
                     </OperationInfo>
                   )}
                   <OperationInfo>
-                    Дата операції:
-                    <span
-                      style={{ textTransform: "uppercase", fontWeight: 600 }}
-                    >
-                      {" "}
+                    Дата операції:{" "}
+                    <OperationResult>
                       {date.getDate().toString().padStart(2, "0")}.
-                      {date.getMonth() + 1}.{date.getFullYear()}
-                    </span>
-                    ,
+                      {date.getMonth().toString().padStart(1, "0") + 1}.
+                      {date.getFullYear()}
+                    </OperationResult>
                   </OperationInfo>
                   <OperationInfo>
-                    Час операції:
-                    <span
-                      style={{ textTransform: "uppercase", fontWeight: 600 }}
-                    >
-                      {" "}
+                    Час операції:{" "}
+                    <OperationResult>
                       {date.getHours().toString().padStart(2, "0")}:
                       {date.getMinutes().toString().padStart(2, "0")}:
                       {date.getSeconds().toString().padStart(2, "0")}
-                    </span>
+                    </OperationResult>
                   </OperationInfo>
                   {isLoading ? (
-                  <Loader type="spin" color="teal" />
-                ) : (
-                  <BtnDelete onClick={() => handleDelete(_id)}>х</BtnDelete>
-                )}
+                    <Loader type="spin" />
+                  ) : (
+                    <BtnDelete onClick={() => handleDelete(_id)}>
+                      <CustomIcon icon={RiDeleteBinLine}></CustomIcon>
+                    </BtnDelete>
+                  )}
                 </Operation>
               );
             }

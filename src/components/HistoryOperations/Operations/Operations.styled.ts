@@ -1,56 +1,70 @@
 import styled from "styled-components";
+import { theme } from "theme/theme";
 
 const OperationWrapper = styled.ul`
   margin-top: 10px;
-  list-style: none;
   padding: 0;
 `;
+
 const OperationsHeader = styled.h2`
-  color: teal;
   text-align: center;
 `;
+
 const Operation = styled.li`
   max-width: 600px;
-  border-radius: 4px;
-  padding: 10px 4px;
+  border-radius: ${theme.radii.normal};
+  padding: 10px 40px;
   margin: 6px auto;
-  font-size: 14px;
+  font-size: ${theme.fontSizes.extraSmall};
   position: relative;
+  ${theme.mq.tablet} {
+    max-width: 700px;
+    display: flex;
+    justify-content: space-between;
+    font-size: ${theme.fontSizes.normal};
+  }
+  ${theme.mq.desktop} {
+    max-width: 900px;
+  }
 `;
-// const Marker = styled.div`
-//   position: absolute;
-//   display: block;
-//   top: 50%;
-//   left: -15px;
-//   transform: translateY(-50%);
-//   width: 10px;
-//   height: 10px;
-//   border-radius: 50%;
-// `;
 
 const OperationSort = styled.div`
-display: flex;
-`
+  display: flex;
+`;
 
 const OperationInfo = styled.span`
-display: block;
-  font-size: 10px;
+  display: block;
   margin-right: 2px;
   padding: 4px;
+  font-family: ${theme.fonts.comfortaa};
+  color: ${theme.colors.accentActive};
+  ${theme.mq.tablet} {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 `;
+
+const OperationResult = styled.span`
+  font-family: ${theme.fonts.merriweather};
+  text-transform: "uppercase";
+  font-weight: ${theme.fontWeight.bold};
+  color: ${theme.colors.dark};
+`;
+
 const BtnDelete = styled.button`
   position: absolute;
   right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
+  top: 10px;
+  border: ${theme.borders.none};
   display: flex;
   justify-content: center;
   align-items: center;
-  width:20px;
-  height: 20px;
-  border-radius: 50%;
-  background-color: orange;
+  width: 30px;
+  height: 30px;
+  border-radius: ${theme.radii.round};
+  border: ${theme.borders.normal} ${theme.colors.accent};
+  background-color: transparent;
   cursor: pointer;
 `;
 
@@ -60,5 +74,6 @@ export {
   OperationSort,
   Operation,
   OperationInfo,
+  OperationResult,
   BtnDelete,
 };
