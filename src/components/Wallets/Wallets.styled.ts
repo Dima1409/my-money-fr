@@ -13,17 +13,17 @@ const InfoWallets = styled.p`
 const SliderWrapper = styled(Slider)`
   margin: 0 1px;
   font-weight: ${theme.fontWeight.normal};
-
   & > div > div {
     display: flex;
     justify-content: space-between;
     & div {
       margin: 0 2px;
-      min-height: 40px;
+      min-height: 50px;
       & > div {
         display: flex;
         justify-content: center;
         align-items: center;
+        text-align: center;
       }
     }
   }
@@ -45,8 +45,9 @@ const SliderWrapper = styled(Slider)`
 const Wallet = styled.div`
   display: flex;
   justify-content: center;
-  padding: 0;
-  margin: 0;
+  align-items: baseline;
+  padding: 8px;
+  margin: 10px 0;
   background-color: ${theme.colors.valid};
   border-radius: ${theme.radii.small};
   color: ${theme.colors.light};

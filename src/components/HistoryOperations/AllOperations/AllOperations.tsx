@@ -29,7 +29,7 @@ interface CustomIconProps {
 export const CustomIcon: React.FC<CustomIconProps> = ({
   icon: Icon,
   size = "20px",
-  color = `${theme.colors.accent}`,
+  color = `${theme.colors.accentActive}`,
 }) => {
   return <Icon size={size} color={color} />;
 };

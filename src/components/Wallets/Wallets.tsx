@@ -39,14 +39,19 @@ const Wallets: React.FC = () => {
     slidesToShow = 7;
     slidesToScroll = 4;
   }
-
-  console.log("isSmallScreen", isSmallScreen);
-  console.log("isLargeScreen", isLargeScreen);
   const settings = sliderSettings(slidesToShow, slidesToScroll);
 
   useEffect(() => {
     dispatchTyped(getAllWallets());
   }, [dispatchTyped]);
+
+  let totalSum = 0;
+  if (wallets && wallets.length > 0) {
+    totalSum = wallets.reduce(
+      (acc: number, wallet: ISearchWallet) => acc + (wallet.total ?? 0),
+      0
+    );
+  }
 
   return (
     <>
@@ -68,6 +73,9 @@ const Wallets: React.FC = () => {
           })
         )}
       </SliderWrapper>
+      <Wallet>
+        Загально:<WalletResult>{totalSum}</WalletResult>
+      </Wallet>
     </>
   );
 };

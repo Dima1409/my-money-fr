@@ -3,7 +3,9 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../redux/auth/operations";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import useAuth from "hooks/useAuth";
-import { NavList, Link, NavListItem } from "./SharedLayout.styled";
+import { NavList, Link, NavListItem, Logout } from "./SharedLayout.styled";
+import { AiOutlineLogout, AiOutlineHome } from "react-icons/ai";
+import { theme } from "theme/theme";
 
 const SharedLayout: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
@@ -12,7 +14,9 @@ const SharedLayout: React.FC = () => {
     <>
       <NavList>
         <NavListItem>
-          <Link to="/">Home</Link>
+          <Link to="/">
+            <AiOutlineHome color={theme.colors.light} size={16} />
+          </Link>
         </NavListItem>
         {!isLoggedIn && (
           <>
@@ -33,13 +37,12 @@ const SharedLayout: React.FC = () => {
             <NavListItem>
               <Link to="/expenses">Expenses</Link>
             </NavListItem>
-            <NavListItem>
-              <button onClick={() => dispatch(logout())}>Logout</button>
-            </NavListItem>
           </>
         )}
       </NavList>
-
+      <Logout onClick={() => dispatch(logout())}>
+        <AiOutlineLogout color={theme.colors.light} size={16} />
+      </Logout>
       <Outlet></Outlet>
     </>
   );

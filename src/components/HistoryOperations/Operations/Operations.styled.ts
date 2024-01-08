@@ -63,7 +63,7 @@ const BtnDelete = styled.button`
   width: 30px;
   height: 30px;
   border-radius: ${theme.radii.round};
-  border: ${theme.borders.normal} ${theme.colors.accent};
+  border: ${theme.borders.normal} ${theme.colors.accentActive};
   background-color: transparent;
   cursor: pointer;
 `;

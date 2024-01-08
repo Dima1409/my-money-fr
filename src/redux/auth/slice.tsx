@@ -27,10 +27,10 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     const handleFulfilled = (state: typeof initialState, action: any) => {
-      state.user.email = action.payload.user.email;
-      state.user.name = action.payload.user.name;
-      state.user.avatarURL = action.payload.user.avatarURL;
-      state.token = action.payload.user.token;
+      state.user.email = action.payload.user.loginUser.email;
+      state.user.name = action.payload.user.loginUser.name;
+      state.user.avatarURL = action.payload.user.loginUser.avatarURL;
+      state.token = action.payload.user.userToken;
       state.isLoggedIn = true;
       state.isPending = false;
       state.isRefreshing = false;
@@ -68,6 +68,7 @@ const authSlice = createSlice({
         state.user.email = action.payload.email;
         state.user.name = action.payload.name;
         state.user.avatarURL = action.payload.avatarURL;
+        state.token = action.payload.token;
         state.isLoggedIn = true;
         state.isPending = false;
         state.isRefreshing = false;

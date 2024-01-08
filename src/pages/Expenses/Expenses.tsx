@@ -35,9 +35,9 @@ const Expenses: React.FC = () => {
           )}
         </>
       )}
-      <ExpensesHeader>Історія доходів</ExpensesHeader>
+      <ExpensesHeader>Історія витрат</ExpensesHeader>
       {operationsLoading ? (
-        <Loader type="spin"/>
+        <Loader type="spin" />
       ) : (
         <>
           {operations ? (
