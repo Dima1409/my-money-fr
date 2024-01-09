@@ -8,7 +8,7 @@ const theme = {
   colors: {
     accent: "#78b5f0",
     accentActive: "#083ac4",
-    background: "#d8e8e8",
+    background: "#d8f0f0",
     incomeHeader: "#095a16",
     expensesHeader: "#773305",
     spinner: "#54aff0",
@@ -29,7 +29,7 @@ const theme = {
     small: "14px",
     normal: "16px",
     bold: "20px",
-    extraBold: "22px",
+    extraBold: "28px",
   },
   fontWeight: {
     light: 300,

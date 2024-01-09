@@ -49,12 +49,17 @@ const HistoryOperations: React.FC = () => {
     );
   };
 
+  const sortedOperations = [...operations]?.sort(
+    (a: ISearchOperation, b: ISearchOperation) =>
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  );
+
   return (
     <>
       <OperationWrapper>
         {isLoggedIn &&
-          operations &&
-          operations.map(
+          sortedOperations &&
+          sortedOperations.map(
             ({
               _id,
               amount,

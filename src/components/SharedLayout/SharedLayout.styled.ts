@@ -19,6 +19,7 @@ const NavListItem = styled.li`
   border-radius: ${theme.radii.small};
   ${theme.mq.tablet} {
     margin-right: 42px;
+    min-width: 200px;
   }
   &:last-child {
     margin-right: 0;
@@ -39,22 +40,5 @@ const Link = styled(NavLink)`
   }
 `;
 
-const Logout = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: auto;
-  text-decoration: none;
-  width: 30px;
-  height: 30px;
-  padding: 4px;
-  background-color: ${theme.colors.accent};
-  border: none;
-  border-radius: ${theme.radii.round};
-  color: ${theme.colors.dark};
-  &:hover {
-    cursor: pointer;
-  }
-`;
 
-export { NavList, NavListItem, Link, Logout };
+export { NavList, NavListItem, Link };

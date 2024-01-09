@@ -1,6 +1,5 @@
 import UserMenu from "components/UserMenu";
 import useAuth from "hooks/useAuth";
-// import Operations from "components/Operations";
 import Wallets from "../../components/Wallets";
 import AllOperations from "components/HistoryOperations/AllOperations";
 
@@ -15,7 +14,9 @@ const HomePage: React.FC = () => {
           <AllOperations />
         </>
       ) : (
-        <div>Вітаємо в менеджері фінансів</div>
+        <div style={{ display: isLoggedIn ? "none" : "block" }}>
+          Вітаємо в менеджері фінансів
+        </div>
       )}
     </>
   );

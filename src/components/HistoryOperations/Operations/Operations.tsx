@@ -21,7 +21,6 @@ import { RiDeleteBinLine } from "react-icons/ri";
 const Operations: React.FC<any> = ({ operationsType }) => {
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const { isLoading } = useOperations();
-
   const handleDelete = (id: any) => {
     dispatchTyped(deleteOperation(id)).then(() =>
       dispatchTyped(getAllOperations())

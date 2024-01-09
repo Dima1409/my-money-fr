@@ -1,14 +1,10 @@
 import { Outlet } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { logout } from "../../redux/auth/operations";
-import { ThunkDispatch } from "@reduxjs/toolkit";
 import useAuth from "hooks/useAuth";
-import { NavList, Link, NavListItem, Logout } from "./SharedLayout.styled";
-import { AiOutlineLogout, AiOutlineHome } from "react-icons/ai";
+import { NavList, Link, NavListItem } from "./SharedLayout.styled";
+import { AiOutlineHome } from "react-icons/ai";
 import { theme } from "theme/theme";
 
 const SharedLayout: React.FC = () => {
-  const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const { isLoggedIn } = useAuth();
   return (
     <>
@@ -40,9 +36,6 @@ const SharedLayout: React.FC = () => {
           </>
         )}
       </NavList>
-      <Logout onClick={() => dispatch(logout())}>
-        <AiOutlineLogout color={theme.colors.light} size={16} />
-      </Logout>
       <Outlet></Outlet>
     </>
   );

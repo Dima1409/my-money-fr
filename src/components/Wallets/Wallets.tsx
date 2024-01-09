@@ -1,8 +1,10 @@
 import React from "react";
 import {
+  WalletsWrapper,
   InfoWallets,
   SliderWrapper,
   Wallet,
+  SumWallets,
   WalletResult,
 } from "./Wallets.styled";
 import { ISearchWallet } from "types/data";
@@ -33,10 +35,10 @@ const Wallets: React.FC = () => {
   let slidesToScroll = 4;
 
   if (isSmallScreen) {
-    slidesToShow = 3;
-    slidesToScroll = 3;
+    slidesToShow = 2;
+    slidesToScroll = 2;
   } else if (isLargeScreen) {
-    slidesToShow = 7;
+    slidesToShow = 4;
     slidesToScroll = 4;
   }
   const settings = sliderSettings(slidesToShow, slidesToScroll);
@@ -54,7 +56,7 @@ const Wallets: React.FC = () => {
   }
 
   return (
-    <>
+    <WalletsWrapper>
       <InfoWallets>Гаманці</InfoWallets>
       <SliderWrapper {...settings}>
         {isError && <div>Page error</div>}
@@ -66,17 +68,18 @@ const Wallets: React.FC = () => {
           wallets.map(({ _id, name, total }: ISearchWallet) => {
             return (
               <Wallet key={_id}>
-                <div>{name}:</div>
-                <WalletResult>{total}</WalletResult>
+                <WalletResult>{name}:</WalletResult>
+                <WalletResult>{total} грн</WalletResult>
               </Wallet>
             );
           })
         )}
       </SliderWrapper>
-      <Wallet>
-        Загально:<WalletResult>{totalSum}</WalletResult>
-      </Wallet>
-    </>
+      <SumWallets>
+        <WalletResult>Загально:</WalletResult>
+        <WalletResult>{totalSum} грн</WalletResult>
+      </SumWallets>
+    </WalletsWrapper>
   );
 };
 

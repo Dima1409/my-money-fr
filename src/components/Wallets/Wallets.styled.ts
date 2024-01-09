@@ -2,6 +2,12 @@ import styled from "styled-components";
 import Slider from "react-slick";
 import { theme } from "theme/theme";
 
+const WalletsWrapper = styled.div`
+  background-color: ${theme.colors.background};
+  border-radius: ${theme.radii.normal};
+  padding: 10px;
+`;
+
 const InfoWallets = styled.p`
   text-align: center;
   color: ${theme.colors.accent};
@@ -16,23 +22,25 @@ const SliderWrapper = styled(Slider)`
   & > div > div {
     display: flex;
     justify-content: space-between;
-    & div {
+    border-radius: ${theme.radii.normal};
+    & > div {
       margin: 0 2px;
-      min-height: 50px;
       & > div {
+        border-radius: ${theme.radii.normal};
+        width: 100%;
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         text-align: center;
       }
     }
   }
   & > ul > li.slick-active > button::before {
-    color: ${(props) => props.theme.accent};
+    color: ${theme.colors.accentActive};
     opacity: 1;
   }
   & > ul > li > button::before {
-    color: ${(props) => props.theme.accent};
+    color: ${theme.colors.accent};
     opacity: 0.45;
     font-size: 12px;
   }
@@ -43,21 +51,48 @@ const SliderWrapper = styled(Slider)`
 `;
 
 const Wallet = styled.div`
+  && {
+    border: 1px solid ${theme.colors.light};
+    border-radius: ${theme.radii.normal};
+    background-color: ${theme.colors.accent};
+    min-height: 50px;
+    color: ${theme.colors.light};
+    padding: 10px;
+    margin-bottom: 10px;
+    & > div {
+      font-size: ${theme.fontSizes.small};
+    }
+  }
+`;
+
+const SumWallets = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: baseline;
   padding: 8px;
-  margin: 10px 0;
-  background-color: ${theme.colors.valid};
+  margin: 10px auto;
+  background-color: ${theme.colors.accent};
   border-radius: ${theme.radii.small};
   color: ${theme.colors.light};
   font-family: ${theme.fonts.open_sans};
-  font-size: ${theme.fontSizes.normal};
+  font-size: ${theme.fontSizes.small};
+  max-width: 320px;
+  ${theme.mq.tablet} {
+    margin: 10px 0 10px auto;
+    max-width: 400px;
+  }
 `;
 
 const WalletResult = styled.div`
   font-weight: ${theme.fontWeight.bold};
-  font-size: ${theme.fontSizes.bold};
+  font-size: ${theme.fontSizes.normal};
 `;
 
-export { InfoWallets, SliderWrapper, Wallet, WalletResult };
+export {
+  WalletsWrapper,
+  InfoWallets,
+  SliderWrapper,
+  Wallet,
+  SumWallets,
+  WalletResult,
+};
