@@ -1,5 +1,13 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { Form } from "../IncomeForm/IncomeForm.styled";
+import {
+  Form,
+  SelectWrapper,
+  Select,
+  ButtonEdit,
+  Option,
+  Input,
+  ButtonSubmit,
+} from "../IncomeForm/IncomeForm.styled";
 
 import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
@@ -16,6 +24,9 @@ import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getAll } from "../../../redux/categories/operations";
 import { expensesOperation } from "../../../redux/operations/operations";
+import { AiTwotoneEdit } from "react-icons/ai";
+import { MdDoneOutline } from "react-icons/md";
+import { theme } from "theme/theme";
 
 const initialState = {
   wallet: "",
@@ -27,14 +38,8 @@ const initialState = {
 
 const ExpenseForm: React.FC = () => {
   const { isLoading } = useOperations();
-  const {
-    isLoading: walletLoading,
-    wallets,
-  } = useWallets();
-  const {
-    categories,
-    isLoading: categoriesLoading,
-  } = useCategory();
+  const { isLoading: walletLoading, wallets } = useWallets();
+  const { categories, isLoading: categoriesLoading } = useCategory();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
 
   const [formData, setFormData] = useState(initialState);
@@ -73,74 +78,79 @@ const ExpenseForm: React.FC = () => {
           <Loader type="spin"></Loader>
         ) : (
           <>
-            <div>Гаманець</div>
-            <select
-              name="wallet"
-              onChange={handleInputChange}
-              value={formData.wallet}
-            >
-              <option value="" disabled>
-                Оберіть гаманець
-              </option>
-              {wallets?.map(({ _id, name }: ISearchWallet) => (
-                <option key={_id}>{name}</option>
-              ))}
-            </select>
-            <button
-              style={{ marginLeft: "12px" }}
-              type="button"
-              onClick={() => {
-                setShowWalletList(true);
-                toggle();
-              }}
-            >
-              edit
-            </button>
-            <div>Категорія</div>
-            <select
-              name="category"
-              onChange={handleInputChange}
-              value={formData.category}
-            >
-              <option value="" disabled>
-                Оберіть категорію
-              </option>
-              {categories
-                .filter(
-                  (category: ISearchCategory) => category.type === "expense"
-                )
-                .map(({ _id, name }: ISearchCategory) => (
-                  <option key={_id} value={name}>
-                    {name}
-                  </option>
+            <SelectWrapper>
+              <Select
+                name="wallet"
+                onChange={handleInputChange}
+                value={formData.wallet}
+              >
+                <Option value="" disabled>
+                  Оберіть гаманець
+                </Option>
+                {wallets?.map(({ _id, name }: ISearchWallet) => (
+                  <option key={_id}>{name}</option>
                 ))}
-            </select>
-            <button
-              style={{ marginLeft: "12px" }}
-              type="button"
-              onClick={() => {
-                setShowCategoryList(true);
-                toggle();
-              }}
-            >
-              edit
-            </button>
-            <div>Коментар</div>
-            <input
-              type="text"
-              name="comment"
-              value={formData.comment}
-              onChange={handleInputChange}
-            ></input>
-            <div>Сума</div>
-            <input
-              type="number"
-              name="amount"
-              placeholder="0"
-              value={formData.amount}
-              onChange={handleInputChange}
-            ></input>
-            <button
+              </Select>
+              <ButtonEdit
+                type="button"
+                onClick={() => {
+                  setShowWalletList(true);
+                  toggle();
+                }}
+              >
+                <AiTwotoneEdit color={theme.colors.light} size={16} />
+              </ButtonEdit>
+            </SelectWrapper>
+            <SelectWrapper></SelectWrapper>
+            <SelectWrapper>
+              <Select
+                name="category"
+                onChange={handleInputChange}
+                value={formData.category}
+              >
+                <Option value="" disabled>
+                  Оберіть категорію
+                </Option>
+                {categories
+                  .filter(
+                    (category: ISearchCategory) => category.type === "expense"
+                  )
+                  .map(({ _id, name }: ISearchCategory) => (
+                    <Option key={_id} value={name}>
+                      {name}
+                    </Option>
+                  ))}
+              </Select>
+              <ButtonEdit
+                type="button"
+                onClick={() => {
+                  setShowCategoryList(true);
+                  toggle();
+                }}
+              >
+                <AiTwotoneEdit color={theme.colors.light} size={16} />
+              </ButtonEdit>
+            </SelectWrapper>
+            <SelectWrapper>
+              <Input
+                type="text"
+                name="comment"
+                placeholder="* Примітка"
+                value={formData.comment}
+                onChange={handleInputChange}
+              ></Input>
+            </SelectWrapper>
+            <SelectWrapper>
+              <Input
+                type="number"
+                name="amount"
+                placeholder="Сума"
+                value={formData.amount}
+                onChange={handleInputChange}
+              ></Input>
+            </SelectWrapper>
+
+            <ButtonSubmit
               type="submit"
               disabled={
                 formData.amount === "" ||
@@ -148,8 +158,8 @@ const ExpenseForm: React.FC = () => {
                 formData.wallet === ""
               }
             >
-              ok
-            </button>
+              <MdDoneOutline color={theme.colors.light} size={16} />
+            </ButtonSubmit>
           </>
         )}
       </Form>

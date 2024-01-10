@@ -1,9 +1,10 @@
 import LoginForm from "components/LoginForm";
+import { HeaderWelcome } from "pages/HomePage/HomePage.styled";
 
 const LoginPage: React.FC = () => {
   return (
     <>
-      <div>Ввійдіть у вже існуючий аккаунт</div>
+      <HeaderWelcome>Вхід в обліковий запис</HeaderWelcome>
       <LoginForm></LoginForm>
     </>
   );

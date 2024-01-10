@@ -1,9 +1,10 @@
 import RegisterForm from "components/RegisterForm";
+import { HeaderWelcome } from "pages/HomePage/HomePage.styled";
 
 const RegisterPage: React.FC = () => {
   return (
     <>
-      <div>Реєстрація</div>
+      <HeaderWelcome>Реєстрація нового користувача</HeaderWelcome>
       <RegisterForm></RegisterForm>
     </>
   );

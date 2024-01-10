@@ -10,6 +10,8 @@ import {
   ButtonShow,
   ButtonSubmit,
 } from "./LoginForm.styled";
+import { BiShow, BiHide } from "react-icons/bi";
+import { theme } from "theme/theme";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState<string>("");
@@ -72,7 +74,7 @@ const LoginForm: React.FC = () => {
           required
         ></FormInput>
         <ButtonShow type="button" onClick={hideShowPassword}>
-          {show ? "!" : "i"}
+          {show ? <BiShow color={theme.colors.light} /> : <BiHide color={theme.colors.light} />}
         </ButtonShow>
       </FormLabel>
       <ButtonSubmit type="submit" disabled={!email || !password}>
