@@ -19,20 +19,21 @@ const InfoWallets = styled.p`
 const SliderWrapper = styled(Slider)`
   margin: 0 1px;
   font-weight: ${theme.fontWeight.normal};
-  & > div > div {
-    display: flex;
-    justify-content: space-between;
+  & > div > div > div {
     border-radius: ${theme.radii.normal};
+    & > div > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
     & > div {
+      display: flex;
+      justify-content: space-between;
+      text-align: center;
+      align-items: center;
+      color: red;
       margin: 0 2px;
-      & > div {
-        border-radius: ${theme.radii.normal};
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        text-align: center;
-      }
     }
   }
   & > ul > li.slick-active > button::before {
@@ -84,6 +85,7 @@ const SumWallets = styled.div`
 `;
 
 const WalletResult = styled.div`
+  margin: 4px;
   font-weight: ${theme.fontWeight.bold};
   font-size: ${theme.fontSizes.normal};
 `;

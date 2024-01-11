@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { theme } from "theme/theme";
 
 const HeaderWelcome = styled.h2`
-  margin: 20px 0;
+  margin: 50px 0;
   font-size: ${theme.fontSizes.bold};
   font-weight: ${theme.fontWeight.bold};
   font-family: ${theme.fonts.merriweather};
@@ -11,6 +11,8 @@ const HeaderWelcome = styled.h2`
 `;
 
 const Description = styled.span`
+  display: block;
+  text-align: center;
   color: ${theme.colors.accent};
   font-family: ${theme.fonts.comfortaa};
 `;

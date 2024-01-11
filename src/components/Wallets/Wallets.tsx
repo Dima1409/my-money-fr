@@ -27,8 +27,11 @@ const Wallets: React.FC = () => {
   const isSmallScreen = useMediaQuery({
     query: `(max-width: ${breakpoints.tablet}px)`,
   });
+  const isMediumScreen = useMediaQuery({
+    query: `(min-width: ${breakpoints.tablet}px) and (max-width: ${breakpoints.desktop}px)`,
+  });
   const isLargeScreen = useMediaQuery({
-    query: `(max-width: ${breakpoints.desktop}px)`,
+    query: `(min-width: ${breakpoints.desktop}px)`,
   });
 
   let slidesToShow = 4;
@@ -37,9 +40,13 @@ const Wallets: React.FC = () => {
   if (isSmallScreen) {
     slidesToShow = 2;
     slidesToScroll = 2;
+  }
+  if (isMediumScreen) {
+    slidesToShow = 5;
+    slidesToScroll = 5;
   } else if (isLargeScreen) {
-    slidesToShow = 4;
-    slidesToScroll = 4;
+    slidesToShow = 8;
+    slidesToScroll = 8;
   }
   const settings = sliderSettings(slidesToShow, slidesToScroll);
 

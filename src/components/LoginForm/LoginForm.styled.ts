@@ -62,7 +62,7 @@ const ButtonSubmit = styled.button`
   align-items: center;
   margin: 0 auto;
   border: none;
-  padding: 4px 8px;
+  padding: 6px 18px;
   border-radius: ${theme.radii.small};
   font-size: ${theme.fontSizes.extraBold};
   color: ${theme.colors.light};

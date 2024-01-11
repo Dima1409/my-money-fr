@@ -10,6 +10,8 @@ import {
   ButtonShow,
   ButtonSubmit,
 } from "components/LoginForm/LoginForm.styled";
+import { BiShow, BiHide } from "react-icons/bi";
+import { theme } from "theme/theme";
 
 const RegisterForm: React.FC = () => {
   const [name, setName] = useState<string>("");
@@ -18,7 +20,7 @@ const RegisterForm: React.FC = () => {
   const [show, setShow] = useState<boolean>(false);
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
-  const showHidePassword = () => {
+  const hideShowPassword = () => {
     setShow(!show);
   };
 
@@ -79,18 +81,18 @@ const RegisterForm: React.FC = () => {
       <FormLabel>
         Password
         <FormInput
-          type={!show ? "text" : "password"}
+          type={show ? "text" : "password"}
           name="password"
           value={password}
           onChange={inputChange}
           required
         ></FormInput>
-        <ButtonShow
-          type="button"
-          aria-label="Toggle password visibility"
-          onClick={showHidePassword}
-        >
-          {!show ? "i" : "!"}
+        <ButtonShow type="button" onClick={hideShowPassword}>
+          {!show ? (
+            <BiShow color={theme.colors.light} />
+          ) : (
+            <BiHide color={theme.colors.light} />
+          )}
         </ButtonShow>
       </FormLabel>
       <ButtonSubmit type="submit" disabled={!name || !email || !password}>

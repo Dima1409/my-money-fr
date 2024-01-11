@@ -15,11 +15,8 @@ import useToggle from "hooks/useToggle";
 import Modal from "components/Modal";
 import WalletsList from "components/WalletsList";
 import CategoryList from "components/CategoryList";
-
-import useOperations from "hooks/useOperations";
 import useWallets from "hooks/useWallets";
 import useCategory from "hooks/useCategory";
-
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getAll } from "../../../redux/categories/operations";
@@ -37,7 +34,6 @@ const initialState = {
 };
 
 const IncomeForm: React.FC = () => {
-  const { isLoading } = useOperations();
   const { isLoading: walletLoading, wallets } = useWallets();
   const { categories, isLoading: categoriesLoading } = useCategory();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
@@ -74,7 +70,7 @@ const IncomeForm: React.FC = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        {isLoading || walletLoading || categoriesLoading ? (
+        {walletLoading || categoriesLoading ? (
           <Loader type="spin"></Loader>
         ) : (
           <>
