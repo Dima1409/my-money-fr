@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "theme/theme";
 
 const Overlay = styled.div`
   position: fixed;
@@ -9,21 +10,30 @@ const Overlay = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: 0.3s;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1200;
 `;
 
 const Modal = styled.div`
   position: relative;
-  padding: 4px;
-  background-color: teal;
-  max-width: calc(100vw - 20px);
+  background-color: ${theme.colors.accent};
+  padding: 50px 10px;
+  border-radius: ${theme.radii.normal};
+  max-width: calc(100vw - 80px);
   max-height: calc(100vh - 20px);
 `;
 const ButtonClose = styled.button`
   position: absolute;
-  top: 6px;
-  right: 6px;
+  border: none;
+  border-radius: ${theme.radii.small};
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  top: 12px;
+  right: 12px;
 `;
 
 export { Overlay, Modal, ButtonClose };

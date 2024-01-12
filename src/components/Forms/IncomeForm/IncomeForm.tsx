@@ -8,7 +8,6 @@ import {
   Input,
   ButtonSubmit,
 } from "./IncomeForm.styled";
-
 import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
 import useToggle from "hooks/useToggle";
@@ -24,6 +23,7 @@ import { incomeOperations } from "../../../redux/operations/operations";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { MdDoneOutline } from "react-icons/md";
 import { theme } from "theme/theme";
+import Container from "components/Container";
 
 const initialState = {
   wallet: "",
@@ -68,7 +68,7 @@ const IncomeForm: React.FC = () => {
   };
 
   return (
-    <>
+    <Container>
       <Form onSubmit={handleSubmit}>
         {walletLoading || categoriesLoading ? (
           <Loader type="spin"></Loader>
@@ -130,7 +130,7 @@ const IncomeForm: React.FC = () => {
               <Input
                 type="text"
                 name="comment"
-                placeholder="* Примітка"
+                placeholder="* Коментар"
                 value={formData.comment}
                 onChange={handleInputChange}
               ></Input>
@@ -177,7 +177,7 @@ const IncomeForm: React.FC = () => {
           )}
         </Modal>
       )}
-    </>
+    </Container>
   );
 };
 

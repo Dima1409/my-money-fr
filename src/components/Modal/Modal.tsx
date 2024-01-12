@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Overlay, Modal as ModalStyled, ButtonClose } from "./Modal.styled";
 import { createPortal } from "react-dom";
+import { GrClose } from "react-icons/gr";
 
 const modalRoot = document.querySelector("#modal-root");
 
@@ -34,7 +35,9 @@ const Modal: React.FC<ModalProps> = ({ onClick, children }) => {
     <Overlay onClick={handleBackdrop}>
       <ModalStyled>
         {children}
-        <ButtonClose onClick={onClick}>close</ButtonClose>
+        <ButtonClose onClick={onClick}>
+          <GrClose />
+        </ButtonClose>
       </ModalStyled>
     </Overlay>,
     modalRoot as Element

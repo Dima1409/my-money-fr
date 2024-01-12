@@ -5,18 +5,20 @@ import { theme } from "theme/theme";
 
 interface LoaderProps {
   type: LoadingType;
+  width?: string;
+  height?: string;
   color?: string;
 }
 
-const Loader: React.FC<LoaderProps> = ({ type }) => {
+const Loader: React.FC<LoaderProps> = ({ type, width, height, color }) => {
   return (
     <Container>
       <Spinner>
         <ReactLoading
           type={type}
           color={`${theme.colors.spinner}`}
-          width={80}
-          height={80}
+          width={width}
+          height={height}
         ></ReactLoading>
       </Spinner>
     </Container>

@@ -1,11 +1,11 @@
 import { ISearchOperation } from "types/data";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import {
   getAllOperations,
   deleteOperation,
 } from "../../../redux/operations/operations";
-import useOperations from "hooks/useOperations";
 import { theme } from "theme/theme";
 import {
   OperationWrapper,
@@ -17,18 +17,24 @@ import {
 import Loader from "components/Loader";
 import { CustomIcon } from "../AllOperations/AllOperations";
 import { RiDeleteBinLine } from "react-icons/ri";
+import Container from "components/Container";
 
 const Operations: React.FC<any> = ({ operationsType }) => {
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
-  const { isLoading } = useOperations();
-  const handleDelete = (id: any) => {
-    dispatchTyped(deleteOperation(id)).then(() =>
-      dispatchTyped(getAllOperations())
-    );
+  const [deletingOperation, setDeletingOperation] = useState<string | null>(
+    null
+  );
+
+  const handleDelete = async (id: any) => {
+    setDeletingOperation(id);
+    dispatchTyped(deleteOperation(id)).then(() => {
+      setDeletingOperation(null);
+      dispatchTyped(getAllOperations());
+    });
   };
 
   return (
-    <>
+    <Container>
       <OperationWrapper>
         {operationsType.map(
           ({
@@ -40,6 +46,7 @@ const Operations: React.FC<any> = ({ operationsType }) => {
             createdAt,
             wallet,
           }: ISearchOperation) => {
+            const isDeleting = deletingOperation === _id;
             const date = new Date(createdAt);
             return (
               <Operation
@@ -50,15 +57,16 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                       ? `${theme.colors.green}`
                       : `${theme.colors.red}`,
                 }}
+                className={isDeleting ? "deleting" : ""}
               >
-                <OperationInfo>
-                  Категорія: <OperationResult>{category}</OperationResult>
-                </OperationInfo>
                 <OperationInfo>
                   Гаманець: <OperationResult>{wallet}</OperationResult>
                 </OperationInfo>
                 <OperationInfo>
                   Сума: <OperationResult>{amount} грн</OperationResult>
+                </OperationInfo>
+                <OperationInfo>
+                  Категорія: <OperationResult>{category}</OperationResult>
                 </OperationInfo>
                 {comment && (
                   <OperationInfo>
@@ -81,17 +89,22 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                     {date.getSeconds().toString().padStart(2, "0")}
                   </OperationResult>
                 </OperationInfo>
-                {isLoading ? (
-                  <Loader type="spin"/>
-                ) : (
-                  <BtnDelete onClick={() => handleDelete(_id)}><CustomIcon icon={RiDeleteBinLine}></CustomIcon></BtnDelete>
-                )}
+                <BtnDelete
+                  onClick={() => handleDelete(_id)}
+                  disabled={isDeleting}
+                >
+                  {isDeleting ? (
+                    <Loader type="spin" width="30px" height="30px" />
+                  ) : (
+                    <CustomIcon icon={RiDeleteBinLine}></CustomIcon>
+                  )}
+                </BtnDelete>
               </Operation>
             );
           }
         )}
       </OperationWrapper>
-    </>
+    </Container>
   );
 };
 export default Operations;

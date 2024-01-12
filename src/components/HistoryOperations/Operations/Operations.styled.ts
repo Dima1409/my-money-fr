@@ -18,7 +18,7 @@ const Operation = styled.li`
   font-size: ${theme.fontSizes.extraSmall};
   position: relative;
   ${theme.mq.tablet} {
-    max-width: 700px;
+    max-width: 768px;
     display: flex;
     justify-content: space-between;
     font-size: ${theme.fontSizes.normal};

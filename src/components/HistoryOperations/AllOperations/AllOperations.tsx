@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import {
@@ -35,18 +35,23 @@ export const CustomIcon: React.FC<CustomIconProps> = ({
 };
 
 const HistoryOperations: React.FC = () => {
-  const { isLoading, operations } = useOperations();
+  const { operations } = useOperations();
   const { isLoggedIn } = useAuth();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+  const [deletingOperation, setDeletingOperation] = useState<string | null>(
+    null
+  );
 
   useEffect(() => {
     dispatchTyped(getAllOperations());
   }, [dispatchTyped]);
 
   const handleDelete = async (id: any) => {
-    dispatchTyped(deleteOperation(id)).then(() =>
-      dispatchTyped(getAllOperations())
-    );
+    setDeletingOperation(id);
+    dispatchTyped(deleteOperation(id)).then(() => {
+      setDeletingOperation(null);
+      dispatchTyped(getAllOperations());
+    });
   };
 
   const sortedOperations = [...operations]?.sort(
@@ -69,6 +74,7 @@ const HistoryOperations: React.FC = () => {
               createdAt,
               wallet,
             }: ISearchOperation) => {
+              const isDeleting = deletingOperation === _id;
               const date = new Date(createdAt);
               return (
                 <Operation
@@ -79,15 +85,16 @@ const HistoryOperations: React.FC = () => {
                         ? `${theme.colors.green}`
                         : `${theme.colors.red}`,
                   }}
+                  className={isDeleting ? "deleting" : ""}
                 >
-                  <OperationInfo>
-                    Категорія: <OperationResult>{category}</OperationResult>
-                  </OperationInfo>
                   <OperationInfo>
                     Гаманець: <OperationResult>{wallet}</OperationResult>
                   </OperationInfo>
                   <OperationInfo>
                     Сума: <OperationResult>{amount} грн</OperationResult>
+                  </OperationInfo>
+                  <OperationInfo>
+                    Категорія: <OperationResult>{category}</OperationResult>
                   </OperationInfo>
                   {comment && (
                     <OperationInfo>
@@ -110,13 +117,16 @@ const HistoryOperations: React.FC = () => {
                       {date.getSeconds().toString().padStart(2, "0")}
                     </OperationResult>
                   </OperationInfo>
-                  {isLoading ? (
-                    <Loader type="spin" />
-                  ) : (
-                    <BtnDelete onClick={() => handleDelete(_id)}>
+                  <BtnDelete
+                    onClick={() => handleDelete(_id)}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? (
+                      <Loader type="spin" width="30px" height="30px" />
+                    ) : (
                       <CustomIcon icon={RiDeleteBinLine}></CustomIcon>
-                    </BtnDelete>
-                  )}
+                    )}
+                  </BtnDelete>
                 </Operation>
               );
             }

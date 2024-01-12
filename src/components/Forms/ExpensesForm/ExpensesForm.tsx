@@ -8,7 +8,6 @@ import {
   Input,
   ButtonSubmit,
 } from "../IncomeForm/IncomeForm.styled";
-
 import { ISearchWallet, ISearchCategory } from "types/data";
 import Loader from "components/Loader";
 import useToggle from "hooks/useToggle";
@@ -24,6 +23,7 @@ import { expensesOperation } from "../../../redux/operations/operations";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { MdDoneOutline } from "react-icons/md";
 import { theme } from "theme/theme";
+import Container from "components/Container";
 
 const initialState = {
   wallet: "",
@@ -68,7 +68,7 @@ const ExpenseForm: React.FC = () => {
   };
 
   return (
-    <>
+    <Container>
       <Form onSubmit={handleSubmit}>
         {walletLoading || categoriesLoading ? (
           <Loader type="spin"></Loader>
@@ -178,7 +178,7 @@ const ExpenseForm: React.FC = () => {
           )}
         </Modal>
       )}
-    </>
+    </Container>
   );
 };
 

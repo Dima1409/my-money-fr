@@ -15,6 +15,7 @@ const SelectWrapper = styled.label`
 `;
 
 const Select = styled.select`
+  margin-right: 10px;
   font-size: ${theme.fontSizes.normal};
   background-color: ${theme.colors.accent};
   color: ${theme.colors.light};
@@ -22,29 +23,42 @@ const Select = styled.select`
   border-radius: ${theme.radii.small};
   text-transform: uppercase;
   padding: 6px;
-  height: 40px;
+  min-height: 40px;
   width: 80%;
+  ${theme.mq.tablet} {
+    width: 60%;
+    margin-left: auto;
+  }
+  ${theme.mq.desktop} {
+    width: 40%;
+  }
 `;
 const Option = styled.option`
   display: block;
   font-size: ${theme.fontSizes.bold};
-  width: 300px;
   color: ${theme.colors.accentActive};
 `;
 
 const Input = styled.input`
   font-size: ${theme.fontSizes.normal};
+  margin: 0 auto;
   background-color: ${theme.colors.accent};
   color: ${theme.colors.light};
+  width: 100%;
   &::placeholder {
     color: ${theme.colors.light};
   }
   border: none;
   border-radius: ${theme.radii.small};
   text-transform: uppercase;
-  padding: 6px;
-  height: 40px;
-  width: 100%;
+  padding-left: 6px;
+  min-height: 40px;
+  ${theme.mq.tablet} {
+    width: 50%;
+  }
+  ${theme.mq.desktop} {
+    width: 40%;
+  }
 `;
 
 const ButtonEdit = styled.button`
@@ -56,6 +70,13 @@ const ButtonEdit = styled.button`
   align-items: center;
   border: none;
   border-radius: ${theme.radii.small};
+  transition: 0.3s;
+  &:hover {
+    cursor: pointer;
+  }
+  ${theme.mq.tablet} {
+    margin-right: auto;
+  }
 `;
 
 const ButtonSubmit = styled.button`

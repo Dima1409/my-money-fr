@@ -9,6 +9,7 @@ import useWallets from "hooks/useWallets";
 import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
+import { WalletsHeader } from "./WalletsList.styled";
 import Loader from "components/Loader";
 
 interface WalletsListProps {
@@ -70,20 +71,22 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
 
   return (
     <>
-      <h2>Мої гаманці</h2>
+      <WalletsHeader>Мої гаманці</WalletsHeader>
       {isLoading ? (
-        <Loader type="spin"/>
+        <Loader type="spin" />
       ) : (
         wallets.map(({ _id, name }) => (
           <div style={{ display: "flex" }} key={_id}>
             {editingWalletId === _id ? (
               <>
+                <label htmlFor={`walletName-${_id}`}></label>
                 <input
                   type="text"
                   name="name"
+                  id={`walletName-${_id}`}
                   value={formData.name}
                   onChange={handleInputChange}
-                ></input>
+                />
                 <button onClick={() => onRename()}>зберегти</button>
                 <button onClick={() => onClose()}>закрити</button>
               </>

@@ -2,7 +2,7 @@ import UserMenu from "components/UserMenu";
 import useAuth from "hooks/useAuth";
 import Wallets from "../../components/Wallets";
 import AllOperations from "components/HistoryOperations/AllOperations";
-import { NavListItem, Link } from "components/SharedLayout/SharedLayout.styled";
+import { Link } from "components/SharedLayout/SharedLayout.styled";
 import { HeaderWelcome, Description } from "./HomePage.styled";
 import { theme } from "theme/theme";
 
