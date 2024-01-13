@@ -20,8 +20,7 @@ import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getAll } from "../../../redux/categories/operations";
 import { incomeOperations } from "../../../redux/operations/operations";
-import { AiTwotoneEdit } from "react-icons/ai";
-import { MdDoneOutline } from "react-icons/md";
+import { IconEdit, IconOk } from "components/WalletsList/WalletsList.styled";
 import { theme } from "theme/theme";
 import Container from "components/Container";
 
@@ -69,7 +68,7 @@ const IncomeForm: React.FC = () => {
 
   return (
     <Container>
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} autoComplete="off">
         {walletLoading || categoriesLoading ? (
           <Loader type="spin"></Loader>
         ) : (
@@ -81,7 +80,7 @@ const IncomeForm: React.FC = () => {
                 value={formData.wallet}
               >
                 <Option value="" disabled>
-                  Оберіть гаманець
+                  Гаманець
                 </Option>
                 {wallets?.map(({ _id, name }: ISearchWallet) => (
                   <Option key={_id}>{name}</Option>
@@ -94,7 +93,7 @@ const IncomeForm: React.FC = () => {
                   toggle();
                 }}
               >
-                <AiTwotoneEdit color={theme.colors.light} size={16} />
+                <IconEdit style={{ color: theme.colors.light }} />
               </ButtonEdit>
             </SelectWrapper>
             <SelectWrapper>
@@ -104,7 +103,7 @@ const IncomeForm: React.FC = () => {
                 value={formData.category}
               >
                 <Option value="" disabled>
-                  Оберіть категорію
+                  Категорія
                 </Option>
                 {categories
                   .filter(
@@ -123,7 +122,7 @@ const IncomeForm: React.FC = () => {
                   toggle();
                 }}
               >
-                <AiTwotoneEdit color={theme.colors.light} size={16} />
+                <IconEdit style={{ color: theme.colors.light }} />
               </ButtonEdit>
             </SelectWrapper>
             <SelectWrapper>
@@ -153,7 +152,7 @@ const IncomeForm: React.FC = () => {
                 formData.wallet === ""
               }
             >
-              <MdDoneOutline color={theme.colors.light} size={16} />
+              <IconOk style={{ color: theme.colors.light }} />
             </ButtonSubmit>
           </>
         )}

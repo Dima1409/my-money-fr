@@ -10,19 +10,11 @@ const Form = styled.form`
   border-radius: ${theme.radii.small};
 `;
 
-const FormHeader = styled.h3`
-  color: ${theme.colors.light};
-  font-size: ${theme.fontSizes.bold};
-  font-family: ${theme.fonts.comfortaa};
-  text-align: center;
-  margin-bottom: 20px;
-`;
-
 const FormLabel = styled.label`
   position: relative;
   color: ${theme.colors.light};
   font-family: ${theme.fonts.comfortaa};
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 `;
 
 const FormInput = styled.input`
@@ -64,7 +56,7 @@ const ButtonSubmit = styled.button`
   border: none;
   padding: 6px 18px;
   border-radius: ${theme.radii.small};
-  font-size: ${theme.fontSizes.extraBold};
+  font-size: ${theme.fontSizes.bold};
   color: ${theme.colors.light};
   opacity: 0.5;
   transition: 0.25s;
@@ -79,4 +71,4 @@ const ButtonSubmit = styled.button`
   }
 `;
 
-export { Form, FormHeader, FormLabel, FormInput, ButtonShow, ButtonSubmit };
+export { Form, FormLabel, FormInput, ButtonShow, ButtonSubmit };

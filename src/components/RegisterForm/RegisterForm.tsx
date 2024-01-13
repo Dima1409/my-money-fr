@@ -4,7 +4,6 @@ import { ThunkDispatch } from "@reduxjs/toolkit";
 import { register } from "../../redux/auth/operations";
 import {
   Form,
-  FormHeader,
   FormLabel,
   FormInput,
   ButtonShow,
@@ -57,9 +56,8 @@ const RegisterForm: React.FC = () => {
 
   return (
     <Form onSubmit={handleSubmit} autoComplete="off">
-      <FormHeader>Register form</FormHeader>
       <FormLabel>
-        Name
+        Ім'я
         <FormInput
           type="text"
           name="name"
@@ -79,7 +77,7 @@ const RegisterForm: React.FC = () => {
         ></FormInput>
       </FormLabel>
       <FormLabel>
-        Password
+        Пароль
         <FormInput
           type={show ? "text" : "password"}
           name="password"
@@ -88,7 +86,7 @@ const RegisterForm: React.FC = () => {
           required
         ></FormInput>
         <ButtonShow type="button" onClick={hideShowPassword}>
-          {!show ? (
+          {show ? (
             <BiShow color={theme.colors.light} />
           ) : (
             <BiHide color={theme.colors.light} />
@@ -96,7 +94,7 @@ const RegisterForm: React.FC = () => {
         </ButtonShow>
       </FormLabel>
       <ButtonSubmit type="submit" disabled={!name || !email || !password}>
-        Register
+        Реєстрація
       </ButtonSubmit>
     </Form>
   );

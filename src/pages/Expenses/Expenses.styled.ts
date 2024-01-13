@@ -5,6 +5,7 @@ const ExpensesHeader = styled.h2`
   color: ${theme.colors.expensesHeader};
   text-align: center;
   font-size: ${theme.fontSizes.extraBold};
+  margin-bottom: 20px;
 `;
 
 export { ExpensesHeader };

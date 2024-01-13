@@ -13,13 +13,14 @@ const OperationsHeader = styled.h2`
 const Operation = styled.li`
   max-width: 600px;
   border-radius: ${theme.radii.normal};
-  padding: 10px 40px;
+  padding: 10px 12px;
   margin: 6px auto;
   font-size: ${theme.fontSizes.extraSmall};
   position: relative;
   ${theme.mq.tablet} {
     max-width: 768px;
     display: flex;
+    padding: 10px 60px;
     justify-content: space-between;
     font-size: ${theme.fontSizes.normal};
   }
@@ -63,7 +64,7 @@ const BtnDelete = styled.button`
   width: 30px;
   height: 30px;
   border-radius: ${theme.radii.round};
-  border: ${theme.borders.normal} ${theme.colors.accentActive};
+  border: ${theme.borders.normal} ${theme.colors.accent};
   background-color: transparent;
   cursor: pointer;
 `;

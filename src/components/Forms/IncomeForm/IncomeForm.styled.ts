@@ -84,14 +84,14 @@ const ButtonSubmit = styled.button`
   width: 30%;
   margin: 0 auto;
   height: 40px;
-  background-color: ${theme.colors.background};
+  background-color: ${theme.colors.accent};
   justify-content: center;
   align-items: center;
   border: none;
   border-radius: ${theme.radii.small};
   transition: 0.3s;
-  &:enabled {
-    background-color: ${theme.colors.accent};
+  &:disabled {
+    opacity: 0.5;
   }
 `;
 

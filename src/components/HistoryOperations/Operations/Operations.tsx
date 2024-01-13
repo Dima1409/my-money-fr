@@ -74,7 +74,7 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                   </OperationInfo>
                 )}
                 <OperationInfo>
-                  Дата операції:{" "}
+                  Дата:{" "}
                   <OperationResult>
                     {date.getDate().toString().padStart(2, "0")}.
                     {date.getMonth().toString().padStart(1, "0") + 1}.
@@ -82,7 +82,7 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                   </OperationResult>
                 </OperationInfo>
                 <OperationInfo>
-                  Час операції:{" "}
+                  Час:{" "}
                   <OperationResult>
                     {date.getHours().toString().padStart(2, "0")}:
                     {date.getMinutes().toString().padStart(2, "0")}:

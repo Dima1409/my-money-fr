@@ -29,7 +29,7 @@ interface CustomIconProps {
 export const CustomIcon: React.FC<CustomIconProps> = ({
   icon: Icon,
   size = "20px",
-  color = `${theme.colors.accentActive}`,
+  color = `${theme.colors.accent}`,
 }) => {
   return <Icon size={size} color={color} />;
 };
@@ -102,7 +102,7 @@ const HistoryOperations: React.FC = () => {
                     </OperationInfo>
                   )}
                   <OperationInfo>
-                    Дата операції:{" "}
+                    Дата:{" "}
                     <OperationResult>
                       {date.getDate().toString().padStart(2, "0")}.
                       {date.getMonth().toString().padStart(1, "0") + 1}.
@@ -110,7 +110,7 @@ const HistoryOperations: React.FC = () => {
                     </OperationResult>
                   </OperationInfo>
                   <OperationInfo>
-                    Час операції:{" "}
+                    Час:{" "}
                     <OperationResult>
                       {date.getHours().toString().padStart(2, "0")}:
                       {date.getMinutes().toString().padStart(2, "0")}:

@@ -1,8 +1,6 @@
 import { Outlet } from "react-router-dom";
 import useAuth from "hooks/useAuth";
-import { NavList, Link, NavListItem } from "./SharedLayout.styled";
-import { AiOutlineHome } from "react-icons/ai";
-import { theme } from "theme/theme";
+import { NavList, Link, NavListItem, IconHome } from "./SharedLayout.styled";
 
 const SharedLayout: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -11,7 +9,7 @@ const SharedLayout: React.FC = () => {
       <NavList>
         <NavListItem>
           <Link to="/">
-            <AiOutlineHome color={theme.colors.light} size={16} />
+            <IconHome />
           </Link>
         </NavListItem>
         {!isLoggedIn && (

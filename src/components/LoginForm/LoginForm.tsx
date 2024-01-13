@@ -4,7 +4,6 @@ import { ThunkDispatch } from "@reduxjs/toolkit";
 import { login } from "../../redux/auth/operations";
 import {
   Form,
-  FormHeader,
   FormLabel,
   FormInput,
   ButtonShow,
@@ -51,7 +50,6 @@ const LoginForm: React.FC = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
-      <FormHeader>Login form</FormHeader>
       <FormLabel htmlFor="email">
         Email
         <FormInput
@@ -64,7 +62,7 @@ const LoginForm: React.FC = () => {
         ></FormInput>
       </FormLabel>
       <FormLabel htmlFor="password">
-        Password
+        Пароль
         <FormInput
           type={show ? "text" : "password"}
           name="password"
@@ -78,7 +76,7 @@ const LoginForm: React.FC = () => {
         </ButtonShow>
       </FormLabel>
       <ButtonSubmit type="submit" disabled={!email || !password}>
-        LogIn
+        Увійти
       </ButtonSubmit>
     </Form>
   );
