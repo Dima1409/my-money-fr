@@ -6,6 +6,7 @@ import {
   ButtonEdit,
   Option,
   Input,
+  ButtonsWrapper,
   ButtonSubmit,
 } from "./IncomeForm.styled";
 import { ISearchWallet, ISearchCategory } from "types/data";
@@ -20,7 +21,11 @@ import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getAll } from "../../../redux/categories/operations";
 import { incomeOperations } from "../../../redux/operations/operations";
-import { IconEdit, IconOk } from "components/WalletsList/WalletsList.styled";
+import {
+  IconEdit,
+  IconOk,
+  IconClose,
+} from "components/WalletsList/WalletsList.styled";
 import { theme } from "theme/theme";
 import Container from "components/Container";
 
@@ -64,6 +69,10 @@ const IncomeForm: React.FC = () => {
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const clearForm = () => {
+    setFormData(initialState);
   };
 
   return (
@@ -143,17 +152,30 @@ const IncomeForm: React.FC = () => {
                 onChange={handleInputChange}
               ></Input>
             </SelectWrapper>
-
-            <ButtonSubmit
-              type="submit"
-              disabled={
-                formData.amount === "" ||
-                formData.category === "" ||
-                formData.wallet === ""
-              }
-            >
-              <IconOk style={{ color: theme.colors.light }} />
-            </ButtonSubmit>
+            <ButtonsWrapper>
+              <ButtonSubmit
+                type="submit"
+                disabled={
+                  formData.amount === "" ||
+                  formData.category === "" ||
+                  formData.wallet === ""
+                }
+              >
+                <IconOk style={{ color: theme.colors.light }} />
+              </ButtonSubmit>
+              <ButtonSubmit
+                type="button"
+                disabled={
+                  formData.amount === "" &&
+                  formData.category === "" &&
+                  formData.wallet === ""
+                }
+                onClick={() => clearForm()}
+                style={{ backgroundColor: theme.colors.red }}
+              >
+                <IconClose style={{ color: theme.colors.dark }} />
+              </ButtonSubmit>
+            </ButtonsWrapper>
           </>
         )}
       </Form>

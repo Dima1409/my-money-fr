@@ -24,13 +24,24 @@ const Select = styled.select`
   text-transform: uppercase;
   padding: 6px;
   min-height: 40px;
-  width: 80%;
+  width: 280px;
+  margin-left: auto;
   ${theme.mq.tablet} {
-    width: 60%;
+    width: 40%;
     margin-left: auto;
   }
   ${theme.mq.desktop} {
-    width: 40%;
+    width: 20%;
+    margin-left: auto;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  &:disabled {
+    background-color: inherit;
+  }
+  &:focus {
+    background-color: ${theme.colors.accentActive};
   }
 `;
 const Option = styled.option`
@@ -44,7 +55,7 @@ const Input = styled.input`
   margin: 0 auto;
   background-color: ${theme.colors.accent};
   color: ${theme.colors.light};
-  width: 100%;
+  width: 280px;
   &::placeholder {
     color: ${theme.colors.light};
   }
@@ -54,10 +65,10 @@ const Input = styled.input`
   padding-left: 6px;
   min-height: 40px;
   ${theme.mq.tablet} {
-    width: 50%;
+    width: 30%;
   }
   ${theme.mq.desktop} {
-    width: 40%;
+    width: 20%;
   }
 `;
 
@@ -68,6 +79,7 @@ const ButtonEdit = styled.button`
   background-color: ${theme.colors.accent};
   justify-content: center;
   align-items: center;
+  margin-right: auto;
   border: none;
   border-radius: ${theme.radii.small};
   transition: 0.3s;
@@ -79,10 +91,16 @@ const ButtonEdit = styled.button`
   }
 `;
 
+const ButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const ButtonSubmit = styled.button`
   display: flex;
   width: 30%;
-  margin: 0 auto;
+  margin: 4px;
   height: 40px;
   background-color: ${theme.colors.accent};
   justify-content: center;
@@ -90,9 +108,24 @@ const ButtonSubmit = styled.button`
   border: none;
   border-radius: ${theme.radii.small};
   transition: 0.3s;
+  ${theme.mq.tablet} {
+    width: 10%;
+  }
   &:disabled {
     opacity: 0.5;
   }
+  &:hover:not(:disabled) {
+    cursor: pointer;
+  }
 `;
 
-export { Form, SelectWrapper, Select, Option, Input, ButtonEdit, ButtonSubmit };
+export {
+  Form,
+  SelectWrapper,
+  Select,
+  Option,
+  Input,
+  ButtonEdit,
+  ButtonsWrapper,
+  ButtonSubmit,
+};

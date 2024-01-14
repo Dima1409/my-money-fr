@@ -15,10 +15,10 @@ const SharedLayout: React.FC = () => {
         {!isLoggedIn && (
           <>
             <NavListItem>
-              <Link to="/register">Register</Link>
+              <Link to="/register">Реєстрація</Link>
             </NavListItem>
             <NavListItem>
-              <Link to="/login">Login</Link>
+              <Link to="/login">Вхід</Link>
             </NavListItem>
           </>
         )}
@@ -26,10 +26,10 @@ const SharedLayout: React.FC = () => {
         {isLoggedIn && (
           <>
             <NavListItem>
-              <Link to="/incomes">Income</Link>
+              <Link to="/incomes">Доходи</Link>
             </NavListItem>
             <NavListItem>
-              <Link to="/expenses">Expenses</Link>
+              <Link to="/expenses">Витрати</Link>
             </NavListItem>
           </>
         )}

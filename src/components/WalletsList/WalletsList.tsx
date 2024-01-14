@@ -30,21 +30,34 @@ import {
   BtnCloseEdit,
 } from "./WalletsList.styled";
 import Loader from "components/Loader";
-import { theme } from "theme/theme";
+import Pagination from "components/pagination/Pagination";
 
 interface WalletsListProps {
   wallets: ISearchWallet[];
 }
+const ITEMS_PER_PAGE = 5;
+
 const initialState = {
   name: "",
 };
 
 const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  const currentWallets = wallets.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const { isLoading } = useWallets();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const [formData, setFormData] = useState(initialState);
   const [editingWalletId, setEditingWalletId] = useState<string | null>(null);
   const [editing, setEditing] = useState<boolean>(false);
+  const [walletsList, setWalletsList] = useState(wallets);
+  const totalItems = walletsList.length;
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -54,8 +67,20 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     });
   };
 
-  const handleDelete = (id: any) => {
-    dispatchTyped(deleteWallet(id)).then(() => dispatchTyped(getAllWallets()));
+  const handleDelete = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: any
+  ) => {
+    e.preventDefault();
+    dispatchTyped(deleteWallet(id)).then(() => {
+      dispatchTyped(getAllWallets());
+      const updatedWallets = wallets.filter((wallet) => wallet._id !== id);
+      setWalletsList(updatedWallets);
+      const totalPages = Math.ceil(updatedWallets.length / ITEMS_PER_PAGE);
+      if (currentPage > totalPages) {
+        setCurrentPage(totalPages);
+      }
+    });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -63,6 +88,8 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     dispatchTyped(createNewWallets(formData)).then(() =>
       dispatchTyped(getAllWallets())
     );
+    setWalletsList(wallets);
+    setCurrentPage(Math.ceil((totalItems + 1) / ITEMS_PER_PAGE));
     setFormData(initialState);
   };
 
@@ -95,47 +122,54 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       {isLoading ? (
         <Loader type="spin" />
       ) : (
-        wallets.map(({ _id, name }) => (
-          <WalletsContainer key={_id}>
-            {editingWalletId === _id ? (
-              <>
-                <FormEdit autoComplete="off">
-                  <label>
-                    <InputCreateNew
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      autoFocus
-                    />
-                  </label>
-                  <WalletsWrapper>
-                    <BtnRename
-                      type="submit"
-                      disabled={formData.name === ""}
-                      onClick={() => onRename()}
-                    >
-                      <IconOk />
-                    </BtnRename>
-                    <BtnCloseEdit onClick={() => onClose()}>
-                      <IconClose />
-                    </BtnCloseEdit>
-                  </WalletsWrapper>
-                </FormEdit>
-              </>
-            ) : (
-              <WalletsWrapper>
-                <LabelName>{name}</LabelName>
-                <BtnDelete onClick={() => handleDelete(_id)}>
-                  <IconDelete />
-                </BtnDelete>
-                <BtnEdit onClick={() => _id && startEditing(_id)}>
-                  <IconEdit />
-                </BtnEdit>
-              </WalletsWrapper>
-            )}
-          </WalletsContainer>
-        ))
+        <>
+          <Pagination
+            totalItems={wallets.length}
+            itemsPerPage={ITEMS_PER_PAGE}
+            onPageChange={handlePageChange}
+          />
+          {currentWallets.map(({ _id, name }) => (
+            <WalletsContainer key={_id}>
+              {editingWalletId === _id ? (
+                <>
+                  <FormEdit autoComplete="off">
+                    <label>
+                      <InputCreateNew
+                        type="text"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        autoFocus
+                      />
+                    </label>
+                    <WalletsWrapper>
+                      <BtnRename
+                        type="submit"
+                        disabled={formData.name === ""}
+                        onClick={() => onRename()}
+                      >
+                        <IconOk />
+                      </BtnRename>
+                      <BtnCloseEdit onClick={() => onClose()}>
+                        <IconClose />
+                      </BtnCloseEdit>
+                    </WalletsWrapper>
+                  </FormEdit>
+                </>
+              ) : (
+                <WalletsWrapper>
+                  <LabelName>{name}</LabelName>
+                  <BtnDelete onClick={(e) => handleDelete(e, _id)}>
+                    <IconDelete />
+                  </BtnDelete>
+                  <BtnEdit onClick={() => _id && startEditing(_id)}>
+                    <IconEdit />
+                  </BtnEdit>
+                </WalletsWrapper>
+              )}
+            </WalletsContainer>
+          ))}
+        </>
       )}
 
       {editing ? (
@@ -145,13 +179,16 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       ) : (
         <WalletsContainer>
           <FormCreateNew onSubmit={handleSubmit} autoComplete="off">
-            <InputCreateNew
-              type="text"
-              name="name"
-              placeholder="Додати гаманець..."
-              value={formData.name}
-              onChange={handleInputChange}
-            ></InputCreateNew>
+            <label>
+              <InputCreateNew
+                type="text"
+                name="name"
+                placeholder="Додати гаманець..."
+                value={formData.name}
+                onChange={handleInputChange}
+              ></InputCreateNew>
+            </label>
+
             <BtnSubmit type="submit" disabled={formData.name === ""}>
               <IconOk />
             </BtnSubmit>

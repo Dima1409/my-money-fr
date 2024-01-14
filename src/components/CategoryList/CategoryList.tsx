@@ -9,12 +9,37 @@ import useCategory from "hooks/useCategory";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
+import {
+  IconEdit,
+  IconOk,
+  IconClose,
+  IconDelete,
+  WalletsContainer,
+  WalletsHeader,
+  WalletsWrapper,
+  LabelName,
+  BtnDelete,
+  BtnEdit,
+  FormEdit,
+  FormCreateNew,
+  IsEditing,
+  BtnSubmit,
+  InputCreateNew,
+  InfoWallets,
+  BtnRename,
+  BtnCloseEdit,
+} from "components/WalletsList/WalletsList.styled";
+import { RadioWrapper, InputRadio, LabelSelect } from "./CategoryList.styled";
 import Loader from "components/Loader";
+import Pagination from "components/pagination/Pagination";
 
 interface CategoryListProps {
   categories: ISearchCategory[];
   typeOfCategory: string;
 }
+
+const ITEMS_PER_PAGE = 5;
+
 const initialState = {
   name: "",
   type: "",
@@ -24,6 +49,15 @@ const CategoryList: React.FC<CategoryListProps> = ({
   categories,
   typeOfCategory,
 }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+  const currentCategories = categories.slice(indexOfFirstItem, indexOfLastItem);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   const { isLoading } = useCategory();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const [formData, setFormData] = useState(initialState);
@@ -31,6 +65,8 @@ const CategoryList: React.FC<CategoryListProps> = ({
     null
   );
   const [editing, setEditing] = useState<boolean>(false);
+  const [categoryList, setCategoryList] = useState(categories);
+  const totalItems = categoryList.length;
 
   const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -40,8 +76,22 @@ const CategoryList: React.FC<CategoryListProps> = ({
     });
   };
 
-  const handleDelete = async (id: any) => {
-    dispatchTyped(deleteCategory(id)).then(() => dispatchTyped(getAll()));
+  const handleDelete = async (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: any
+  ) => {
+    e.preventDefault();
+    dispatchTyped(deleteCategory(id)).then(() => {
+      dispatchTyped(getAll());
+      const updatedCategories = categories.filter(
+        (category) => category._id !== id
+      );
+      setCategoryList(updatedCategories);
+      const totalPages = Math.ceil(updatedCategories.length / ITEMS_PER_PAGE);
+      if (currentPage > totalPages) {
+        setCurrentPage(totalPages);
+      }
+    });
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -49,6 +99,8 @@ const CategoryList: React.FC<CategoryListProps> = ({
     dispatchTyped(createNewCategory(formData)).then(() =>
       dispatchTyped(getAll())
     );
+    setCategoryList(categories);
+    setCurrentPage(Math.ceil((totalItems + 1) / ITEMS_PER_PAGE));
     setFormData(initialState);
   };
 
@@ -77,82 +129,107 @@ const CategoryList: React.FC<CategoryListProps> = ({
   };
 
   return (
-    <>
-      <h2>Мої категорії</h2>
+    <InfoWallets>
+      <WalletsHeader>Мої категорії</WalletsHeader>
       {isLoading ? (
-        <Loader type="spin"/>
+        <Loader type="spin" />
       ) : (
-        categories.map(({ _id, name }) => (
-          <div style={{ display: "flex" }} key={_id}>
-            {editingCategoryId === _id ? (
-              <>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                ></input>
-                <button onClick={() => onRename()}>зберегти</button>
-                <button onClick={() => onClose()}>закрити</button>
-              </>
-            ) : (
-              <>
-                <label style={{ width: "220px" }}>{name}</label>
-                <button onClick={() => handleDelete(_id)}>видалити</button>
-                <button onClick={() => _id && startEditing(_id)}>
-                  перейменувати
-                </button>
-              </>
-            )}
-          </div>
-        ))
+        <>
+          <Pagination
+            totalItems={categories.length}
+            itemsPerPage={ITEMS_PER_PAGE}
+            onPageChange={handlePageChange}
+          />
+          {currentCategories.map(({ _id, name }) => (
+            <WalletsContainer key={_id}>
+              {editingCategoryId === _id ? (
+                <FormEdit autoComplete="off">
+                  <label>
+                    <InputCreateNew
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    ></InputCreateNew>
+                  </label>
+                  <WalletsWrapper>
+                    <BtnRename
+                      type="submit"
+                      disabled={formData.name === ""}
+                      onClick={() => onRename()}
+                    >
+                      <IconOk />
+                    </BtnRename>
+                    <BtnCloseEdit onClick={() => onClose()}>
+                      <IconClose />
+                    </BtnCloseEdit>
+                  </WalletsWrapper>
+                </FormEdit>
+              ) : (
+                <WalletsWrapper>
+                  <LabelName>{name}</LabelName>
+                  <BtnDelete onClick={(e) => handleDelete(e, _id)}>
+                    <IconDelete />
+                  </BtnDelete>
+                  <BtnEdit onClick={() => _id && startEditing(_id)}>
+                    <IconEdit />
+                  </BtnEdit>
+                </WalletsWrapper>
+              )}
+            </WalletsContainer>
+          ))}
+        </>
       )}
 
       {editing ? (
-        <div>редагування...</div>
+        <WalletsContainer>
+          <IsEditing>Редагування...</IsEditing>
+        </WalletsContainer>
       ) : (
-        <form
-          onSubmit={handleSubmit}
-          style={{ display: "flex", margin: "10px" }}
-        >
-          <label>
-            Категорія
-            <input
-              type="text"
-              name="name"
-              placeholder="new category..."
-              value={formData.name}
-              onChange={handleInputChange}
-            ></input>
-          </label>
+        <WalletsContainer>
+          <FormCreateNew onSubmit={handleSubmit} autoComplete="off">
+            <label>
+              <InputCreateNew
+                type="text"
+                name="name"
+                placeholder="Нова категорія..."
+                value={formData.name}
+                onChange={handleInputChange}
+              ></InputCreateNew>
+            </label>
+            <RadioWrapper>
+              <LabelSelect>
+                <InputRadio
+                  type="radio"
+                  name="type"
+                  value="income"
+                  checked={formData.type === "income"}
+                  onChange={handleInputChange}
+                />
+                Доходи
+              </LabelSelect>
+              <LabelSelect>
+                <InputRadio
+                  type="radio"
+                  name="type"
+                  value="expense"
+                  checked={formData.type === "expense"}
+                  onChange={handleInputChange}
+                />
+                Витрати
+              </LabelSelect>
+            </RadioWrapper>
 
-          <label>
-            <input
-              type="radio"
-              name="type"
-              value="income"
-              checked={formData.type === "income"}
-              onChange={handleInputChange}
-            />
-            Income
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="type"
-              value="expense"
-              checked={formData.type === "expense"}
-              onChange={handleInputChange}
-            />
-            Expense
-          </label>
-
-          <button type="submit" style={{ display: "block", margin: "0 auto" }}>
-            додати нову категорію
-          </button>
-        </form>
+            <BtnSubmit
+              type="submit"
+              disabled={formData.name === "" || formData.type === ""}
+            >
+              <IconOk />
+            </BtnSubmit>
+          </FormCreateNew>
+        </WalletsContainer>
       )}
-    </>
+    </InfoWallets>
   );
 };
 
