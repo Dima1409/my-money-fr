@@ -109,7 +109,6 @@ const refreshUser = createAsyncThunk("/auth/current", async (_, thunkAPI) => {
   try {
     setAuthHeader(persistedToken);
     const response = await API.get("/auth/current");
-    console.log("REFRESH OPERATIONS", response);
     return response.data.data;
   } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message);

@@ -76,7 +76,7 @@ const IncomeForm: React.FC = () => {
   };
 
   return (
-    <Container>
+    <>
       <Form onSubmit={handleSubmit} autoComplete="off">
         {walletLoading || categoriesLoading ? (
           <Loader type="spin"></Loader>
@@ -198,7 +198,7 @@ const IncomeForm: React.FC = () => {
           )}
         </Modal>
       )}
-    </Container>
+    </>
   );
 };
 

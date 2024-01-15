@@ -21,7 +21,6 @@ const createNewCategory = createAsyncThunk(
   async (credentials: Category, thunkAPI) => {
     try {
       const response = await API.post("/categories", credentials);
-      console.log("Create new category in operations", response);
       return response.data.data.result;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);
@@ -36,7 +35,6 @@ const renameCategory = createAsyncThunk(
       const response = await API.patch(`/categories/${credentials.id}`, {
         name: credentials.name,
       });
-      console.log("Edit category in operations", response);
       return response.data.data.result;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);
@@ -49,7 +47,6 @@ const deleteCategory = createAsyncThunk(
   async (credentials: Category, thunkAPI) => {
     try {
       const response = await API.delete(`/categories/${credentials}`);
-      console.log("Delete category in operations", response);
       return response.data.data;
     } catch (error: any) {
       throw thunkAPI.rejectWithValue(error.message);

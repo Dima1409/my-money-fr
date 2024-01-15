@@ -17,26 +17,60 @@ import {
 import Loader from "components/Loader";
 import { CustomIcon } from "../AllOperations/AllOperations";
 import { RiDeleteBinLine } from "react-icons/ri";
-import Container from "components/Container";
+import { isToday, isYesterday } from "utils/dateTodayYesterday";
+import Pagination from "components/pagination/Pagination";
 
-const Operations: React.FC<any> = ({ operationsType }) => {
+const ITEMS_PER_PAGE = 10;
+
+interface OperationsProps {
+  operationsType: ISearchOperation[];
+}
+
+const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const [deletingOperation, setDeletingOperation] = useState<string | null>(
     null
   );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+
+  const currentOperations = operationsType.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   const handleDelete = async (id: any) => {
     setDeletingOperation(id);
     dispatchTyped(deleteOperation(id)).then(() => {
       setDeletingOperation(null);
       dispatchTyped(getAllOperations());
+      const updatedList = operationsType.filter(
+        (operation) => operation._id !== id
+      );
+      const totalPages = Math.ceil(updatedList.length / ITEMS_PER_PAGE);
+      if (currentPage > totalPages) {
+        setCurrentPage(totalPages);
+      }
     });
   };
 
   return (
-    <Container>
+    <>
       <OperationWrapper>
-        {operationsType.map(
+        <>
+          <Pagination
+            totalItems={operationsType.length}
+            itemsPerPage={ITEMS_PER_PAGE}
+            onPageChange={handlePageChange}
+          />
+        </>
+        {currentOperations.map(
           ({
             _id,
             amount,
@@ -48,6 +82,13 @@ const Operations: React.FC<any> = ({ operationsType }) => {
           }: ISearchOperation) => {
             const isDeleting = deletingOperation === _id;
             const date = new Date(createdAt);
+            let dateNote = "";
+
+            if (isToday(date)) {
+              dateNote = " (сьогодні)";
+            } else if (isYesterday(date)) {
+              dateNote = " (вчора)";
+            }
             return (
               <Operation
                 key={_id}
@@ -79,6 +120,7 @@ const Operations: React.FC<any> = ({ operationsType }) => {
                     {date.getDate().toString().padStart(2, "0")}.
                     {date.getMonth().toString().padStart(1, "0") + 1}.
                     {date.getFullYear()}
+                    {dateNote}
                   </OperationResult>
                 </OperationInfo>
                 <OperationInfo>
@@ -104,7 +146,7 @@ const Operations: React.FC<any> = ({ operationsType }) => {
           }
         )}
       </OperationWrapper>
-    </Container>
+    </>
   );
 };
 export default Operations;

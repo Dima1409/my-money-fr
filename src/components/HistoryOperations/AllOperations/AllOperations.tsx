@@ -19,12 +19,16 @@ import {
 import { theme } from "theme/theme";
 import { IconType } from "react-icons";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { isToday, isYesterday } from "utils/dateTodayYesterday";
+import Pagination from "components/pagination/Pagination";
 
 interface CustomIconProps {
   icon: IconType;
   size?: string;
   color?: string;
 }
+
+const ITEMS_PER_PAGE = 10;
 
 export const CustomIcon: React.FC<CustomIconProps> = ({
   icon: Icon,
@@ -42,29 +46,54 @@ const HistoryOperations: React.FC = () => {
     null
   );
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
+  const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
+
   useEffect(() => {
     dispatchTyped(getAllOperations());
   }, [dispatchTyped]);
-
-  const handleDelete = async (id: any) => {
-    setDeletingOperation(id);
-    dispatchTyped(deleteOperation(id)).then(() => {
-      setDeletingOperation(null);
-      dispatchTyped(getAllOperations());
-    });
-  };
 
   const sortedOperations = [...operations]?.sort(
     (a: ISearchOperation, b: ISearchOperation) =>
       new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
+  const currentOperations = sortedOperations.slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const handleDelete = async (id: any) => {
+    setDeletingOperation(id);
+    dispatchTyped(deleteOperation(id)).then(() => {
+      setDeletingOperation(null);
+      dispatchTyped(getAllOperations());
+      const updatedList = operations.filter(
+        (operation) => operation._id !== id
+      );
+      const totalPages = Math.ceil(updatedList.length / ITEMS_PER_PAGE);
+      if (currentPage > totalPages) {
+        setCurrentPage(totalPages);
+      }
+    });
+  };
+
   return (
     <>
       <OperationWrapper>
+        <Pagination
+          totalItems={operations.length}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={handlePageChange}
+        />
         {isLoggedIn &&
-          sortedOperations &&
-          sortedOperations.map(
+          currentOperations &&
+          currentOperations.map(
             ({
               _id,
               amount,
@@ -76,58 +105,68 @@ const HistoryOperations: React.FC = () => {
             }: ISearchOperation) => {
               const isDeleting = deletingOperation === _id;
               const date = new Date(createdAt);
+              let dateNote = "";
+
+              if (isToday(date)) {
+                dateNote = " (сьогодні)";
+              } else if (isYesterday(date)) {
+                dateNote = " (вчора)";
+              }
               return (
-                <Operation
-                  key={_id}
-                  style={{
-                    backgroundColor:
-                      type === "income"
-                        ? `${theme.colors.green}`
-                        : `${theme.colors.red}`,
-                  }}
-                  className={isDeleting ? "deleting" : ""}
-                >
-                  <OperationInfo>
-                    Гаманець: <OperationResult>{wallet}</OperationResult>
-                  </OperationInfo>
-                  <OperationInfo>
-                    Сума: <OperationResult>{amount} грн</OperationResult>
-                  </OperationInfo>
-                  <OperationInfo>
-                    Категорія: <OperationResult>{category}</OperationResult>
-                  </OperationInfo>
-                  {comment && (
-                    <OperationInfo>
-                      Коментар: <OperationResult>{comment}</OperationResult>
-                    </OperationInfo>
-                  )}
-                  <OperationInfo>
-                    Дата:{" "}
-                    <OperationResult>
-                      {date.getDate().toString().padStart(2, "0")}.
-                      {date.getMonth().toString().padStart(1, "0") + 1}.
-                      {date.getFullYear()}
-                    </OperationResult>
-                  </OperationInfo>
-                  <OperationInfo>
-                    Час:{" "}
-                    <OperationResult>
-                      {date.getHours().toString().padStart(2, "0")}:
-                      {date.getMinutes().toString().padStart(2, "0")}:
-                      {date.getSeconds().toString().padStart(2, "0")}
-                    </OperationResult>
-                  </OperationInfo>
-                  <BtnDelete
-                    onClick={() => handleDelete(_id)}
-                    disabled={isDeleting}
+                <>
+                  <Operation
+                    key={_id}
+                    style={{
+                      backgroundColor:
+                        type === "income"
+                          ? `${theme.colors.green}`
+                          : `${theme.colors.red}`,
+                    }}
+                    className={isDeleting ? "deleting" : ""}
                   >
-                    {isDeleting ? (
-                      <Loader type="spin" width="30px" height="30px" />
-                    ) : (
-                      <CustomIcon icon={RiDeleteBinLine}></CustomIcon>
+                    <OperationInfo>
+                      Гаманець: <OperationResult>{wallet}</OperationResult>
+                    </OperationInfo>
+                    <OperationInfo>
+                      Сума: <OperationResult>{amount} грн</OperationResult>
+                    </OperationInfo>
+                    <OperationInfo>
+                      Категорія: <OperationResult>{category}</OperationResult>
+                    </OperationInfo>
+                    {comment && (
+                      <OperationInfo>
+                        Коментар: <OperationResult>{comment}</OperationResult>
+                      </OperationInfo>
                     )}
-                  </BtnDelete>
-                </Operation>
+                    <OperationInfo>
+                      Дата:{" "}
+                      <OperationResult>
+                        {date.getDate().toString().padStart(2, "0")}.
+                        {date.getMonth().toString().padStart(1, "0") + 1}.
+                        {date.getFullYear()}
+                        {dateNote}
+                      </OperationResult>
+                    </OperationInfo>
+                    <OperationInfo>
+                      Час:{" "}
+                      <OperationResult>
+                        {date.getHours().toString().padStart(2, "0")}:
+                        {date.getMinutes().toString().padStart(2, "0")}:
+                        {date.getSeconds().toString().padStart(2, "0")}
+                      </OperationResult>
+                    </OperationInfo>
+                    <BtnDelete
+                      onClick={() => handleDelete(_id)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? (
+                        <Loader type="spin" width="30px" height="30px" />
+                      ) : (
+                        <CustomIcon icon={RiDeleteBinLine}></CustomIcon>
+                      )}
+                    </BtnDelete>
+                  </Operation>
+                </>
               );
             }
           )}

@@ -76,7 +76,7 @@ const ExpenseForm: React.FC = () => {
   };
 
   return (
-    <Container>
+    <>
       <Form onSubmit={handleSubmit} autoComplete="off">
         {walletLoading || categoriesLoading ? (
           <Loader type="spin"></Loader>
@@ -200,7 +200,7 @@ const ExpenseForm: React.FC = () => {
           )}
         </Modal>
       )}
-    </Container>
+    </>
   );
 };
 
