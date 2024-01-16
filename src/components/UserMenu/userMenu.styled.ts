@@ -34,4 +34,24 @@ const Logout = styled.button`
   }
 `;
 
-export { UserWrapper, User, Logout };
+const InputEdit = styled.input`
+  outline: none;
+  border: none;
+  width: 100%;
+  border-radius: ${theme.radii.small};
+  font-size: ${theme.fontSizes.normal};
+  color: ${theme.colors.dark};
+  padding: 4px 6px;
+  height: 40px;
+  margin-bottom: 10px;
+  ${theme.mq.tablet} {
+    font-size: ${theme.fontSizes.bold};
+  }
+`;
+
+const EditButton = styled(Logout)`
+  margin-right: 6px;
+`;
+
+
+export { UserWrapper, User, Logout, InputEdit, EditButton };

@@ -3,6 +3,7 @@ import {
   register,
   login,
   logout,
+  editUser,
   updateUserAvatar,
   deleteAvatar,
   refreshUser,
@@ -62,6 +63,17 @@ const authSlice = createSlice({
         state.isPending = false;
         state.error = null;
       })
+      .addCase(
+        editUser.fulfilled,
+        (state: typeof initialState, action: any) => {
+          state.user.email = action.payload.email;
+          state.user.name = action.payload.name;
+          state.isLoggedIn = true;
+          state.isPending = false;
+          state.isRefreshing = false;
+          state.error = null;
+        }
+      )
       .addCase(updateUserAvatar.fulfilled, handleFulfilled)
       .addCase(deleteAvatar.fulfilled, handleFulfilled)
       .addCase(refreshUser.fulfilled, (state, action) => {
@@ -77,12 +89,14 @@ const authSlice = createSlice({
       .addCase(register.pending, handlePending)
       .addCase(login.pending, handlePending)
       .addCase(logout.pending, handlePending)
+      .addCase(editUser.pending, handlePending)
       .addCase(updateUserAvatar.pending, handlePending)
       .addCase(deleteAvatar.pending, handlePending)
       .addCase(refreshUser.pending, handlePending)
       .addCase(register.rejected, handleRejected)
       .addCase(login.rejected, handleRejected)
       .addCase(logout.rejected, handleRejected)
+      .addCase(editUser.rejected, handleRejected)
       .addCase(updateUserAvatar.rejected, handleRejected)
       .addCase(deleteAvatar.rejected, handleRejected)
       .addCase(refreshUser.rejected, handleRejected);

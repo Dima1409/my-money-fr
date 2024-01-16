@@ -27,7 +27,6 @@ import {
   IconClose,
 } from "components/WalletsList/WalletsList.styled";
 import { theme } from "theme/theme";
-import Container from "components/Container";
 
 const initialState = {
   wallet: "",
@@ -41,7 +40,6 @@ const IncomeForm: React.FC = () => {
   const { isLoading: walletLoading, wallets } = useWallets();
   const { categories, isLoading: categoriesLoading } = useCategory();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
-
   const [formData, setFormData] = useState(initialState);
   const [showWalletList, setShowWalletList] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);

@@ -55,6 +55,23 @@ const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   }
 });
 
+interface EditUserCredentials {
+  name: string;
+  email: string;
+}
+
+const editUser = createAsyncThunk(
+  "auth/update",
+  async (credentials: EditUserCredentials, thunkAPI) => {
+    try {
+      const response = await API.patch("/auth/update", credentials);
+      return response.data.data;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const deleteAvatar = createAsyncThunk(
   "auth/deleteAvatar",
   async (_, thunkAPI) => {
@@ -115,4 +132,12 @@ const refreshUser = createAsyncThunk("/auth/current", async (_, thunkAPI) => {
   }
 });
 
-export { register, login, logout, deleteAvatar, updateUserAvatar, refreshUser };
+export {
+  register,
+  login,
+  logout,
+  editUser,
+  deleteAvatar,
+  updateUserAvatar,
+  refreshUser,
+};

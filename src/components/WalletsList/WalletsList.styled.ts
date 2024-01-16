@@ -141,6 +141,7 @@ const InputCreateNew = styled.input`
   border: none;
   border-radius: ${theme.radii.small};
   font-size: ${theme.fontSizes.normal};
+  color: ${theme.colors.dark};
   padding: 4px 6px;
   height: 40px;
   margin-bottom: 10px;
