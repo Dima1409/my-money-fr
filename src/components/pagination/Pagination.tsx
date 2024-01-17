@@ -27,15 +27,13 @@ const Pagination: React.FC<PaginationProps> = ({
   return (
     <PaginationContainer>
       {Array.from({ length: totalPages }).map((_, index) => (
-        <>
-          <PageButton
-            key={index}
-            onClick={() => paginate(index + 1)}
-            isCurrent={currentPage === index + 1}
-          >
-            {index + 1}
-          </PageButton>
-        </>
+        <PageButton
+          key={`page-${index + 1}`}
+          onClick={() => paginate(index + 1)}
+          $isCurrent={currentPage === index + 1}
+        >
+          {index + 1}
+        </PageButton>
       ))}
     </PaginationContainer>
   );

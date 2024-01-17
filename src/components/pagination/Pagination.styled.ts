@@ -7,7 +7,7 @@ const PaginationContainer = styled.div`
   margin-bottom: 10px;
 `;
 
-const PageButton = styled.button<{ isCurrent: boolean }>`
+const PageButton = styled.button<{ $isCurrent: boolean }>`
   margin: 0 5px;
   padding: 5px 10px;
   border: none;
@@ -16,10 +16,10 @@ const PageButton = styled.button<{ isCurrent: boolean }>`
   width: 30px;
   height: 30px;
   border-radius: ${theme.radii.small};
-  background-color: ${({ isCurrent }) =>
-    isCurrent ? theme.colors.accentActive : theme.colors.light};
-  color: ${({ isCurrent }) =>
-    isCurrent ? theme.colors.light : theme.colors.dark};
+  background-color: ${({ $isCurrent }) =>
+    $isCurrent ? theme.colors.accentActive : theme.colors.background};
+  color: ${({ $isCurrent }) =>
+    $isCurrent ? theme.colors.light : theme.colors.accent};
   cursor: pointer;
 
   &:hover {
