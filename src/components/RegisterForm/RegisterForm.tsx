@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { register } from "../../redux/auth/operations";
 import {
-  Form,
+  FormLogin,
   FormLabel,
   FormInput,
   ButtonShow,
@@ -55,7 +55,7 @@ const RegisterForm: React.FC = () => {
   };
 
   return (
-    <Form onSubmit={handleSubmit} autoComplete="off">
+    <FormLogin onSubmit={handleSubmit} autoComplete="off">
       <FormLabel>
         Ім'я
         <FormInput
@@ -96,7 +96,7 @@ const RegisterForm: React.FC = () => {
       <ButtonSubmit type="submit" disabled={!name || !email || !password}>
         Реєстрація
       </ButtonSubmit>
-    </Form>
+    </FormLogin>
   );
 };
 

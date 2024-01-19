@@ -1,23 +1,28 @@
 import styled from "styled-components";
+import { Form, Field } from "formik";
 import { theme } from "theme/theme";
 
-const Form = styled.form`
+const FormLogin = styled(Form)`
   background-color: ${theme.colors.accentActive};
   display: flex;
   align-items: center;
   flex-direction: column;
   padding: 30px 8px;
   border-radius: ${theme.radii.small};
+  ${theme.mq.tablet} {
+    width: 480px;
+    margin: 0 auto;
+  }
 `;
 
 const FormLabel = styled.label`
   position: relative;
   color: ${theme.colors.light};
   font-family: ${theme.fonts.comfortaa};
-  margin-bottom: 8px;
+  margin-bottom: 26px;
 `;
 
-const FormInput = styled.input`
+const FormInput = styled(Field)`
   display: block;
   margin: 8px 0;
   padding: 6px 8px;
@@ -26,9 +31,15 @@ const FormInput = styled.input`
   color: ${theme.colors.light};
   font-family: ${theme.fonts.merriweather};
   font-size: ${theme.fontSizes.normal};
-  border: ${theme.borders.none};
+  border: ${theme.borders.normal} transparent;
   border-radius: ${theme.radii.small};
   min-height: 22px;
+  &.success {
+    border-color: ${theme.colors.valid};
+  }
+  &.error {
+    border-color: ${theme.colors.invalid};
+  }
 `;
 
 const ButtonShow = styled.button`
@@ -71,4 +82,4 @@ const ButtonSubmit = styled.button`
   }
 `;
 
-export { Form, FormLabel, FormInput, ButtonShow, ButtonSubmit };
+export { FormLogin, FormLabel, FormInput, ButtonShow, ButtonSubmit };
