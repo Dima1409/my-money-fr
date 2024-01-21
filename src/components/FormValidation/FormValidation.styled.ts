@@ -6,18 +6,10 @@ const Error = styled.div`
   width: 100%;
   text-align: center;
   left: 50%;
-  top: 70px;
+  top: 65px;
   transform: translateX(-50%);
-  font-size: 10px;
+  font-size: ${theme.fontSizes.extraSmall};
   color: ${theme.colors.invalid};
-  ${theme.mq.tablet} {
-    font-size: ${theme.fontSizes.small};
-    top: 62px;
-  }
-  ${theme.mq.desktop} {
-    top: 60px;
-    font-size: ${theme.fontSizes.normal};
-  }
 `;
 
 const Correct = styled(Error)`

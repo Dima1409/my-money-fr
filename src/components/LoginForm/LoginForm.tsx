@@ -12,6 +12,9 @@ import {
   ButtonSubmit,
 } from "./LoginForm.styled";
 import { BiShow, BiHide } from "react-icons/bi";
+import { Slide } from "react-toastify";
+import { notifyError, ToastContainer } from "utils/toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { theme } from "theme/theme";
 
 const LoginForm: React.FC = () => {
@@ -19,7 +22,7 @@ const LoginForm: React.FC = () => {
     email: "",
     password: "",
   };
-  const { validationLogin, InputCorrect, InputError } = FormValidation;
+  const { validationLogin, InputError } = FormValidation;
   const [show, setShow] = useState<boolean>(false);
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
@@ -36,18 +39,27 @@ const LoginForm: React.FC = () => {
         email: values.email,
         password: values.password,
       })
-    );
-    resetForm();
+    ).then((res) => {
+      console.log(res);
+      if (res.payload.user) {
+        resetForm();
+      }
+      if (res.payload === "Request failed with status code 401") {
+        notifyError("Не правильна адреса email або пароль");
+      }
+      return;
+    });
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      validationSchema={validationLogin}
+      // validationSchema={validationLogin}
       onSubmit={handleSubmit}
     >
       {(formik) => (
         <FormLogin>
+          <ToastContainer transition={Slide} />
           <FormLabel htmlFor="email">
             Email
             <FormInput
@@ -63,9 +75,9 @@ const LoginForm: React.FC = () => {
               id="email"
               required
             ></FormInput>
-            {!formik.errors.email && formik.values.email !== "" ? (
-              <InputCorrect name="Email is correct" />
-            ) : null}
+            {/* {!formik.errors.email && formik.values.email !== "" ? (
+              <InputCorrect name="Валідний Email" />
+            ) : null} */}
             <InputError name="email" />
           </FormLabel>
           <FormLabel htmlFor="password">
@@ -90,14 +102,15 @@ const LoginForm: React.FC = () => {
                 <BiHide color={theme.colors.light} />
               )}
             </ButtonShow>
-            {!formik.errors.password && formik.values.password !== "" ? (
-              <InputCorrect name="Password is correct" />
-            ) : null}
+            {/* {!formik.errors.password && formik.values.password !== "" ? (
+              <InputCorrect name="Валідний пароль" />
+            ) : null} */}
             <InputError name="password" />
           </FormLabel>
           <ButtonSubmit
             disabled={!!formik.errors.email || !!formik.errors.password}
             type="submit"
+            onClick={() => console.log("submit")}
           >
             Увійти
           </ButtonSubmit>

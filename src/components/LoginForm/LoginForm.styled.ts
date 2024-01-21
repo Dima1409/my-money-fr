@@ -7,7 +7,7 @@ const FormLogin = styled(Form)`
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 30px 8px;
+  padding: 20px 8px;
   border-radius: ${theme.radii.small};
   ${theme.mq.tablet} {
     width: 480px;
@@ -19,7 +19,12 @@ const FormLabel = styled.label`
   position: relative;
   color: ${theme.colors.light};
   font-family: ${theme.fonts.comfortaa};
-  margin-bottom: 26px;
+  font-size: ${theme.fontSizes.small};
+  margin-bottom: 20px;
+  ${theme.mq.tablet} {
+    font-size: ${theme.fontSizes.normal};
+    margin-bottom: 40px;
+  }
 `;
 
 const FormInput = styled(Field)`

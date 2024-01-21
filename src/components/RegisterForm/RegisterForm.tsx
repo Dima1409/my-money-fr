@@ -1,7 +1,8 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { register } from "../../redux/auth/operations";
+import { Formik, FormikHelpers } from "formik";
 import {
   FormLogin,
   FormLabel,
@@ -9,13 +10,19 @@ import {
   ButtonShow,
   ButtonSubmit,
 } from "components/LoginForm/LoginForm.styled";
+import FormValidation from "components/FormValidation";
+import { Slide } from "react-toastify";
+import { notifyError, ToastContainer } from "utils/toastify";
 import { BiShow, BiHide } from "react-icons/bi";
 import { theme } from "theme/theme";
 
 const RegisterForm: React.FC = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const initialValues = {
+    name: "",
+    email: "",
+    password: "",
+  };
+  const { validationRegister, InputError } = FormValidation;
   const [show, setShow] = useState<boolean>(false);
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
 
@@ -23,80 +30,108 @@ const RegisterForm: React.FC = () => {
     setShow(!show);
   };
 
-  const inputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.currentTarget;
-    switch (name) {
-      case "name":
-        setName(value);
-        break;
-      case "email":
-        setEmail(value);
-        break;
-      case "password":
-        setPassword(value);
-        break;
-      default:
-        return;
-    }
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (
+    values: typeof initialValues,
+    { resetForm }: FormikHelpers<typeof initialValues>
+  ) => {
     dispatch(
       register({
-        email,
-        name,
-        password,
+        name: values.name,
+        email: values.email,
+        password: values.password,
       })
-    );
-    setEmail("");
-    setName("");
-    setPassword("");
+    ).then((res) => {
+      console.log("res reg", res);
+    });
   };
 
   return (
-    <FormLogin onSubmit={handleSubmit} autoComplete="off">
-      <FormLabel>
-        Ім'я
-        <FormInput
-          type="text"
-          name="name"
-          value={name}
-          onChange={inputChange}
-          required
-        ></FormInput>
-      </FormLabel>
-      <FormLabel>
-        Email
-        <FormInput
-          type="text"
-          name="email"
-          value={email}
-          onChange={inputChange}
-          required
-        ></FormInput>
-      </FormLabel>
-      <FormLabel>
-        Пароль
-        <FormInput
-          type={show ? "text" : "password"}
-          name="password"
-          value={password}
-          onChange={inputChange}
-          required
-        ></FormInput>
-        <ButtonShow type="button" onClick={hideShowPassword}>
-          {show ? (
-            <BiShow color={theme.colors.light} />
-          ) : (
-            <BiHide color={theme.colors.light} />
-          )}
-        </ButtonShow>
-      </FormLabel>
-      <ButtonSubmit type="submit" disabled={!name || !email || !password}>
-        Реєстрація
-      </ButtonSubmit>
-    </FormLogin>
+    <Formik
+      initialValues={initialValues}
+      // validationSchema={validationRegister}
+      onSubmit={handleSubmit}
+      Í
+    >
+      {(formik) => (
+        <FormLogin autoComplete="off">
+          <ToastContainer transition={Slide} />
+          <FormLabel>
+            Ім'я
+            <FormInput
+              className={
+                !formik.errors.name && formik.values.name !== ""
+                  ? "success"
+                  : formik.errors.name && formik.values.name !== ""
+                  ? "error"
+                  : "default"
+              }
+              type="text"
+              name="name"
+              required
+            ></FormInput>
+            {/* {!formik.errors.name && formik.values.name !== "" ? (
+              <InputCorrect name="Валідне Ім'я" />
+            ) : null} */}
+            <InputError name="name" />
+          </FormLabel>
+          <FormLabel>
+            Email
+            <FormInput
+              className={
+                !formik.errors.email && formik.values.email !== ""
+                  ? "success"
+                  : formik.errors.email && formik.values.email !== ""
+                  ? "error"
+                  : "default"
+              }
+              type="text"
+              name="email"
+              required
+            ></FormInput>
+            {/* {!formik.errors.email && formik.values.email !== "" ? (
+              <InputCorrect name="Валідний Email" />
+            ) : null} */}
+            <InputError name="email" />
+          </FormLabel>
+          <FormLabel>
+            Пароль
+            <FormInput
+              className={
+                !formik.errors.password && formik.values.password !== ""
+                  ? "success"
+                  : formik.errors.password && formik.values.password !== ""
+                  ? "error"
+                  : "default"
+              }
+              type={show ? "text" : "password"}
+              name="password"
+              required
+            ></FormInput>
+            <ButtonShow type="button" onClick={hideShowPassword}>
+              {show ? (
+                <BiShow color={theme.colors.light} />
+              ) : (
+                <BiHide color={theme.colors.light} />
+              )}
+            </ButtonShow>
+            {/* {!formik.errors.password && formik.values.password !== "" ? (
+              <InputCorrect name="Валідний пароль" />
+            ) : null} */}
+            <InputError name="password" />
+          </FormLabel>
+          <ButtonSubmit
+            type="submit"
+            disabled={
+              !!formik.errors.name ||
+              !!formik.errors.email ||
+              !!formik.errors.password
+            }
+          >
+            Реєстрація
+          </ButtonSubmit>
+        </FormLogin>
+      )}
+    </Formik>
   );
 };
 

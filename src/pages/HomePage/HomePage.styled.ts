@@ -3,7 +3,7 @@ import { theme } from "theme/theme";
 
 const HeaderWelcome = styled.h2`
   margin: 8px 0;
-  font-size: ${theme.fontSizes.bold};
+  font-size: ${theme.fontSizes.small};
   font-weight: ${theme.fontWeight.bold};
   font-family: ${theme.fonts.merriweather};
   color: ${theme.colors.accent};
