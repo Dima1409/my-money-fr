@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
+import { Form, Field } from "formik";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdDoneOutline } from "react-icons/md";
@@ -69,12 +70,14 @@ const WalletsWrapper = styled.div`
 `;
 
 const LabelName = styled.label`
+  position: relative;
   font-size: ${theme.fontSizes.normal};
   color: ${theme.colors.light};
   font-family: ${theme.fonts.merriweather};
-  margin-right: 10px;
+  margin-bottom: 30px;
   ${theme.mq.tablet} {
     font-size: ${theme.fontSizes.extraBold};
+    margin-bottom: 40px;
   }
 `;
 
@@ -122,21 +125,21 @@ const IsEditing = styled.div`
   font-size: ${theme.fontSizes.normal};
 `;
 
-const FormEdit = styled.form`
+const FormEdit = styled(Form)`
   display: flex;
   flex-direction: column;
   align-items: center;
   color: ${theme.colors.light};
   border: ${theme.borders.normal};
   border-radius: ${theme.radii.small};
-  padding: 4px;
+  padding: 6px;
 `;
 
 const FormCreateNew = styled(FormEdit)`
   padding: 6px;
 `;
 
-const InputCreateNew = styled.input`
+const InputCreateNew = styled(Field)`
   outline: none;
   border: none;
   border-radius: ${theme.radii.small};
@@ -147,6 +150,12 @@ const InputCreateNew = styled.input`
   margin-bottom: 10px;
   ${theme.mq.tablet} {
     font-size: ${theme.fontSizes.bold};
+  }
+  &.success {
+    border-color: ${theme.colors.valid};
+  }
+  &.error {
+    border-color: ${theme.colors.invalid};
   }
 `;
 

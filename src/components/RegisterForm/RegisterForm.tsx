@@ -41,16 +41,21 @@ const RegisterForm: React.FC = () => {
         password: values.password,
       })
     ).then((res) => {
-      console.log("res reg", res);
+      console.log(res);
+      if (res.payload === "Request failed with status code 409") {
+        notifyError("Користувач з таким email вже існує");
+      }
+      if (res.payload.user) {
+        resetForm();
+      }
     });
   };
 
   return (
     <Formik
       initialValues={initialValues}
-      // validationSchema={validationRegister}
+      validationSchema={validationRegister}
       onSubmit={handleSubmit}
-      Í
     >
       {(formik) => (
         <FormLogin autoComplete="off">
@@ -69,9 +74,6 @@ const RegisterForm: React.FC = () => {
               name="name"
               required
             ></FormInput>
-            {/* {!formik.errors.name && formik.values.name !== "" ? (
-              <InputCorrect name="Валідне Ім'я" />
-            ) : null} */}
             <InputError name="name" />
           </FormLabel>
           <FormLabel>
@@ -88,9 +90,6 @@ const RegisterForm: React.FC = () => {
               name="email"
               required
             ></FormInput>
-            {/* {!formik.errors.email && formik.values.email !== "" ? (
-              <InputCorrect name="Валідний Email" />
-            ) : null} */}
             <InputError name="email" />
           </FormLabel>
           <FormLabel>
@@ -114,9 +113,6 @@ const RegisterForm: React.FC = () => {
                 <BiHide color={theme.colors.light} />
               )}
             </ButtonShow>
-            {/* {!formik.errors.password && formik.values.password !== "" ? (
-              <InputCorrect name="Валідний пароль" />
-            ) : null} */}
             <InputError name="password" />
           </FormLabel>
           <ButtonSubmit

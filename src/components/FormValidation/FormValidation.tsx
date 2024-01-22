@@ -31,6 +31,18 @@ const validationRegister = yup.object().shape({
     .required("Поле пароль обов'язкове"),
 });
 
+const validationUpdate = yup.object().shape({
+  name: yup
+    .string()
+    .required("Поле Ім'я обов'якове")
+    .matches(namePattern, "Недійсне або неприпустиме ім'я"),
+  email: yup
+    .string()
+    .required("Поле email обов'якове")
+    .matches(emailPattern, "Недійсна або неприпустима email-адреса")
+    .email(),
+});
+
 const InputError = ({ name }: { name: string }) => {
   return (
     <Error>
@@ -53,6 +65,7 @@ const InputCorrect = ({ name }: { name: string }) => {
 const FormValidations = {
   validationLogin,
   validationRegister,
+  validationUpdate,
   InputCorrect,
   InputError,
 };

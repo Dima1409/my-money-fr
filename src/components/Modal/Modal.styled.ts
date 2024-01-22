@@ -20,6 +20,10 @@ const IconClose = styled(GrClose)`
   width: 15px;
   height: 15px;
   color: ${theme.colors.accent};
+  transition: 0.3s;
+  &:hover {
+    cursor: pointer;
+  }
   ${theme.mq.tablet} {
     width: 22px;
     height: 22px;

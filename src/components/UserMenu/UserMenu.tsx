@@ -1,5 +1,5 @@
 import useAuth from "hooks/useAuth";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useState } from "react";
 import {
   UserWrapper,
   User,
@@ -21,36 +21,31 @@ import {
   BtnSubmit,
   InfoWallets,
 } from "components/WalletsList/WalletsList.styled";
+import { Formik } from "formik";
+import FormValidation from "components/FormValidation";
 
 const UserMenu: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
   const { isLoggedIn, user } = useAuth();
-  const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+  const { validationUpdate, InputError } = FormValidation;
   const { name, email } = user;
   const initialState = {
     name: name,
     email: email,
   };
-  const [formData, setFormData] = useState(initialState);
   const [showUserInfo, setShowUserInfo] = useState(false);
   const { isOpen, close, toggle } = useToggle();
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      dispatchTyped(editUser(formData));
-      close();
-    } catch (error) {
-      console.log(error);
-    }
+  const handleSubmit = async (values: typeof initialState) => {
+    dispatch(
+      editUser({
+        name: values.name,
+        email: values.email,
+      })
+    ).then((res) => {
+      console.log(res);
+    });
+    close();
   };
 
   return (
@@ -89,25 +84,54 @@ const UserMenu: React.FC = () => {
         >
           {showUserInfo && user && (
             <InfoWallets>
-              <FormEdit onSubmit={handleSubmit} autoComplete="off">
-                <span>Ім'я:</span>
-                <LabelName>
-                  <InputEdit
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                  ></InputEdit>
-                </LabelName>
-                <span>Email:</span>
-                <LabelName>
-                  <InputEdit
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  ></InputEdit>
-                </LabelName>
-                <BtnSubmit type="submit">Зберегти</BtnSubmit>
-              </FormEdit>
+              <Formik
+                initialValues={initialState}
+                validationSchema={validationUpdate}
+                onSubmit={handleSubmit}
+              >
+                {(formik) => (
+                  <FormEdit autoComplete="off">
+                    <LabelName htmlFor="name">
+                      Ім'я:
+                      <InputEdit
+                        className={
+                          !formik.errors.name && formik.values.name !== ""
+                            ? "success"
+                            : formik.errors.name && formik.values.name !== ""
+                            ? "error"
+                            : "default"
+                        }
+                        type="text"
+                        name="name"
+                        id="name"
+                      ></InputEdit>
+                      <InputError name="name" />
+                    </LabelName>
+                    <LabelName htmlFor="email">
+                      Email:
+                      <InputEdit
+                        className={
+                          !formik.errors.email && formik.values.email !== ""
+                            ? "success"
+                            : formik.errors.email && formik.values.email !== ""
+                            ? "error"
+                            : "default"
+                        }
+                        type="text"
+                        name="email"
+                        id="email"
+                      ></InputEdit>
+                      <InputError name="email" />
+                    </LabelName>
+                    <BtnSubmit
+                      type="submit"
+                      disabled={!!formik.errors.name || !!formik.errors.email}
+                    >
+                      Зберегти
+                    </BtnSubmit>
+                  </FormEdit>
+                )}
+              </Formik>
             </InfoWallets>
           )}
         </Modal>

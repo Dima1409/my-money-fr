@@ -54,7 +54,7 @@ const LoginForm: React.FC = () => {
   return (
     <Formik
       initialValues={initialValues}
-      // validationSchema={validationLogin}
+      validationSchema={validationLogin}
       onSubmit={handleSubmit}
     >
       {(formik) => (
