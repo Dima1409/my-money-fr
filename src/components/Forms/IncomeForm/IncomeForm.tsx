@@ -27,6 +27,7 @@ import {
   IconClose,
 } from "components/WalletsList/WalletsList.styled";
 import { theme } from "theme/theme";
+import { commentPattern } from "utils/patterns";
 
 const initialState = {
   wallet: "",
@@ -44,6 +45,7 @@ const IncomeForm: React.FC = () => {
   const [showWalletList, setShowWalletList] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const { isOpen, close, toggle } = useToggle();
+  const [isCommentValid, setIsCommentValid] = useState(true);
 
   useEffect(() => {
     dispatchTyped(getAll());
@@ -53,6 +55,10 @@ const IncomeForm: React.FC = () => {
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
+    if (name === "comment") {
+      const isValid = commentPattern.test(value);
+      setIsCommentValid(isValid);
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -139,6 +145,7 @@ const IncomeForm: React.FC = () => {
                 placeholder="* Коментар"
                 value={formData.comment}
                 onChange={handleInputChange}
+                pattern={commentPattern.source}
               ></Input>
             </SelectWrapper>
             <SelectWrapper>
@@ -156,7 +163,8 @@ const IncomeForm: React.FC = () => {
                 disabled={
                   formData.amount === "" ||
                   formData.category === "" ||
-                  formData.wallet === ""
+                  formData.wallet === "" ||
+                  !isCommentValid
                 }
               >
                 <IconOk style={{ color: theme.colors.light }} />
@@ -166,7 +174,8 @@ const IncomeForm: React.FC = () => {
                 disabled={
                   formData.amount === "" &&
                   formData.category === "" &&
-                  formData.wallet === ""
+                  formData.wallet === "" &&
+                  formData.comment === ""
                 }
                 onClick={() => clearForm()}
                 style={{ backgroundColor: theme.colors.red }}

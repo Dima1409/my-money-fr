@@ -1,7 +1,12 @@
 import * as yup from "yup";
 import { ErrorMessage } from "formik";
 import { Error, Correct } from "./FormValidation.styled";
-import { emailPattern, passwordPattern, namePattern } from "utils/patterns";
+import {
+  emailPattern,
+  passwordPattern,
+  namePattern,
+  commentPattern,
+} from "utils/patterns";
 
 const validationLogin = yup.object().shape({
   email: yup
@@ -43,6 +48,10 @@ const validationUpdate = yup.object().shape({
     .email(),
 });
 
+const validationComment = yup.object().shape({
+  comment: yup.string().matches(commentPattern, "Недоступний коментар"),
+});
+
 const InputError = ({ name }: { name: string }) => {
   return (
     <Error>
@@ -66,6 +75,7 @@ const FormValidations = {
   validationLogin,
   validationRegister,
   validationUpdate,
+  validationComment,
   InputCorrect,
   InputError,
 };

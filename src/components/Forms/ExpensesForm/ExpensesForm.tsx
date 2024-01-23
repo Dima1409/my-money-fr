@@ -27,7 +27,7 @@ import {
   IconClose,
 } from "components/WalletsList/WalletsList.styled";
 import { theme } from "theme/theme";
-import Container from "components/Container";
+import { commentPattern } from "utils/patterns";
 
 const initialState = {
   wallet: "",
@@ -46,6 +46,7 @@ const ExpenseForm: React.FC = () => {
   const [showWalletList, setShowWalletList] = useState(false);
   const [showCategoryList, setShowCategoryList] = useState(false);
   const { isOpen, close, toggle } = useToggle();
+  const [isCommentValid, setIsCommentValid] = useState(true);
 
   useEffect(() => {
     dispatchTyped(getAll());
@@ -55,6 +56,10 @@ const ExpenseForm: React.FC = () => {
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
+    if (name === "comment") {
+      const isValid = commentPattern.test(value);
+      setIsCommentValid(isValid);
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -139,9 +144,10 @@ const ExpenseForm: React.FC = () => {
               <Input
                 type="text"
                 name="comment"
-                placeholder="* Примітка"
+                placeholder="* Коментар"
                 value={formData.comment}
                 onChange={handleInputChange}
+                pattern={commentPattern.source}
               ></Input>
             </SelectWrapper>
             <SelectWrapper>
@@ -160,7 +166,8 @@ const ExpenseForm: React.FC = () => {
                 disabled={
                   formData.amount === "" ||
                   formData.category === "" ||
-                  formData.wallet === ""
+                  formData.wallet === "" ||
+                  !isCommentValid
                 }
               >
                 <IconOk style={{ color: theme.colors.light }} />
@@ -170,7 +177,8 @@ const ExpenseForm: React.FC = () => {
                 disabled={
                   formData.amount === "" &&
                   formData.category === "" &&
-                  formData.wallet === ""
+                  formData.wallet === "" &&
+                  formData.comment === ""
                 }
                 onClick={() => clearForm()}
                 style={{ backgroundColor: theme.colors.red }}

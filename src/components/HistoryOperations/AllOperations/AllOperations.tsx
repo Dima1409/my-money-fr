@@ -5,6 +5,7 @@ import {
   getAllOperations,
   deleteOperation,
 } from "../../../redux/operations/operations";
+import { getAllWallets } from "../../../redux/wallets/operations";
 import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
 import Loader from "components/Loader";
@@ -73,6 +74,7 @@ const HistoryOperations: React.FC = () => {
     dispatchTyped(deleteOperation(id)).then(() => {
       setDeletingOperation(null);
       dispatchTyped(getAllOperations());
+      dispatchTyped(getAllWallets());
       const updatedList = operations.filter(
         (operation) => operation._id !== id
       );

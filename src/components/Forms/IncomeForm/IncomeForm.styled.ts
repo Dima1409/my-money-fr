@@ -59,8 +59,9 @@ const Input = styled.input`
   &::placeholder {
     color: ${theme.colors.light};
   }
-  border: none;
+  border: ${theme.borders.normal} transparent;
   border-radius: ${theme.radii.small};
+  outline: none;
   text-transform: uppercase;
   padding-left: 6px;
   min-height: 40px;
@@ -69,6 +70,12 @@ const Input = styled.input`
   }
   ${theme.mq.desktop} {
     width: 20%;
+  }
+  &:valid {
+    border-color: ${theme.colors.valid};
+  }
+  &:invalid {
+    border-color: ${theme.colors.invalid};
   }
 `;
 
