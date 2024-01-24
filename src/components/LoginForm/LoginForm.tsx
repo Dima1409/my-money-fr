@@ -102,9 +102,6 @@ const LoginForm: React.FC = () => {
                 <BiHide color={theme.colors.light} />
               )}
             </ButtonShow>
-            {/* {!formik.errors.password && formik.values.password !== "" ? (
-              <InputCorrect name="Валідний пароль" />
-            ) : null} */}
             <InputError name="password" />
           </FormLabel>
           <ButtonSubmit

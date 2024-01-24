@@ -6,7 +6,7 @@ import {
   getAllWallets,
 } from "../../redux/wallets/operations";
 import useWallets from "hooks/useWallets";
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import {
@@ -28,6 +28,7 @@ import {
   InfoWallets,
   BtnRename,
   BtnCloseEdit,
+  LabelList,
 } from "./WalletsList.styled";
 import Loader from "components/Loader";
 import Pagination from "components/pagination/Pagination";
@@ -36,7 +37,6 @@ interface WalletsListProps {
   wallets: ISearchWallet[];
 }
 const ITEMS_PER_PAGE = 5;
-
 const initialState = {
   name: "",
 };
@@ -46,25 +46,16 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
   const currentWallets = wallets.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
+  const [formData, setFormData] = useState(initialState);
   const { isLoading } = useWallets();
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
-  const [formData, setFormData] = useState(initialState);
   const [editingWalletId, setEditingWalletId] = useState<string | null>(null);
   const [editing, setEditing] = useState<boolean>(false);
   const [walletsList, setWalletsList] = useState(wallets);
   const totalItems = walletsList.length;
 
-  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
   };
 
   const handleDelete = async (
@@ -93,6 +84,14 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
     setFormData(initialState);
   };
 
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   const onRename = async () => {
     const id = editingWalletId || "";
     dispatchTyped(editWallet({ id, name: formData.name })).then(() =>
@@ -104,7 +103,6 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
   const onClose = async () => {
     setEditing(false);
     setEditingWalletId(null);
-    setFormData(initialState);
   };
 
   const startEditing = (id: string) => {
@@ -133,13 +131,14 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
               {editingWalletId === _id ? (
                 <>
                   <FormEdit autoComplete="off">
-                    <label>
+                    <label htmlFor="name">
                       <InputCreateNew
                         type="text"
                         name="name"
+                        autoFocus
+                        id="name"
                         value={formData.name}
                         onChange={handleInputChange}
-                        autoFocus
                       />
                     </label>
                     <WalletsWrapper>
@@ -158,7 +157,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                 </>
               ) : (
                 <WalletsWrapper>
-                  <LabelName>{name}</LabelName>
+                  <LabelList>{name.toUpperCase()}</LabelList>
                   <BtnDelete onClick={(e) => handleDelete(e, _id)}>
                     <IconDelete />
                   </BtnDelete>
@@ -178,16 +177,14 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
         </WalletsContainer>
       ) : (
         <WalletsContainer>
-          <FormCreateNew onSubmit={handleSubmit} autoComplete="off">
-            <label>
+          <FormCreateNew autoComplete="off">
+            <LabelName>
               <InputCreateNew
                 type="text"
                 name="name"
                 placeholder="Додати гаманець..."
-                value={formData.name}
-                onChange={handleInputChange}
               ></InputCreateNew>
-            </label>
+            </LabelName>
 
             <BtnSubmit type="submit" disabled={formData.name === ""}>
               <IconOk />

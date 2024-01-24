@@ -5,7 +5,8 @@ import {
   emailPattern,
   passwordPattern,
   namePattern,
-  commentPattern,
+  walletPattern,
+  categoryPattern,
 } from "utils/patterns";
 
 const validationLogin = yup.object().shape({
@@ -48,8 +49,12 @@ const validationUpdate = yup.object().shape({
     .email(),
 });
 
-const validationComment = yup.object().shape({
-  comment: yup.string().matches(commentPattern, "Недоступний коментар"),
+const validationWalletName = yup.object().shape({
+  name: yup.string().matches(walletPattern, "Недоступне ім'я"),
+});
+
+const validationCategoryName = yup.object().shape({
+  name: yup.string().matches(categoryPattern, "Недоступне ім'я"),
 });
 
 const InputError = ({ name }: { name: string }) => {
@@ -75,7 +80,8 @@ const FormValidations = {
   validationLogin,
   validationRegister,
   validationUpdate,
-  validationComment,
+  validationWalletName,
+  validationCategoryName,
   InputCorrect,
   InputError,
 };

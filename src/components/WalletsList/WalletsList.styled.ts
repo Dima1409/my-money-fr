@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
-import { Form, Field } from "formik";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { MdDoneOutline } from "react-icons/md";
@@ -48,6 +47,7 @@ const IconClose = styled(GrClose)`
 
 const WalletsContainer = styled.div`
   padding: 0 6px;
+  margin-bottom: 8px;
 `;
 
 const WalletsHeader = styled.h2`
@@ -79,6 +79,10 @@ const LabelName = styled.label`
     font-size: ${theme.fontSizes.extraBold};
     margin-bottom: 40px;
   }
+`;
+
+const LabelList = styled(LabelName)`
+  margin: 0;
 `;
 
 const BtnEdit = styled.button`
@@ -125,7 +129,7 @@ const IsEditing = styled.div`
   font-size: ${theme.fontSizes.normal};
 `;
 
-const FormEdit = styled(Form)`
+const FormEdit = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -139,9 +143,9 @@ const FormCreateNew = styled(FormEdit)`
   padding: 6px;
 `;
 
-const InputCreateNew = styled(Field)`
+const InputCreateNew = styled.input`
   outline: none;
-  border: none;
+  border: ${theme.borders.normal} transparent;
   border-radius: ${theme.radii.small};
   font-size: ${theme.fontSizes.normal};
   color: ${theme.colors.dark};
@@ -200,6 +204,7 @@ export {
   WalletsHeader,
   WalletsWrapper,
   LabelName,
+  LabelList,
   BtnDelete,
   BtnEdit,
   FormEdit,
