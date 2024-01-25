@@ -41,7 +41,6 @@ const RegisterForm: React.FC = () => {
         password: values.password,
       })
     ).then((res) => {
-      console.log(res);
       if (res.payload === "Request failed with status code 409") {
         notifyError("Користувач з таким email вже існує");
       }

@@ -17,7 +17,6 @@ import {
   WalletsContainer,
   WalletsHeader,
   WalletsWrapper,
-  LabelName,
   BtnDelete,
   BtnEdit,
   FormEdit,
@@ -28,7 +27,9 @@ import {
   InfoWallets,
   BtnRename,
   BtnCloseEdit,
+  LabelList,
 } from "components/WalletsList/WalletsList.styled";
+import { categoryPattern } from "utils/patterns";
 import { RadioWrapper, InputRadio, LabelSelect } from "./CategoryList.styled";
 import Loader from "components/Loader";
 import Pagination from "components/pagination/Pagination";
@@ -109,6 +110,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
     dispatchTyped(renameCategory({ id, name: formData.name })).then(() =>
       dispatchTyped(getAll())
     );
+    setFormData(initialState);
     onClose();
   };
 
@@ -144,10 +146,12 @@ const CategoryList: React.FC<CategoryListProps> = ({
             <WalletsContainer key={_id}>
               {editingCategoryId === _id ? (
                 <FormEdit autoComplete="off">
-                  <label>
+                  <label htmlFor="name">
                     <InputCreateNew
                       type="text"
                       name="name"
+                      autoFocus
+                      id="name"
                       value={formData.name}
                       onChange={handleInputChange}
                     ></InputCreateNew>
@@ -155,7 +159,14 @@ const CategoryList: React.FC<CategoryListProps> = ({
                   <WalletsWrapper>
                     <BtnRename
                       type="submit"
-                      disabled={formData.name === ""}
+                      disabled={
+                        formData.name === "" ||
+                        !categoryPattern.test(formData.name) ||
+                        formData.name ===
+                          categories.find(
+                            (category) => category._id === editingCategoryId
+                          )?.name
+                      }
                       onClick={() => onRename()}
                     >
                       <IconOk />
@@ -167,7 +178,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 </FormEdit>
               ) : (
                 <WalletsWrapper>
-                  <LabelName>{name}</LabelName>
+                  <LabelList>{name.toUpperCase()}</LabelList>
                   <BtnDelete onClick={(e) => handleDelete(e, _id)}>
                     <IconDelete />
                   </BtnDelete>
@@ -193,8 +204,9 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 type="text"
                 name="name"
                 placeholder="Нова категорія..."
-                value={formData.name}
                 onChange={handleInputChange}
+                value={formData.name}
+                pattern={categoryPattern.source}
               ></InputCreateNew>
             </label>
             <RadioWrapper>
@@ -222,7 +234,11 @@ const CategoryList: React.FC<CategoryListProps> = ({
 
             <BtnSubmit
               type="submit"
-              disabled={formData.name === "" || formData.type === ""}
+              disabled={
+                formData.name === "" ||
+                formData.type === "" ||
+                !categoryPattern.test(formData.name)
+              }
             >
               <IconOk />
             </BtnSubmit>

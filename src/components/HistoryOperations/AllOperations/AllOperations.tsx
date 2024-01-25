@@ -125,7 +125,8 @@ const HistoryOperations: React.FC = () => {
                 className={isDeleting ? "deleting" : ""}
               >
                 <OperationInfo>
-                  Гаманець: <OperationResult>{wallet}</OperationResult>
+                  Гаманець:{" "}
+                  <OperationResult>{wallet.toUpperCase()}</OperationResult>
                 </OperationInfo>
                 <OperationInfo>
                   Сума: <OperationResult>{amount} грн</OperationResult>

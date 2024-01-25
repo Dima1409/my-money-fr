@@ -42,9 +42,7 @@ const UserMenu: React.FC = () => {
         name: values.name,
         email: values.email,
       })
-    ).then((res) => {
-      console.log(res);
-    });
+    );
     close();
   };
 

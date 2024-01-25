@@ -18,11 +18,9 @@ interface RegisterCredentials {
 const register = createAsyncThunk(
   "auth/register",
   async (credentials: RegisterCredentials, thunkAPI) => {
-    console.log("register");
     try {
       const response = await API.post("/auth/register", credentials);
       setAuthHeader(response.data.data.user.userToken);
-      console.log(response);
       return response.data.data;
     } catch (error: any) {
       console.log(error);
@@ -35,11 +33,9 @@ interface LoginCredentials {
   email: string;
   password: string;
 }
-
 const login = createAsyncThunk(
   "auth/login",
   async (credentials: LoginCredentials, thunkAPI) => {
-    console.log("login");
     try {
       const response = await API.post("/auth/login", credentials);
       setAuthHeader(response.data.data.user.userToken);

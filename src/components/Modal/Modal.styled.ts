@@ -33,13 +33,13 @@ const IconClose = styled(GrClose)`
 const Modal = styled.div`
   position: relative;
   background-color: ${theme.colors.accent};
-  padding: 50px 30px;
+  padding: 40px 30px;
   border-radius: ${theme.radii.normal};
   max-width: calc(100vw - 20px);
   max-height: calc(100vh - 20px);
-  /* ${theme.mq.tablet} {
+  ${theme.mq.tablet} {
     padding: 50px 250px;
-  } */
+  }
 `;
 const ButtonClose = styled.button`
   position: absolute;

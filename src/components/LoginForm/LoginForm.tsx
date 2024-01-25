@@ -40,7 +40,6 @@ const LoginForm: React.FC = () => {
         password: values.password,
       })
     ).then((res) => {
-      console.log(res);
       if (res.payload.user) {
         resetForm();
       }
@@ -75,9 +74,6 @@ const LoginForm: React.FC = () => {
               id="email"
               required
             ></FormInput>
-            {/* {!formik.errors.email && formik.values.email !== "" ? (
-              <InputCorrect name="Валідний Email" />
-            ) : null} */}
             <InputError name="email" />
           </FormLabel>
           <FormLabel htmlFor="password">
@@ -107,7 +103,6 @@ const LoginForm: React.FC = () => {
           <ButtonSubmit
             disabled={!!formik.errors.email || !!formik.errors.password}
             type="submit"
-            onClick={() => console.log("submit")}
           >
             Увійти
           </ButtonSubmit>

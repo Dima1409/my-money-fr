@@ -32,6 +32,7 @@ import {
 } from "./WalletsList.styled";
 import Loader from "components/Loader";
 import Pagination from "components/pagination/Pagination";
+import { namePattern } from "utils/patterns";
 
 interface WalletsListProps {
   wallets: ISearchWallet[];
@@ -98,11 +99,13 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       dispatchTyped(getAllWallets())
     );
     onClose();
+    setFormData(initialState);
   };
 
   const onClose = async () => {
     setEditing(false);
     setEditingWalletId(null);
+    setFormData(initialState);
   };
 
   const startEditing = (id: string) => {
@@ -129,32 +132,37 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
           {currentWallets.map(({ _id, name }) => (
             <WalletsContainer key={_id}>
               {editingWalletId === _id ? (
-                <>
-                  <FormEdit autoComplete="off">
-                    <label htmlFor="name">
-                      <InputCreateNew
-                        type="text"
-                        name="name"
-                        autoFocus
-                        id="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                      />
-                    </label>
-                    <WalletsWrapper>
-                      <BtnRename
-                        type="submit"
-                        disabled={formData.name === ""}
-                        onClick={() => onRename()}
-                      >
-                        <IconOk />
-                      </BtnRename>
-                      <BtnCloseEdit onClick={() => onClose()}>
-                        <IconClose />
-                      </BtnCloseEdit>
-                    </WalletsWrapper>
-                  </FormEdit>
-                </>
+                <FormEdit autoComplete="off">
+                  <label htmlFor="name">
+                    <InputCreateNew
+                      type="text"
+                      name="name"
+                      autoFocus
+                      id="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                  <WalletsWrapper>
+                    <BtnRename
+                      type="submit"
+                      disabled={
+                        formData.name === "" ||
+                        !namePattern.test(formData.name) ||
+                        formData.name ===
+                          wallets.find(
+                            (wallet) => wallet._id === editingWalletId
+                          )?.name
+                      }
+                      onClick={() => onRename()}
+                    >
+                      <IconOk />
+                    </BtnRename>
+                    <BtnCloseEdit onClick={() => onClose()}>
+                      <IconClose />
+                    </BtnCloseEdit>
+                  </WalletsWrapper>
+                </FormEdit>
               ) : (
                 <WalletsWrapper>
                   <LabelList>{name.toUpperCase()}</LabelList>
@@ -177,16 +185,23 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
         </WalletsContainer>
       ) : (
         <WalletsContainer>
-          <FormCreateNew autoComplete="off">
+          <FormCreateNew onSubmit={handleSubmit} autoComplete="off">
             <LabelName>
               <InputCreateNew
                 type="text"
                 name="name"
+                value={formData.name}
                 placeholder="Додати гаманець..."
+                onChange={handleInputChange}
+                pattern={namePattern.source}
               ></InputCreateNew>
             </LabelName>
-
-            <BtnSubmit type="submit" disabled={formData.name === ""}>
+            <BtnSubmit
+              type="submit"
+              disabled={
+                formData.name === "" || !namePattern.test(formData.name)
+              }
+            >
               <IconOk />
             </BtnSubmit>
           </FormCreateNew>

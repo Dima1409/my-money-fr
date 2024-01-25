@@ -27,7 +27,7 @@ import {
   IconClose,
 } from "components/WalletsList/WalletsList.styled";
 import { theme } from "theme/theme";
-import { commentPattern } from "utils/patterns";
+import { amountPattern, commentPattern } from "utils/patterns";
 
 const initialState = {
   wallet: "",
@@ -152,11 +152,13 @@ const ExpenseForm: React.FC = () => {
             </SelectWrapper>
             <SelectWrapper>
               <Input
+                style={{ borderColor: "transparent" }}
                 type="number"
                 name="amount"
                 placeholder="Сума"
                 value={formData.amount}
                 onChange={handleInputChange}
+                pattern={amountPattern.source}
               ></Input>
             </SelectWrapper>
 

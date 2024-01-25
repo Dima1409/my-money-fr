@@ -66,7 +66,7 @@ const WalletsWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 const LabelName = styled.label`
@@ -159,6 +159,9 @@ const InputCreateNew = styled.input`
     border-color: ${theme.colors.valid};
   }
   &.error {
+    border-color: ${theme.colors.invalid};
+  }
+  &:invalid {
     border-color: ${theme.colors.invalid};
   }
 `;

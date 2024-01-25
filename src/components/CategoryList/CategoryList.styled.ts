@@ -6,8 +6,8 @@ const RadioWrapper = styled.div`
   flex-direction: column;
   width: 100px;
   align-items: center;
-  margin-top: 10px;
-  margin-bottom: 18px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 `;
 
 const LabelSelect = styled.label`
@@ -18,7 +18,7 @@ const LabelSelect = styled.label`
   align-items: center;
   border: ${theme.borders.normal};
   border-radius: ${theme.radii.normal};
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   &:hover {
     cursor: pointer;
   }
