@@ -123,7 +123,12 @@ const UserMenu: React.FC = () => {
                     </LabelName>
                     <BtnSubmit
                       type="submit"
-                      disabled={!!formik.errors.name || !!formik.errors.email}
+                      disabled={
+                        !!formik.errors.name ||
+                        !!formik.errors.email ||
+                        (formik.values.name === name &&
+                          formik.values.email === email)
+                      }
                     >
                       Зберегти
                     </BtnSubmit>
