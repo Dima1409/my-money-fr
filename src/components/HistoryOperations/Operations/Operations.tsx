@@ -16,7 +16,6 @@ import {
 } from "./Operations.styled";
 import Loader from "components/Loader";
 import { DeleteIcon } from "../AllOperations/AllOperations";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { isToday, isYesterday } from "utils/dateTodayYesterday";
 import Pagination from "components/pagination/Pagination";
 
