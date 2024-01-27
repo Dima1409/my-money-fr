@@ -18,38 +18,46 @@ const HomePage: React.FC = () => {
         </>
       ) : (
         <>
-          <HeaderWelcome style={{ display: isLoggedIn || !isRefreshing ? "none" : "block" }}>
-            Вітаємо в менеджері фінансів
-          </HeaderWelcome>
-          <Description>
-            Зараєструвати{" "}
-            <Link
-              style={{
-                display: "inline-block",
-                margin: "0",
-                padding: "0",
-                color: `${theme.colors.accentActive}`,
-                textDecoration: "underline",
-              }}
-              to="/register"
-            >
-              новий
-            </Link>{" "}
-            обліковий запис або{" "}
-            <Link
-              to="/login"
-              style={{
-                display: "inline-block",
-                margin: "0",
-                padding: "0",
-                color: `${theme.colors.accentActive}`,
-                textDecoration: "underline",
-              }}
-            >
-              увійти
-            </Link>{" "}
-            в існуючий
-          </Description>
+          {isRefreshing ? null : (
+            <>
+              <HeaderWelcome
+                style={{
+                  display: isLoggedIn || !isRefreshing ? "none" : "block",
+                }}
+              >
+                Вітаємо в менеджері фінансів
+              </HeaderWelcome>
+              <Description>
+                Зареєструвати{" "}
+                <Link
+                  style={{
+                    display: "inline-block",
+                    margin: "0",
+                    padding: "0",
+                    color: `${theme.colors.accentActive}`,
+                    textDecoration: "underline",
+                  }}
+                  to="/register"
+                >
+                  новий
+                </Link>{" "}
+                обліковий запис або{" "}
+                <Link
+                  to="/login"
+                  style={{
+                    display: "inline-block",
+                    margin: "0",
+                    padding: "0",
+                    color: `${theme.colors.accentActive}`,
+                    textDecoration: "underline",
+                  }}
+                >
+                  увійти
+                </Link>{" "}
+                в існуючий
+              </Description>
+            </>
+          )}
         </>
       )}
     </>
