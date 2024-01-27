@@ -32,7 +32,7 @@ import {
 } from "./WalletsList.styled";
 import Loader from "components/Loader";
 import Pagination from "components/pagination/Pagination";
-import { namePattern } from "utils/patterns";
+import { walletPattern } from "utils/patterns";
 
 interface WalletsListProps {
   wallets: ISearchWallet[];
@@ -148,7 +148,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                       type="submit"
                       disabled={
                         formData.name === "" ||
-                        !namePattern.test(formData.name) ||
+                        !walletPattern.test(formData.name) ||
                         formData.name ===
                           wallets.find(
                             (wallet) => wallet._id === editingWalletId
@@ -193,13 +193,13 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                 value={formData.name}
                 placeholder="Додати гаманець..."
                 onChange={handleInputChange}
-                pattern={namePattern.source}
+                pattern={walletPattern.source}
               ></InputCreateNew>
             </LabelName>
             <BtnSubmit
               type="submit"
               disabled={
-                formData.name === "" || !namePattern.test(formData.name)
+                formData.name === "" || !walletPattern.test(formData.name)
               }
             >
               <IconOk />

@@ -5,6 +5,7 @@ import { theme } from "theme/theme";
 const WalletsWrapper = styled.div`
   background-color: ${theme.colors.background};
   border-radius: ${theme.radii.normal};
+  padding: 10px 4px;
 `;
 
 const InfoWallets = styled.p`
