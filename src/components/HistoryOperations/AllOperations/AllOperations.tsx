@@ -171,17 +171,10 @@ const HistoryOperations: React.FC = () => {
                   {isDeleting ? (
                     <Loader type="spin" width="30px" height="30px" />
                   ) : (
-                    <div
-                      style={{
-                        width: window.devicePixelRatio > 1 ? "40px" : "20px",
-                        height: window.devicePixelRatio > 1 ? "40px" : "20px",
-                      }}
-                    >
-                      <DeleteIcon
-                        size="20"
-                        color={theme.colors.accent}
-                      ></DeleteIcon>
-                    </div>
+                    <DeleteIcon
+                      size="20"
+                      color={theme.colors.accent}
+                    ></DeleteIcon>
                   )}
                 </BtnDelete>
               </Operation>
