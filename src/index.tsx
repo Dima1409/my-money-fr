@@ -14,7 +14,7 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <BrowserRouter basename="/my_money">
+        <BrowserRouter basename="">
           <App />
         </BrowserRouter>
       </PersistGate>
