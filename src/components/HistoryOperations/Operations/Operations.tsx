@@ -15,7 +15,7 @@ import {
   BtnDelete,
 } from "./Operations.styled";
 import Loader from "components/Loader";
-import { CustomIcon } from "../AllOperations/AllOperations";
+import { DeleteIcon } from "../AllOperations/AllOperations";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { isToday, isYesterday } from "utils/dateTodayYesterday";
 import Pagination from "components/pagination/Pagination";
@@ -139,7 +139,10 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   {isDeleting ? (
                     <Loader type="spin" width="30px" height="30px" />
                   ) : (
-                    <CustomIcon icon={RiDeleteBinLine}></CustomIcon>
+                    <DeleteIcon
+                      size="20"
+                      color={theme.colors.accent}
+                    ></DeleteIcon>
                   )}
                 </BtnDelete>
               </Operation>
