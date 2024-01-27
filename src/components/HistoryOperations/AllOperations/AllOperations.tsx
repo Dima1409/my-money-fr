@@ -33,11 +33,11 @@ const ITEMS_PER_PAGE = 10;
 
 export const CustomIcon: React.FC<CustomIconProps> = ({
   icon: Icon,
-  size = "20px",
+  size = "20",
   color = `${theme.colors.accent}`,
 }) => {
   const adjustedSize =
-    window.devicePixelRatio > 1 ? `${parseInt(size) * 2}px` : size;
+    window.devicePixelRatio > 1 ? `${parseInt(size) * 2}px` : `${size}px`;
   return <Icon size={adjustedSize} color={color} />;
 };
 
