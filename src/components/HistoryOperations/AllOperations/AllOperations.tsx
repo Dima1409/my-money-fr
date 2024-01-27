@@ -31,7 +31,7 @@ interface CustomIconProps {
 
 const ITEMS_PER_PAGE = 10;
 
-export const CustomIcon: React.FC<CustomIconProps> = ({
+const CustomIcon: React.FC<CustomIconProps> = ({
   icon: Icon,
   size = "20",
   color = `${theme.colors.accent}`,
@@ -41,6 +41,11 @@ export const CustomIcon: React.FC<CustomIconProps> = ({
 
   return <Icon size={adjustedSize} color={color} />;
 };
+
+export const DeleteIcon: React.FC<{ size?: string; color?: string }> = ({
+  size,
+  color,
+}) => <CustomIcon icon={RiDeleteBinLine} size={size} color={color} />;
 
 const HistoryOperations: React.FC = () => {
   const { operations } = useOperations();
@@ -166,7 +171,10 @@ const HistoryOperations: React.FC = () => {
                   {isDeleting ? (
                     <Loader type="spin" width="30px" height="30px" />
                   ) : (
-                    <CustomIcon icon={RiDeleteBinLine}></CustomIcon>
+                    <DeleteIcon
+                      size="20"
+                      color={theme.colors.accent}
+                    ></DeleteIcon>
                   )}
                 </BtnDelete>
               </Operation>
