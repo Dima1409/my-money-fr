@@ -36,7 +36,9 @@ export const CustomIcon: React.FC<CustomIconProps> = ({
   size = "20px",
   color = `${theme.colors.accent}`,
 }) => {
-  return <Icon size={size} color={color} />;
+  const adjustedSize =
+    window.devicePixelRatio > 1 ? `${parseInt(size) * 2}px` : size;
+  return <Icon size={adjustedSize} color={color} />;
 };
 
 const HistoryOperations: React.FC = () => {

@@ -30,8 +30,8 @@ const UserMenu: React.FC = () => {
   const { validationUpdate, InputError } = FormValidation;
   const { name, email } = user;
   const initialState = {
-    name: name,
-    email: email,
+    name: user.name,
+    email: user.email,
   };
   const [showUserInfo, setShowUserInfo] = useState(false);
   const { isOpen, close, toggle } = useToggle();
@@ -88,7 +88,7 @@ const UserMenu: React.FC = () => {
                 onSubmit={handleSubmit}
               >
                 {(formik) => (
-                  <FormEdit autoComplete="off">
+                  <FormEdit autoComplete="off" onSubmit={formik.handleSubmit}>
                     <LabelName htmlFor="name">
                       Ім'я:
                       <InputEdit
@@ -99,6 +99,8 @@ const UserMenu: React.FC = () => {
                             ? "error"
                             : "default"
                         }
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
                         type="text"
                         name="name"
                         id="name"
@@ -115,6 +117,8 @@ const UserMenu: React.FC = () => {
                             ? "error"
                             : "default"
                         }
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
                         type="text"
                         name="email"
                         id="email"
