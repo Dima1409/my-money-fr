@@ -7,7 +7,7 @@ import { HeaderWelcome, Description } from "./HomePage.styled";
 import { theme } from "theme/theme";
 
 const HomePage: React.FC = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isRefreshing } = useAuth();
   return (
     <>
       {isLoggedIn ? (
@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
         </>
       ) : (
         <>
-          <HeaderWelcome style={{ display: isLoggedIn ? "none" : "block" }}>
+          <HeaderWelcome style={{ display: isLoggedIn || isRefreshing ? "none" : "block" }}>
             Вітаємо в менеджері фінансів
           </HeaderWelcome>
           <Description>
