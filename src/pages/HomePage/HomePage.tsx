@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
         </>
       ) : (
         <>
-          <HeaderWelcome style={{ display: isLoggedIn || isRefreshing ? "none" : "block" }}>
+          <HeaderWelcome style={{ display: isLoggedIn && !isRefreshing ? "none" : "block" }}>
             Вітаємо в менеджері фінансів
           </HeaderWelcome>
           <Description>
