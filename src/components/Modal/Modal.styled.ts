@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
-import { GrClose } from "react-icons/gr";
 
 const Overlay = styled.div`
   position: fixed;
@@ -14,20 +13,6 @@ const Overlay = styled.div`
   transition: 0.3s;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1200;
-`;
-
-const IconClose = styled(GrClose)`
-  width: 15px;
-  height: 15px;
-  color: ${theme.colors.accent};
-  transition: 0.3s;
-  &:hover {
-    cursor: pointer;
-  }
-  ${theme.mq.tablet} {
-    width: 22px;
-    height: 22px;
-  }
 `;
 
 const Modal = styled.div`
@@ -52,6 +37,11 @@ const ButtonClose = styled.button`
   height: 30px;
   top: 12px;
   right: 12px;
+  transition: 0.3s;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 5px ${theme.colors.accentActive};
+  }
 `;
 
-export { Overlay, Modal, ButtonClose, IconClose };
+export { Overlay, Modal, ButtonClose };

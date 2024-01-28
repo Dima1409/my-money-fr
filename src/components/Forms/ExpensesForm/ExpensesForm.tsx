@@ -21,11 +21,7 @@ import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getAll } from "../../../redux/categories/operations";
 import { expensesOperation } from "../../../redux/operations/operations";
-import {
-  IconEdit,
-  IconOk,
-  IconClose,
-} from "components/WalletsList/WalletsList.styled";
+import { EditIcon, DoneIcon, CloseIcon } from "components/Icons/Icons";
 import { theme } from "theme/theme";
 import { amountPattern, commentPattern } from "utils/patterns";
 
@@ -107,7 +103,7 @@ const ExpenseForm: React.FC = () => {
                   toggle();
                 }}
               >
-                <IconEdit color={theme.colors.light} />
+                <EditIcon color={theme.colors.light} />
               </ButtonEdit>
             </SelectWrapper>
             <SelectWrapper></SelectWrapper>
@@ -137,7 +133,7 @@ const ExpenseForm: React.FC = () => {
                   toggle();
                 }}
               >
-                <IconEdit color={theme.colors.light} />
+                <EditIcon color={theme.colors.light} />
               </ButtonEdit>
             </SelectWrapper>
             <SelectWrapper>
@@ -172,7 +168,7 @@ const ExpenseForm: React.FC = () => {
                   !isCommentValid
                 }
               >
-                <IconOk style={{ color: theme.colors.light }} />
+                <DoneIcon color={theme.colors.valid} />
               </ButtonSubmit>
               <ButtonSubmit
                 type="button"
@@ -185,7 +181,7 @@ const ExpenseForm: React.FC = () => {
                 onClick={() => clearForm()}
                 style={{ backgroundColor: theme.colors.red }}
               >
-                <IconClose style={{ color: theme.colors.dark }} />
+                <CloseIcon color={theme.colors.invalid}/>
               </ButtonSubmit>
             </ButtonsWrapper>
           </>

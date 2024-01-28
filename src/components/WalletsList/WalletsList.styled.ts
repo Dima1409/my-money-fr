@@ -1,49 +1,5 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
-import { AiTwotoneEdit } from "react-icons/ai";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { MdDoneOutline } from "react-icons/md";
-import { GrClose } from "react-icons/gr";
-
-const IconEdit = styled(AiTwotoneEdit)`
-  width: 15px;
-  height: 15px;
-  color: ${theme.colors.accent};
-  ${theme.mq.tablet} {
-    width: 22px;
-    height: 22px;
-  }
-`;
-
-const IconOk = styled(MdDoneOutline)`
-  width: 15px;
-  height: 15px;
-  color: ${theme.colors.accent};
-  ${theme.mq.tablet} {
-    width: 22px;
-    height: 22px;
-  }
-`;
-
-const IconDelete = styled(RiDeleteBinLine)`
-  width: 15px;
-  height: 15px;
-  color: ${theme.colors.accent};
-  ${theme.mq.tablet} {
-    width: 22px;
-    height: 22px;
-  }
-`;
-
-const IconClose = styled(GrClose)`
-  width: 15px;
-  height: 15px;
-  color: ${theme.colors.accent};
-  ${theme.mq.tablet} {
-    width: 22px;
-    height: 22px;
-  }
-`;
 
 const WalletsContainer = styled.div`
   padding: 0 6px;
@@ -74,10 +30,10 @@ const LabelName = styled.label`
   font-size: ${theme.fontSizes.normal};
   color: ${theme.colors.light};
   font-family: ${theme.fonts.merriweather};
-  margin-bottom: 30px;
+  margin-bottom: 5px;
   ${theme.mq.tablet} {
     font-size: ${theme.fontSizes.extraBold};
-    margin-bottom: 40px;
+    margin-bottom: 10px;
   }
 `;
 
@@ -89,8 +45,8 @@ const BtnEdit = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: ${theme.radii.small};
   background-color: ${theme.colors.light};
@@ -101,10 +57,11 @@ const BtnEdit = styled.button`
   }
   &:hover {
     cursor: pointer;
+    box-shadow: 0 0 5px ${theme.colors.accentActive};
   }
   ${theme.mq.tablet} {
-    width: 40px;
-    height: 40px;
+    width: 45px;
+    height: 45px;
   }
 `;
 
@@ -174,14 +131,15 @@ const BtnSubmit = styled.button`
   align-items: center;
   background-color: ${theme.colors.green};
   width: 80px;
-  height: 30px;
-  padding: 0;
+  height: 40px;
+  padding: 10px;
   transition: 0.3s;
   &:disabled {
     opacity: 0.5;
   }
-  &:hover {
+  &:hover:not(:disabled) {
     cursor: pointer;
+    box-shadow: 0 0 5px ${theme.colors.accentActive};
   }
   ${theme.mq.tablet} {
     width: 140px;
@@ -199,10 +157,6 @@ const InfoWallets = styled.div`
 `;
 
 export {
-  IconEdit,
-  IconOk,
-  IconClose,
-  IconDelete,
   WalletsContainer,
   WalletsHeader,
   WalletsWrapper,

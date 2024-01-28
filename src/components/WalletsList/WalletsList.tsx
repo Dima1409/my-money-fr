@@ -10,10 +10,6 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import {
-  IconEdit,
-  IconOk,
-  IconClose,
-  IconDelete,
   WalletsContainer,
   WalletsHeader,
   WalletsWrapper,
@@ -33,6 +29,12 @@ import {
 import Loader from "components/Loader";
 import Pagination from "components/pagination/Pagination";
 import { walletPattern } from "utils/patterns";
+import {
+  DeleteIcon,
+  EditIcon,
+  DoneIcon,
+  CloseIcon,
+} from "components/Icons/Icons";
 import { Slide } from "react-toastify";
 import { notifyError, ToastContainer } from "utils/toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -172,10 +174,10 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                       }
                       onClick={() => onRename()}
                     >
-                      <IconOk />
+                      <DoneIcon />
                     </BtnRename>
                     <BtnCloseEdit onClick={() => onClose()}>
-                      <IconClose />
+                      <CloseIcon />
                     </BtnCloseEdit>
                   </WalletsWrapper>
                 </FormEdit>
@@ -183,10 +185,10 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                 <WalletsWrapper>
                   <LabelList>{name}</LabelList>
                   <BtnDelete onClick={(e) => handleDelete(e, _id)}>
-                    <IconDelete />
+                    <DeleteIcon />
                   </BtnDelete>
                   <BtnEdit onClick={() => _id && startEditing(_id)}>
-                    <IconEdit />
+                    <EditIcon />
                   </BtnEdit>
                 </WalletsWrapper>
               )}
@@ -215,10 +217,16 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
             <BtnSubmit
               type="submit"
               disabled={
-                formData.name === "" || !walletPattern.test(formData.name)
+                formData.name === "" ||
+                !walletPattern.test(formData.name) ||
+                wallets.some(
+                  (wallet) =>
+                    wallet._id !== editingWalletId &&
+                    wallet.name.toLowerCase() === formData.name.toLowerCase()
+                )
               }
             >
-              <IconOk />
+              <DoneIcon />
             </BtnSubmit>
           </FormCreateNew>
         </WalletsContainer>

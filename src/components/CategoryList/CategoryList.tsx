@@ -10,10 +10,12 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import {
-  IconEdit,
-  IconOk,
-  IconClose,
-  IconDelete,
+  EditIcon,
+  DeleteIcon,
+  DoneIcon,
+  CloseIcon,
+} from "components/Icons/Icons";
+import {
   WalletsContainer,
   WalletsHeader,
   WalletsWrapper,
@@ -184,10 +186,10 @@ const CategoryList: React.FC<CategoryListProps> = ({
                       }
                       onClick={() => onRename()}
                     >
-                      <IconOk />
+                      <DoneIcon />
                     </BtnRename>
                     <BtnCloseEdit onClick={() => onClose()}>
-                      <IconClose />
+                      <CloseIcon />
                     </BtnCloseEdit>
                   </WalletsWrapper>
                 </FormEdit>
@@ -195,10 +197,10 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 <WalletsWrapper>
                   <LabelList>{name}</LabelList>
                   <BtnDelete onClick={(e) => handleDelete(e, _id)}>
-                    <IconDelete />
+                    <DeleteIcon />
                   </BtnDelete>
                   <BtnEdit onClick={() => _id && startEditing(_id)}>
-                    <IconEdit />
+                    <EditIcon />
                   </BtnEdit>
                 </WalletsWrapper>
               )}
@@ -252,10 +254,15 @@ const CategoryList: React.FC<CategoryListProps> = ({
               disabled={
                 formData.name === "" ||
                 formData.type === "" ||
-                !categoryPattern.test(formData.name)
+                !categoryPattern.test(formData.name) ||
+                categories.some(
+                  (category) =>
+                    category._id !== editingCategoryId &&
+                    category.name.toLowerCase() === formData.name.toLowerCase()
+                )
               }
             >
-              <IconOk />
+              <DoneIcon />
             </BtnSubmit>
           </FormCreateNew>
         </WalletsContainer>

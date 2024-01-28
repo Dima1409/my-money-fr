@@ -17,31 +17,12 @@ import {
   OperationResult,
   BtnDelete,
 } from "../Operations/Operations.styled";
+import { DeleteIcon } from "components/Icons/Icons";
 import { theme } from "theme/theme";
-import { IconType } from "react-icons";
-import { RiDeleteBinLine } from "react-icons/ri";
 import { isToday, isYesterday } from "utils/dateTodayYesterday";
 import Pagination from "components/pagination/Pagination";
 
 const ITEMS_PER_PAGE = 10;
-
-interface CustomIconProps {
-  icon: IconType;
-  size?: string;
-  color?: string;
-}
-const CustomIcon: React.FC<CustomIconProps> = ({
-  icon: Icon,
-  size = window.devicePixelRatio > 1 ? "30" : "15",
-  color = `${theme.colors.accent}`,
-}) => {
-  return <Icon size={size} color={color} />;
-};
-
-export const DeleteIcon: React.FC<{ size?: string; color?: string }> = ({
-  size,
-  color,
-}) => <CustomIcon icon={RiDeleteBinLine} size={size} color={color} />;
 
 const HistoryOperations: React.FC = () => {
   const { operations } = useOperations();
@@ -129,8 +110,7 @@ const HistoryOperations: React.FC = () => {
                 className={isDeleting ? "deleting" : ""}
               >
                 <OperationInfo>
-                  Гаманець:{" "}
-                  <OperationResult>{wallet}</OperationResult>
+                  Гаманець: <OperationResult>{wallet}</OperationResult>
                 </OperationInfo>
                 <OperationInfo>
                   Сума: <OperationResult>{amount} грн</OperationResult>
@@ -167,7 +147,7 @@ const HistoryOperations: React.FC = () => {
                   {isDeleting ? (
                     <Loader type="spin" width="30px" height="30px" />
                   ) : (
-                    <DeleteIcon color={theme.colors.accent}></DeleteIcon>
+                    <DeleteIcon color={theme.colors.accent}/>
                   )}
                 </BtnDelete>
               </Operation>

@@ -10,9 +10,9 @@ import {
 import { logout, editUser } from "../../redux/auth/operations";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { AiOutlineLogout } from "react-icons/ai";
 import { AiTwotoneEdit } from "react-icons/ai";
 import { theme } from "theme/theme";
+import { LogOutIcon } from "components/Icons/Icons";
 import useToggle from "hooks/useToggle";
 import Modal from "components/Modal";
 import {
@@ -69,7 +69,7 @@ const UserMenu: React.FC = () => {
             <AiTwotoneEdit color={theme.colors.light} size={16} />
           </EditButton>
           <Logout onClick={() => dispatch(logout())}>
-            <AiOutlineLogout color={theme.colors.light} size={16} />
+            <LogOutIcon color={theme.colors.red} />
           </Logout>
         </UserWrapper>
       )}

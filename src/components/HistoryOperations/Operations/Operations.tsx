@@ -15,7 +15,7 @@ import {
   BtnDelete,
 } from "./Operations.styled";
 import Loader from "components/Loader";
-import { DeleteIcon } from "../AllOperations/AllOperations";
+import { DeleteIcon } from "components/Icons/Icons";
 import { isToday, isYesterday } from "utils/dateTodayYesterday";
 import Pagination from "components/pagination/Pagination";
 
@@ -100,8 +100,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                 className={isDeleting ? "deleting" : ""}
               >
                 <OperationInfo>
-                  Гаманець:{" "}
-                  <OperationResult>{wallet}</OperationResult>
+                  Гаманець: <OperationResult>{wallet}</OperationResult>
                 </OperationInfo>
                 <OperationInfo>
                   Сума: <OperationResult>{amount} грн</OperationResult>
@@ -138,7 +137,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   {isDeleting ? (
                     <Loader type="spin" width="30px" height="30px" />
                   ) : (
-                    <DeleteIcon color={theme.colors.accent}></DeleteIcon>
+                    <DeleteIcon />
                   )}
                 </BtnDelete>
               </Operation>

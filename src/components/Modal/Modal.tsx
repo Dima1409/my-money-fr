@@ -1,11 +1,8 @@
 import { useEffect } from "react";
-import {
-  Overlay,
-  Modal as ModalStyled,
-  ButtonClose,
-  IconClose,
-} from "./Modal.styled";
+import { Overlay, Modal as ModalStyled, ButtonClose } from "./Modal.styled";
+import { CloseIcon } from "components/Icons/Icons";
 import { createPortal } from "react-dom";
+import { theme } from "theme/theme";
 
 const modalRoot = document.querySelector("#modal-root");
 
@@ -40,7 +37,7 @@ const Modal: React.FC<ModalProps> = ({ onClick, children }) => {
       <ModalStyled>
         {children}
         <ButtonClose onClick={onClick}>
-          <IconClose />
+          <CloseIcon color={theme.colors.invalid} />
         </ButtonClose>
       </ModalStyled>
     </Overlay>,
