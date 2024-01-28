@@ -23,7 +23,7 @@ const createNewCategory = createAsyncThunk(
       const response = await API.post("/categories", credentials);
       return response.data.data.result;
     } catch (error: any) {
-      throw thunkAPI.rejectWithValue(error.message);
+      throw thunkAPI.rejectWithValue(error);
     }
   }
 );

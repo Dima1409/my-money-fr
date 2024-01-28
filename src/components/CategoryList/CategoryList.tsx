@@ -33,6 +33,9 @@ import { categoryPattern } from "utils/patterns";
 import { RadioWrapper, InputRadio, LabelSelect } from "./CategoryList.styled";
 import Loader from "components/Loader";
 import Pagination from "components/pagination/Pagination";
+import { Slide } from "react-toastify";
+import { notifyError, ToastContainer } from "utils/toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface CategoryListProps {
   categories: ISearchCategory[];
@@ -97,9 +100,15 @@ const CategoryList: React.FC<CategoryListProps> = ({
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatchTyped(createNewCategory(formData)).then(() =>
-      dispatchTyped(getAll())
-    );
+    dispatchTyped(createNewCategory(formData)).then((res) => {
+      if (
+        res.payload.response.data.message ===
+        `Category with name: ${formData.name} already exist`
+      ) {
+        return notifyError("Категорія з таким ім'ям вже існує");
+      }
+      dispatchTyped(getAll());
+    });
     setCategoryList(categories);
     setCurrentPage(Math.ceil((totalItems + 1) / ITEMS_PER_PAGE));
     setFormData(initialState);
@@ -132,6 +141,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
 
   return (
     <InfoWallets>
+      <ToastContainer transition={Slide} />
       <WalletsHeader>Мої категорії</WalletsHeader>
       {isLoading ? (
         <Loader type="spin" />
@@ -165,7 +175,12 @@ const CategoryList: React.FC<CategoryListProps> = ({
                         formData.name ===
                           categories.find(
                             (category) => category._id === editingCategoryId
-                          )?.name
+                          )?.name ||
+                        categories.some(
+                          (category) =>
+                            category._id !== editingCategoryId &&
+                            category.name === formData.name
+                        )
                       }
                       onClick={() => onRename()}
                     >
@@ -178,7 +193,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 </FormEdit>
               ) : (
                 <WalletsWrapper>
-                  <LabelList>{name.toUpperCase()}</LabelList>
+                  <LabelList>{name}</LabelList>
                   <BtnDelete onClick={(e) => handleDelete(e, _id)}>
                     <IconDelete />
                   </BtnDelete>

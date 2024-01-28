@@ -21,7 +21,6 @@ const Select = styled.select`
   color: ${theme.colors.light};
   border: none;
   border-radius: ${theme.radii.small};
-  text-transform: uppercase;
   padding: 6px;
   min-height: 40px;
   width: 280px;
@@ -62,7 +61,6 @@ const Input = styled.input`
   border: ${theme.borders.normal} transparent;
   border-radius: ${theme.radii.small};
   outline: none;
-  text-transform: uppercase;
   padding-left: 6px;
   min-height: 40px;
   ${theme.mq.tablet} {

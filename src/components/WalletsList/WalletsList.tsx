@@ -33,6 +33,9 @@ import {
 import Loader from "components/Loader";
 import Pagination from "components/pagination/Pagination";
 import { walletPattern } from "utils/patterns";
+import { Slide } from "react-toastify";
+import { notifyError, ToastContainer } from "utils/toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface WalletsListProps {
   wallets: ISearchWallet[];
@@ -77,9 +80,16 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatchTyped(createNewWallets(formData)).then(() =>
-      dispatchTyped(getAllWallets())
-    );
+    dispatchTyped(createNewWallets(formData)).then((res) => {
+      if (
+        res.payload.response.data.message ===
+        `Wallet ${formData.name} already exists`
+      ) {
+        return notifyError("Гаманець з таким ім'ям вже існує");
+      }
+      console.log("RES", res);
+      dispatchTyped(getAllWallets());
+    });
     setWalletsList(wallets);
     setCurrentPage(Math.ceil((totalItems + 1) / ITEMS_PER_PAGE));
     setFormData(initialState);
@@ -119,6 +129,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
 
   return (
     <InfoWallets>
+      <ToastContainer transition={Slide} />
       <WalletsHeader>Мої гаманці</WalletsHeader>
       {isLoading ? (
         <Loader type="spin" />
@@ -149,6 +160,11 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                       disabled={
                         formData.name === "" ||
                         !walletPattern.test(formData.name) ||
+                        wallets.some(
+                          (wallet) =>
+                            wallet._id !== editingWalletId &&
+                            wallet.name === formData.name
+                        ) ||
                         formData.name ===
                           wallets.find(
                             (wallet) => wallet._id === editingWalletId
@@ -165,7 +181,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                 </FormEdit>
               ) : (
                 <WalletsWrapper>
-                  <LabelList>{name.toUpperCase()}</LabelList>
+                  <LabelList>{name}</LabelList>
                   <BtnDelete onClick={(e) => handleDelete(e, _id)}>
                     <IconDelete />
                   </BtnDelete>

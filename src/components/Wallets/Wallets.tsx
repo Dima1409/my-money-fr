@@ -75,7 +75,7 @@ const Wallets: React.FC = () => {
           wallets.map(({ _id, name, total }: ISearchWallet) => {
             return (
               <Wallet key={_id}>
-                <WalletResult>{name.toUpperCase()}:</WalletResult>
+                <WalletResult>{name}:</WalletResult>
                 <WalletResult>{total} грн</WalletResult>
               </Wallet>
             );

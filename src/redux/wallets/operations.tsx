@@ -23,7 +23,7 @@ const createNewWallets = createAsyncThunk(
       const response = await API.post("/wallets/new", credentials);
       return response.data.data.result;
     } catch (error: any) {
-      throw thunkAPI.rejectWithValue(error.message);
+      throw thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -49,7 +49,7 @@ const editWallet = createAsyncThunk(
       });
       return response.data.data.result;
     } catch (error: any) {
-      throw thunkAPI.rejectWithValue(error.message);
+      throw thunkAPI.rejectWithValue(error);
     }
   }
 );

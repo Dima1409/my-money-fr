@@ -101,7 +101,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
               >
                 <OperationInfo>
                   Гаманець:{" "}
-                  <OperationResult>{wallet.toUpperCase()}</OperationResult>
+                  <OperationResult>{wallet}</OperationResult>
                 </OperationInfo>
                 <OperationInfo>
                   Сума: <OperationResult>{amount} грн</OperationResult>
