@@ -32,7 +32,7 @@ interface CustomIconProps {
 }
 const CustomIcon: React.FC<CustomIconProps> = ({
   icon: Icon,
-  size = window.devicePixelRatio > 1 ? "80" : "20",
+  size = window.devicePixelRatio > 1 ? "30" : "15",
   color = `${theme.colors.accent}`,
 }) => {
   return <Icon size={size} color={color} />;

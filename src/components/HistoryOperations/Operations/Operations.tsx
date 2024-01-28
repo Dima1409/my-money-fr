@@ -138,10 +138,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   {isDeleting ? (
                     <Loader type="spin" width="30px" height="30px" />
                   ) : (
-                    <DeleteIcon
-                      size="20"
-                      color={theme.colors.accent}
-                    ></DeleteIcon>
+                    <DeleteIcon color={theme.colors.accent}></DeleteIcon>
                   )}
                 </BtnDelete>
               </Operation>
