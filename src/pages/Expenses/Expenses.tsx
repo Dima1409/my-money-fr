@@ -9,7 +9,7 @@ import useWallets from "hooks/useWallets";
 import Loader from "components/Loader";
 
 const Expenses: React.FC = () => {
-  const { isLoading: operationsLoading, operations } = useOperations();
+  const { operations } = useOperations();
   const { isLoading: walletsLoading, wallets } = useWallets();
   const { isLoading: categoriesLoading, categories } = useCategory();
 
@@ -36,17 +36,7 @@ const Expenses: React.FC = () => {
         </>
       )}
       <ExpensesHeader>Історія витрат</ExpensesHeader>
-      {operationsLoading ? (
-        <Loader type="spin" />
-      ) : (
-        <>
-          {operations ? (
-            <Operations operationsType={sortedExpenseOperations}></Operations>
-          ) : (
-            <div>errorpage</div>
-          )}
-        </>
-      )}
+      <Operations operationsType={sortedExpenseOperations}></Operations>
     </>
   );
 };

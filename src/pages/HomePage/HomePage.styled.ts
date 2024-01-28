@@ -11,7 +11,7 @@ const HeaderWelcome = styled.h2`
 `;
 
 const Description = styled.span`
-margin: 40px 0;
+  margin: 40px 0;
   display: block;
   text-align: center;
   color: ${theme.colors.accent};

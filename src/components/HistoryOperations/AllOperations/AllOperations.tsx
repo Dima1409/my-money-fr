@@ -23,23 +23,19 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { isToday, isYesterday } from "utils/dateTodayYesterday";
 import Pagination from "components/pagination/Pagination";
 
+const ITEMS_PER_PAGE = 10;
+
 interface CustomIconProps {
   icon: IconType;
   size?: string;
   color?: string;
 }
-
-const ITEMS_PER_PAGE = 10;
-
 const CustomIcon: React.FC<CustomIconProps> = ({
   icon: Icon,
-  size = "20",
+  size = window.devicePixelRatio > 1 ? "80" : "20",
   color = `${theme.colors.accent}`,
 }) => {
-  const pixelRatio = window.devicePixelRatio || 1;
-  const adjustedSize = `${parseInt(size) * pixelRatio}px`;
-
-  return <Icon size={adjustedSize} color={color} />;
+  return <Icon size={size} color={color} />;
 };
 
 export const DeleteIcon: React.FC<{ size?: string; color?: string }> = ({
@@ -171,10 +167,7 @@ const HistoryOperations: React.FC = () => {
                   {isDeleting ? (
                     <Loader type="spin" width="30px" height="30px" />
                   ) : (
-                    <DeleteIcon
-                      size="20"
-                      color={theme.colors.accent}
-                    ></DeleteIcon>
+                    <DeleteIcon color={theme.colors.accent}></DeleteIcon>
                   )}
                 </BtnDelete>
               </Operation>

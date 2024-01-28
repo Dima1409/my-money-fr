@@ -61,8 +61,8 @@ const BtnDelete = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
+  width: 50px;
+  height: 50px;
   border-radius: ${theme.radii.round};
   border: ${theme.borders.normal} ${theme.colors.accent};
   background-color: transparent;
