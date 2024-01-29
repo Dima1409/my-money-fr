@@ -12,7 +12,7 @@ const WalletsHeader = styled.h2`
   color: ${theme.colors.light};
   font-size: ${theme.fontSizes.bold};
   font-weight: ${theme.fontWeight.bold};
-  margin-bottom: 10px;
+  margin-bottom: 4px;
   ${theme.mq.tablet} {
     font-size: ${theme.fontSizes.extraBold};
   }
@@ -30,10 +30,10 @@ const LabelName = styled.label`
   font-size: ${theme.fontSizes.normal};
   color: ${theme.colors.light};
   font-family: ${theme.fonts.merriweather};
-  margin-bottom: 5px;
+  margin-bottom: 2px;
   ${theme.mq.tablet} {
     font-size: ${theme.fontSizes.extraBold};
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
 `;
 
@@ -45,8 +45,8 @@ const BtnEdit = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border: none;
   border-radius: ${theme.radii.small};
   background-color: ${theme.colors.light};
@@ -107,8 +107,8 @@ const InputCreateNew = styled.input`
   font-size: ${theme.fontSizes.normal};
   color: ${theme.colors.dark};
   padding: 4px 6px;
-  height: 40px;
-  margin-bottom: 10px;
+  height: 30px;
+  margin-bottom: 2px;
   ${theme.mq.tablet} {
     font-size: ${theme.fontSizes.bold};
   }
@@ -131,7 +131,7 @@ const BtnSubmit = styled.button`
   align-items: center;
   background-color: ${theme.colors.green};
   width: 80px;
-  height: 40px;
+  height: 30px;
   padding: 10px;
   transition: 0.3s;
   &:disabled {

@@ -3,15 +3,14 @@ import { theme } from "theme/theme";
 
 const RadioWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 100px;
+  justify-content: space-between;
   align-items: center;
   margin-top: 5px;
   margin-bottom: 5px;
+  width: 180px;
 `;
 
 const LabelSelect = styled.label`
-  width: 100%;
   display: flex;
   padding: 4px;
   justify-content: space-around;
@@ -19,6 +18,7 @@ const LabelSelect = styled.label`
   border: ${theme.borders.normal};
   border-radius: ${theme.radii.normal};
   margin-bottom: 5px;
+  font-size: ${theme.fontSizes.small};
   &:hover {
     cursor: pointer;
   }
@@ -27,6 +27,7 @@ const LabelSelect = styled.label`
 const InputRadio = styled.input`
   margin: 0;
   margin-right: 6px;
+  font-size: ${theme.fontSizes.small};
   &:hover {
     cursor: pointer;
   }
