@@ -35,6 +35,7 @@ import {
   DoneIcon,
   CloseIcon,
 } from "components/Icons/Icons";
+import { theme } from "theme/theme";
 import { Slide } from "react-toastify";
 import { notifyError, ToastContainer } from "utils/toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -226,7 +227,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                 )
               }
             >
-              <DoneIcon />
+              <DoneIcon color={theme.colors.valid} />
             </BtnSubmit>
           </FormCreateNew>
         </WalletsContainer>

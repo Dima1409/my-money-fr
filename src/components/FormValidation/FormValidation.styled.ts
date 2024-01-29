@@ -11,7 +11,7 @@ const Error = styled.div`
   font-size: ${theme.fontSizes.extraSmall};
   color: ${theme.colors.invalid};
   ${theme.mq.tablet} {
-    top: 90px;
+    top: 80px;
     font-size: ${theme.fontSizes.small};
   }
 `;

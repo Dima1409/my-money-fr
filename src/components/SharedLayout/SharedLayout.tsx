@@ -1,6 +1,16 @@
 import { Outlet } from "react-router-dom";
 import useAuth from "hooks/useAuth";
-import { NavList, Link, NavListItem, IconHome } from "./SharedLayout.styled";
+import {
+  HomeIcon,
+  IncomeIcon,
+  ExpenseIcon,
+  TransferIcon,
+  StatisticIcon,
+  SigInIcon,
+  LoginIcon,
+} from "components/Icons/Icons";
+import { NavList, Link, NavListItem } from "./SharedLayout.styled";
+import { theme } from "theme/theme";
 
 const SharedLayout: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -9,16 +19,23 @@ const SharedLayout: React.FC = () => {
       <NavList>
         <NavListItem>
           <Link to="/">
-            <IconHome />
+            <HomeIcon color={theme.colors.light} />
+            Головна
           </Link>
         </NavListItem>
         {!isLoggedIn && (
           <>
             <NavListItem>
-              <Link to="/register">Реєстрація</Link>
+              <Link to="/register">
+                <SigInIcon color={theme.colors.light} />
+                Реєстрація
+              </Link>
             </NavListItem>
             <NavListItem>
-              <Link to="/login">Вхід</Link>
+              <Link to="/login">
+                <LoginIcon color={theme.colors.light} />
+                Вхід
+              </Link>
             </NavListItem>
           </>
         )}
@@ -26,10 +43,34 @@ const SharedLayout: React.FC = () => {
         {isLoggedIn && (
           <>
             <NavListItem>
-              <Link to="/incomes">Доходи</Link>
+              <Link to="/incomes">
+                <IncomeIcon color={theme.colors.green} />
+                Доходи
+              </Link>
             </NavListItem>
             <NavListItem>
-              <Link to="/expenses">Витрати</Link>
+              <Link to="/expenses">
+                <ExpenseIcon color={theme.colors.red} />
+                Витрати
+              </Link>
+            </NavListItem>
+            <NavListItem>
+              <Link
+                to="/transfers"
+                style={{ pointerEvents: "none", opacity: 0.5 }}
+              >
+                <TransferIcon color={theme.colors.transfers} />
+                Перекази <span style={{ fontSize: "7px" }}>в розробці</span>
+              </Link>
+            </NavListItem>
+            <NavListItem>
+              <Link
+                to="/statistics"
+                style={{ pointerEvents: "none", opacity: 0.5 }}
+              >
+                <StatisticIcon color={theme.colors.valid} />
+                Статистика <span style={{ fontSize: "7px" }}>в розробці</span>
+              </Link>
             </NavListItem>
           </>
         )}

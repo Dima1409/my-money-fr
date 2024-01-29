@@ -1,8 +1,21 @@
 import { IconType } from "react-icons";
-import { RiDeleteBinLine } from "react-icons/ri";
-import { AiTwotoneEdit, AiOutlineLogout } from "react-icons/ai";
-import { MdDoneOutline } from "react-icons/md";
+import {
+  RiDeleteBinLine,
+  RiFileListFill,
+  RiMoneyDollarCircleLine,
+} from "react-icons/ri";
+import {
+  AiTwotoneEdit,
+  AiOutlineLogout,
+  AiOutlineHome,
+  AiFillSchedule,
+} from "react-icons/ai";
+import { IoMdLogIn } from "react-icons/io";
+import { MdDoneOutline, MdEditNote, MdAccessibilityNew } from "react-icons/md";
 import { GrClose } from "react-icons/gr";
+import { BiTransfer } from "react-icons/bi";
+import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
+import { FaWallet } from "react-icons/fa";
 import { theme } from "theme/theme";
 
 interface CustomIconProps {
@@ -11,7 +24,7 @@ interface CustomIconProps {
   color?: string;
 }
 
-const defaultSize = window.devicePixelRatio > 1 ? "30" : "15";
+const defaultSize = window.devicePixelRatio > 1 ? "30" : "25";
 const defaultColor = theme.colors.accent;
 
 const CustomIcon: React.FC<CustomIconProps> = ({ icon: Icon, size, color }) => {
@@ -27,6 +40,50 @@ const IconWrapper: React.FC<{
   color?: string;
 }> = ({ icon, size, color }) => (
   <CustomIcon icon={icon} size={size} color={color} />
+);
+
+const HomeIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={AiOutlineHome} {...props} />
+);
+
+const SigInIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={MdAccessibilityNew} {...props} />
+);
+
+const LoginIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={IoMdLogIn} {...props} />
+);
+
+const IncomeIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={FaArrowTrendUp} {...props} />
+);
+
+const ExpenseIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={FaArrowTrendDown} {...props} />
+);
+
+const TransferIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={BiTransfer} {...props} />
+);
+
+const StatisticIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={AiFillSchedule} {...props} />
+);
+
+const WalletIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={FaWallet} {...props} />
+);
+
+const CategoryIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={RiFileListFill} {...props} />
+);
+
+const NoteIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={MdEditNote} {...props} />
+);
+
+const AmountIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={RiMoneyDollarCircleLine} {...props} />
 );
 
 const DeleteIcon: React.FC<{ size?: string; color?: string }> = (props) => (
@@ -49,4 +106,21 @@ const LogOutIcon: React.FC<{ size?: string; color?: string }> = (props) => (
   <IconWrapper icon={AiOutlineLogout} {...props} />
 );
 
-export { DeleteIcon, EditIcon, DoneIcon, CloseIcon, LogOutIcon };
+export {
+  HomeIcon,
+  SigInIcon,
+  LoginIcon,
+  IncomeIcon,
+  ExpenseIcon,
+  TransferIcon,
+  StatisticIcon,
+  WalletIcon,
+  CategoryIcon,
+  NoteIcon,
+  AmountIcon,
+  DeleteIcon,
+  EditIcon,
+  DoneIcon,
+  CloseIcon,
+  LogOutIcon,
+};

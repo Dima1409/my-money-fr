@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   Form,
   SelectWrapper,
+  IconWrapper,
   Select,
   ButtonEdit,
   Option,
@@ -21,7 +22,15 @@ import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { getAll } from "../../../redux/categories/operations";
 import { incomeOperations } from "../../../redux/operations/operations";
-import { EditIcon, DoneIcon, CloseIcon } from "components/Icons/Icons";
+import {
+  EditIcon,
+  DoneIcon,
+  CloseIcon,
+  WalletIcon,
+  CategoryIcon,
+  NoteIcon,
+  AmountIcon,
+} from "components/Icons/Icons";
 import { theme } from "theme/theme";
 import { amountPattern, commentPattern } from "utils/patterns";
 
@@ -83,6 +92,10 @@ const IncomeForm: React.FC = () => {
         ) : (
           <>
             <SelectWrapper>
+              <IconWrapper>
+                <WalletIcon color={theme.colors.valid} />
+              </IconWrapper>
+
               <Select
                 name="wallet"
                 onChange={handleInputChange}
@@ -106,6 +119,9 @@ const IncomeForm: React.FC = () => {
               </ButtonEdit>
             </SelectWrapper>
             <SelectWrapper>
+              <IconWrapper>
+                <CategoryIcon color={theme.colors.expensesHeader} />
+              </IconWrapper>
               <Select
                 name="category"
                 onChange={handleInputChange}
@@ -135,6 +151,9 @@ const IncomeForm: React.FC = () => {
               </ButtonEdit>
             </SelectWrapper>
             <SelectWrapper>
+              <IconWrapper style={{ marginLeft: 0 }}>
+                <NoteIcon color={theme.colors.incomeHeader} />
+              </IconWrapper>
               <Input
                 type="text"
                 name="comment"
@@ -145,6 +164,9 @@ const IncomeForm: React.FC = () => {
               ></Input>
             </SelectWrapper>
             <SelectWrapper>
+              <IconWrapper style={{ marginLeft: 0 }}>
+                <AmountIcon color={theme.colors.red} />
+              </IconWrapper>
               <Input
                 style={{ borderColor: "transparent" }}
                 type="number"

@@ -9,9 +9,14 @@ const Form = styled.form`
 
 const SelectWrapper = styled.label`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 8px;
+`;
+
+const IconWrapper = styled.div`
+  margin-left: auto;
+  margin-right: 6px;
 `;
 
 const Select = styled.select`
@@ -24,14 +29,11 @@ const Select = styled.select`
   padding: 6px;
   min-height: 40px;
   width: 280px;
-  margin-left: auto;
   ${theme.mq.tablet} {
     width: 40%;
-    margin-left: auto;
   }
   ${theme.mq.desktop} {
     width: 20%;
-    margin-left: auto;
   }
   &:hover {
     cursor: pointer;
@@ -51,7 +53,7 @@ const Option = styled.option`
 
 const Input = styled.input`
   font-size: ${theme.fontSizes.normal};
-  margin: 0 auto;
+  margin: 0;
   background-color: ${theme.colors.accent};
   color: ${theme.colors.light};
   width: 280px;
@@ -127,6 +129,7 @@ const ButtonSubmit = styled.button`
 export {
   Form,
   SelectWrapper,
+  IconWrapper,
   Select,
   Option,
   Input,

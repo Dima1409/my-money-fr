@@ -18,6 +18,7 @@ const theme = {
     light: "#f2f5f2",
     valid: "#329432",
     invalid: "#eb2d36",
+    transfers: "#eced94",
   },
   fonts: {
     comfortaa: "'Comfortaa', sans-serif",

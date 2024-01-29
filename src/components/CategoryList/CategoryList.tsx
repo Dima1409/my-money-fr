@@ -34,6 +34,7 @@ import {
 import { categoryPattern } from "utils/patterns";
 import { RadioWrapper, InputRadio, LabelSelect } from "./CategoryList.styled";
 import Loader from "components/Loader";
+import { theme } from "theme/theme";
 import Pagination from "components/pagination/Pagination";
 import { Slide } from "react-toastify";
 import { notifyError, ToastContainer } from "utils/toastify";
@@ -262,7 +263,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 )
               }
             >
-              <DoneIcon />
+              <DoneIcon color={theme.colors.valid} />
             </BtnSubmit>
           </FormCreateNew>
         </WalletsContainer>

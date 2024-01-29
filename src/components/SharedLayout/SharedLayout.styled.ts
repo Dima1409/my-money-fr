@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
 import { NavLink } from "react-router-dom";
-import { AiOutlineHome } from "react-icons/ai";
 
 const NavList = styled.ul`
   padding: 0;
@@ -13,24 +12,18 @@ const NavList = styled.ul`
   }
 `;
 
-const IconHome = styled(AiOutlineHome)`
-  width: 15px;
-  height: 15px;
-  color: ${theme.colors.light};
-  ${theme.mq.tablet} {
-    width: 22px;
-    height: 22px;
-  }
-`;
-
 const NavListItem = styled.li`
   margin: 10px 0;
   text-align: center;
   background-color: ${theme.colors.accent};
   border-radius: ${theme.radii.small};
   ${theme.mq.tablet} {
-    margin-right: 42px;
+    margin-right: 2px;
+    min-width: 150px;
+  }
+  ${theme.mq.desktop} {
     min-width: 200px;
+    margin-right: 15px;
   }
   &:last-child {
     margin-right: 0;
@@ -39,10 +32,11 @@ const NavListItem = styled.li`
 
 const Link = styled(NavLink)`
   display: flex;
-  justify-content: center;
+  flex-direction: row-reverse;
+  justify-content: space-between;
   align-items: center;
   text-decoration: none;
-  padding: 10px 40px;
+  padding: 10px 15px;
   min-height: 30px;
   color: ${theme.colors.light};
   border-radius: ${theme.radii.small};
@@ -54,4 +48,4 @@ const Link = styled(NavLink)`
   }
 `;
 
-export { NavList, NavListItem, Link, IconHome };
+export { NavList, NavListItem, Link };
