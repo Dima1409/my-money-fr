@@ -10,7 +10,7 @@ import {
 interface Operation {
   id: string;
   amount: number;
-  type: string;
+  type?: string;
   wallet: string;
   category: string;
   comment: string;
@@ -19,8 +19,8 @@ interface Operation {
 // interface TransferOperation {
 //   id: string;
 //   amount: number;
-//   type: string;
-//   wallet: string;
+//   walletFrom: string;
+//   walletTo: string;
 // }
 
 interface OperationsState {
@@ -29,11 +29,23 @@ interface OperationsState {
   error: string | null;
 }
 
+// interface TransfersState {
+//   operations: TransferOperation[];
+//   isLoading: boolean;
+//   error: string | null;
+// }
+
 const initialState: OperationsState = {
   operations: [],
   isLoading: false,
   error: null,
 };
+
+// const initialStateTransfers: TransfersState = {
+//   operations: [],
+//   isLoading: false,
+//   error: null,
+// };
 
 const handlePending = (state: OperationsState) => {
   state.isLoading = true;

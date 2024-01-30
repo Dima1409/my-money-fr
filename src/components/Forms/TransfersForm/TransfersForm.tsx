@@ -30,7 +30,7 @@ const initialState = {
   walletFrom: "",
   walletTo: "",
   amount: "",
-  type: "transfer",
+  // type: "transfer",
 };
 
 const TransfersForm: React.FC = () => {
