@@ -3,6 +3,7 @@ import {
   getAllOperations,
   incomeOperations,
   expensesOperation,
+  transfersOperation,
   deleteOperation,
 } from "./operations";
 
@@ -14,6 +15,13 @@ interface Operation {
   category: string;
   comment: string;
 }
+
+// interface TransferOperation {
+//   id: string;
+//   amount: number;
+//   type: string;
+//   wallet: string;
+// }
 
 interface OperationsState {
   operations: Operation[];
@@ -66,6 +74,14 @@ const OperationsSlice = createSlice({
         }
       )
       .addCase(
+        transfersOperation.fulfilled,
+        (state: OperationsState, action: PayloadAction<Operation>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.operations.push(action.payload);
+        }
+      )
+      .addCase(
         deleteOperation.fulfilled,
         (state: OperationsState, action: PayloadAction<Operation>) => {
           state.isLoading = false;
@@ -80,10 +96,12 @@ const OperationsSlice = createSlice({
       .addCase(incomeOperations.pending, handlePending)
       .addCase(expensesOperation.pending, handlePending)
       .addCase(deleteOperation.pending, handlePending)
+      .addCase(transfersOperation.pending, handlePending)
       .addCase(getAllOperations.rejected, handleRejected)
       .addCase(incomeOperations.rejected, handleRejected)
       .addCase(expensesOperation.rejected, handleRejected)
-      .addCase(deleteOperation.rejected, handleRejected);
+      .addCase(deleteOperation.rejected, handleRejected)
+      .addCase(transfersOperation.rejected, handleRejected);
   },
 });
 

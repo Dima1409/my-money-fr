@@ -41,9 +41,6 @@ const Select = styled.select`
   &:disabled {
     background-color: inherit;
   }
-  &:focus {
-    background-color: ${theme.colors.accentActive};
-  }
 `;
 const Option = styled.option`
   display: block;

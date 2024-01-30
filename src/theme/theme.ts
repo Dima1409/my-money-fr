@@ -10,7 +10,7 @@ const theme = {
     accentActive: "#083ac4",
     background: "#d8f0f0",
     incomeHeader: "#095a16",
-    expensesHeader: "#8a5a39",
+    expensesHeader: "#bc5915",
     spinner: "#54aff0",
     red: "#eac3a9",
     green: "#ccfcd4",
@@ -18,7 +18,7 @@ const theme = {
     light: "#f2f5f2",
     valid: "#329432",
     invalid: "#eb2d36",
-    transfers: "#eced94",
+    transfers: "#858612",
   },
   fonts: {
     comfortaa: "'Comfortaa', sans-serif",

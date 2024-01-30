@@ -13,8 +13,9 @@ const RegisterPage = lazy(() => import("../pages/RegisterPage"));
 const LoginPage = lazy(() => import("../pages/LoginPage"));
 const ExpensesPage = lazy(() => import("../pages/Expenses"));
 const IncomePage = lazy(() => import("../pages/Income"));
+const TransferPage = lazy(() => import("../pages/Transfers"));
 
-const LoadingFallback: React.FC = () => <Loader type="spin"/>;
+const LoadingFallback: React.FC = () => <Loader type="spin" />;
 
 const LazyPage: React.FC<{ children: ReactNode }> = ({ children }) => (
   <Suspense fallback={<LoadingFallback />}>{children}</Suspense>
@@ -83,6 +84,19 @@ const App: React.FC = () => {
                 component={() => (
                   <LazyPage>
                     <ExpensesPage />
+                  </LazyPage>
+                )}
+                redirectTo="/login"
+              />
+            }
+          ></Route>
+          <Route
+            path="transfers"
+            element={
+              <Routs.PrivateRoute
+                component={() => (
+                  <LazyPage>
+                    <TransferPage />
                   </LazyPage>
                 )}
                 redirectTo="/login"

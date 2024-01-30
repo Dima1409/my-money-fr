@@ -55,12 +55,9 @@ const SharedLayout: React.FC = () => {
               </Link>
             </NavListItem>
             <NavListItem>
-              <Link
-                to="/transfers"
-                style={{ pointerEvents: "none", opacity: 0.5 }}
-              >
+              <Link to="/transfers">
                 <TransferIcon color={theme.colors.transfers} />
-                Перекази <span style={{ fontSize: "7px" }}>в розробці</span>
+                Перекази
               </Link>
             </NavListItem>
             <NavListItem>

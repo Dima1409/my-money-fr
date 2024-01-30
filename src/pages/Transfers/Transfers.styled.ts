@@ -1,7 +1,9 @@
 import styled from "styled-components";
+import { theme } from "theme/theme";
+import { IncomeHeader } from "pages/Income/Income.styled";
 
-const TransfersHeader = styled.h2`
-  font-size: 24px;
+const TransfersHeader = styled(IncomeHeader)`
+  color: ${theme.colors.transfers};
 `;
 
 export { TransfersHeader };

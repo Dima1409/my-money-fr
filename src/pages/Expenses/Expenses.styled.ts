@@ -1,11 +1,9 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
+import { IncomeHeader } from "pages/Income/Income.styled";
 
-const ExpensesHeader = styled.h2`
+const ExpensesHeader = styled(IncomeHeader)`
   color: ${theme.colors.expensesHeader};
-  text-align: center;
-  font-size: ${theme.fontSizes.extraBold};
-  margin-bottom: 20px;
 `;
 
 export { ExpensesHeader };

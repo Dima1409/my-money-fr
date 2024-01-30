@@ -95,7 +95,6 @@ const IncomeForm: React.FC = () => {
               <IconWrapper>
                 <WalletIcon color={theme.colors.valid} />
               </IconWrapper>
-
               <Select
                 name="wallet"
                 onChange={handleInputChange}

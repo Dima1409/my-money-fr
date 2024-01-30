@@ -10,6 +10,14 @@ interface operationsCredentials {
   comment: string;
 }
 
+interface transfersCredentials {
+  id?: string;
+  amount: string;
+  type: string;
+  walletFrom: string;
+  walletTo: string;
+}
+
 const getAllOperations = createAsyncThunk("operation", async (_, thunkAPI) => {
   try {
     const response = await API.get("/operation");
@@ -43,6 +51,19 @@ const expensesOperation = createAsyncThunk(
   }
 );
 
+const transfersOperation = createAsyncThunk(
+  "/operation/transfer",
+  async (credentials: transfersCredentials, thunkAPI) => {
+    try {
+      const response = await API.post("/operation/transfer", credentials);
+      console.log(response.data.data.result);
+      return response.data.data.result;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const deleteOperation = createAsyncThunk(
   "/operation/delete",
   async (id: operationsCredentials, thunkAPI) => {
@@ -59,5 +80,6 @@ export {
   getAllOperations,
   incomeOperations,
   expensesOperation,
+  transfersOperation,
   deleteOperation,
 };
