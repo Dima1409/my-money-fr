@@ -46,25 +46,31 @@ const OperationInfo = styled.span`
   }
 `;
 
+const TypeWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const OperationResult = styled.span`
   font-family: ${theme.fonts.merriweather};
   text-transform: "uppercase";
+  font-size: ${theme.fontSizes.small};
   font-weight: ${theme.fontWeight.bold};
-  color: ${theme.colors.dark};
+  color: ${theme.colors.accentActive};
 `;
 
 const BtnDelete = styled.button`
   position: absolute;
   right: 10px;
   top: 10px;
-  border: ${theme.borders.none};
   display: flex;
   justify-content: center;
   align-items: center;
   width: 40px;
   height: 40px;
   border-radius: ${theme.radii.round};
-  border: ${theme.borders.normal} ${theme.colors.accent};
+  border: ${theme.borders.normal} ${theme.colors.darkRed};
   background-color: transparent;
   cursor: pointer;
 `;
@@ -73,6 +79,7 @@ export {
   OperationWrapper,
   OperationsHeader,
   OperationSort,
+  TypeWrapper,
   Operation,
   OperationInfo,
   OperationResult,

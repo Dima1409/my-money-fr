@@ -4,16 +4,11 @@ import API from "Services/AxiosConfig";
 interface operationsCredentials {
   id?: string;
   amount: string;
-  wallet: string;
-  category: string;
-  comment: string;
-}
-
-interface transfersCredentials {
-  id?: string;
-  amount: string;
-  walletFrom: string;
-  walletTo: string;
+  wallet?: string;
+  category?: string;
+  comment?: string;
+  walletFrom?: string;
+  walletTo?: string;
 }
 
 const getAllOperations = createAsyncThunk("operation", async (_, thunkAPI) => {
@@ -51,10 +46,9 @@ const expensesOperation = createAsyncThunk(
 
 const transfersOperation = createAsyncThunk(
   "/operation/transfer",
-  async (credentials: transfersCredentials, thunkAPI) => {
+  async (credentials: operationsCredentials, thunkAPI) => {
     try {
       const response = await API.post("/operation/transfer", credentials);
-      console.log("response", response);
       return response.data.data.result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error);
@@ -69,7 +63,7 @@ const deleteOperation = createAsyncThunk(
       const response = await API.delete(`/operation/${id}`);
       return response.data.data.result;
     } catch (error: any) {
-      throw thunkAPI.rejectWithValue(error.message);
+      throw thunkAPI.rejectWithValue(error);
     }
   }
 );

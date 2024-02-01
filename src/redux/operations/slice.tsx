@@ -16,36 +16,17 @@ interface Operation {
   comment: string;
 }
 
-// interface TransferOperation {
-//   id: string;
-//   amount: number;
-//   walletFrom: string;
-//   walletTo: string;
-// }
-
 interface OperationsState {
   operations: Operation[];
   isLoading: boolean;
   error: string | null;
 }
 
-// interface TransfersState {
-//   operations: TransferOperation[];
-//   isLoading: boolean;
-//   error: string | null;
-// }
-
 const initialState: OperationsState = {
   operations: [],
   isLoading: false,
   error: null,
 };
-
-// const initialStateTransfers: TransfersState = {
-//   operations: [],
-//   isLoading: false,
-//   error: null,
-// };
 
 const handlePending = (state: OperationsState) => {
   state.isLoading = true;

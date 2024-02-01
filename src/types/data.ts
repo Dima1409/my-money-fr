@@ -17,5 +17,7 @@ export interface ISearchOperation {
   comment: string;
   createdAt: string;
   updatedAt: string;
-  wallet: string;
+  wallet?: string;
+  walletFrom?: string;
+  walletTo?: string;
 }

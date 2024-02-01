@@ -66,7 +66,6 @@ const TransfersForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      console.log(formData);
       dispatchTyped(transfersOperation(formData));
       setFormData(initialState);
     } catch (error) {

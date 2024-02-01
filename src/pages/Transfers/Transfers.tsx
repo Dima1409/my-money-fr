@@ -12,7 +12,7 @@ const Transfers: React.FC = () => {
   const { isLoading: walletsLoading, wallets } = useWallets();
 
   const transferOperations: ISearchOperation[] = operations.filter(
-    (elem: ISearchOperation) => elem.type === "transfer"
+    (elem: ISearchOperation) => !elem.type
   );
 
   const sortedTransferOperations = transferOperations.sort(

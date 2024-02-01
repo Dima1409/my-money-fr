@@ -13,8 +13,11 @@ import {
 import { IoMdLogIn } from "react-icons/io";
 import { MdDoneOutline, MdEditNote, MdAccessibilityNew } from "react-icons/md";
 import { GrClose } from "react-icons/gr";
-import { BiTransfer } from "react-icons/bi";
-import { FaArrowTrendUp, FaArrowTrendDown } from "react-icons/fa6";
+import {
+  FaArrowTrendUp,
+  FaArrowTrendDown,
+  FaArrowsRotate,
+} from "react-icons/fa6";
 import { FaWallet } from "react-icons/fa";
 import { theme } from "theme/theme";
 
@@ -63,7 +66,7 @@ const ExpenseIcon: React.FC<{ size?: string; color?: string }> = (props) => (
 );
 
 const TransferIcon: React.FC<{ size?: string; color?: string }> = (props) => (
-  <IconWrapper icon={BiTransfer} {...props} />
+  <IconWrapper icon={FaArrowsRotate} {...props} />
 );
 
 const StatisticIcon: React.FC<{ size?: string; color?: string }> = (props) => (

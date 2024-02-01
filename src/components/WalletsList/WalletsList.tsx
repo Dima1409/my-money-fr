@@ -90,7 +90,6 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
       ) {
         return notifyError("Гаманець з таким ім'ям вже існує");
       }
-      console.log("RES", res);
       dispatchTyped(getAllWallets());
     });
     setWalletsList(wallets);
