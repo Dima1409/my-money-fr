@@ -5,6 +5,7 @@ import { ThunkDispatch } from "@reduxjs/toolkit";
 import {
   getAllOperations,
   deleteOperation,
+  deleteTransferOperation,
 } from "../../../redux/operations/operations";
 import { theme } from "theme/theme";
 import getBackgroundColor from "./getBgColor";
@@ -51,9 +52,12 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
     setCurrentPage(page);
   };
 
-  const handleDelete = async (id: any) => {
+  const handleDelete = async (id: any, type: string) => {
     setDeletingOperation(id);
-    dispatchTyped(deleteOperation(id)).then(() => {
+
+    dispatchTyped(
+      type ? deleteOperation(id) : deleteTransferOperation(id)
+    ).then(() => {
       setDeletingOperation(null);
       dispatchTyped(getAllOperations());
       const updatedList = operationsType.filter(
@@ -150,7 +154,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   </OperationResult>
                 </OperationInfo>
                 <BtnDelete
-                  onClick={() => handleDelete(_id)}
+                  onClick={() => handleDelete(_id, type)}
                   disabled={isDeleting}
                 >
                   {isDeleting ? (

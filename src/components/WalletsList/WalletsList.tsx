@@ -226,7 +226,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                 )
               }
             >
-              <DoneIcon color={theme.colors.valid} />
+              <DoneIcon color={theme.colors.accent} />
             </BtnSubmit>
           </FormCreateNew>
         </WalletsContainer>

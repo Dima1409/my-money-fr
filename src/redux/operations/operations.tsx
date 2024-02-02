@@ -68,10 +68,23 @@ const deleteOperation = createAsyncThunk(
   }
 );
 
+const deleteTransferOperation = createAsyncThunk(
+  "/operation//transfer/:id",
+  async (id: operationsCredentials, thunkAPI) => {
+    try {
+      const response = await API.delete(`/operation/transfer/${id}`);
+      return response.data.data.result;
+    } catch (error: any) {
+      throw thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export {
   getAllOperations,
   incomeOperations,
   expensesOperation,
   transfersOperation,
   deleteOperation,
+  deleteTransferOperation,
 };

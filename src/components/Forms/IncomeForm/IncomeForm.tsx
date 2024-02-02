@@ -32,7 +32,7 @@ import {
   AmountIcon,
 } from "components/Icons/Icons";
 import { theme } from "theme/theme";
-import { amountPattern, commentPattern } from "utils/patterns";
+import { amountPattern, commentPattern, namePattern } from "utils/patterns";
 
 const initialState = {
   wallet: "",
@@ -180,6 +180,7 @@ const IncomeForm: React.FC = () => {
               <ButtonSubmit
                 type="submit"
                 disabled={
+                  !amountPattern.test(formData.amount) ||
                   formData.amount === "" ||
                   formData.category === "" ||
                   formData.wallet === "" ||

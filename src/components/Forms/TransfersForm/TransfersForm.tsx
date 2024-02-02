@@ -142,6 +142,7 @@ const TransfersForm: React.FC = () => {
             <ButtonSubmit
               type="submit"
               disabled={
+                !amountPattern.test(formData.amount) ||
                 formData.amount === "" ||
                 formData.walletFrom === "" ||
                 formData.walletTo === "" ||

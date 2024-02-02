@@ -4,6 +4,7 @@ import { ThunkDispatch } from "redux-thunk";
 import {
   getAllOperations,
   deleteOperation,
+  deleteTransferOperation,
 } from "../../../redux/operations/operations";
 import { getAllWallets } from "../../../redux/wallets/operations";
 import useOperations from "hooks/useOperations";
@@ -61,9 +62,11 @@ const HistoryOperations: React.FC = () => {
     indexOfLastItem
   );
 
-  const handleDelete = async (id: any) => {
+  const handleDelete = async (id: any, type: string) => {
     setDeletingOperation(id);
-    dispatchTyped(deleteOperation(id)).then(() => {
+    dispatchTyped(
+      type ? deleteOperation(id) : deleteTransferOperation(id)
+    ).then(() => {
       setDeletingOperation(null);
       dispatchTyped(getAllOperations());
       dispatchTyped(getAllWallets());
@@ -160,7 +163,7 @@ const HistoryOperations: React.FC = () => {
                   </OperationResult>
                 </OperationInfo>
                 <BtnDelete
-                  onClick={() => handleDelete(_id)}
+                  onClick={() => handleDelete(_id, type)}
                   disabled={isDeleting}
                 >
                   {isDeleting ? (

@@ -182,6 +182,7 @@ const ExpenseForm: React.FC = () => {
               <ButtonSubmit
                 type="submit"
                 disabled={
+                  !amountPattern.test(formData.amount) ||
                   formData.amount === "" ||
                   formData.category === "" ||
                   formData.wallet === "" ||

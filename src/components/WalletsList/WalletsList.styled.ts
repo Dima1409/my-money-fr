@@ -129,7 +129,7 @@ const BtnSubmit = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${theme.colors.light};
+  background-color: ${theme.colors.accentActive};
   width: 80px;
   height: 30px;
   padding: 10px;
