@@ -18,7 +18,7 @@ import {
   FaArrowTrendDown,
   FaArrowsRotate,
 } from "react-icons/fa6";
-import { FaWallet } from "react-icons/fa";
+import { FaWallet, FaAngleUp } from "react-icons/fa";
 import { theme } from "theme/theme";
 
 interface CustomIconProps {
@@ -109,6 +109,10 @@ const LogOutIcon: React.FC<{ size?: string; color?: string }> = (props) => (
   <IconWrapper icon={AiOutlineLogout} {...props} />
 );
 
+const TopIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={FaAngleUp} {...props} />
+);
+
 export {
   HomeIcon,
   SigInIcon,
@@ -126,4 +130,5 @@ export {
   DoneIcon,
   CloseIcon,
   LogOutIcon,
+  TopIcon,
 };

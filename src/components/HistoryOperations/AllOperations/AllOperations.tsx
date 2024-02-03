@@ -29,6 +29,7 @@ import { theme } from "theme/theme";
 import getBackgroundColor from "../Operations/getBgColor";
 import { isToday, isYesterday } from "utils/dateTodayYesterday";
 import Pagination from "components/pagination/Pagination";
+import ButtonToTop from "components/ButtonToTop";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -82,6 +83,7 @@ const HistoryOperations: React.FC = () => {
 
   return (
     <OperationWrapper>
+      <ButtonToTop></ButtonToTop>
       <Pagination
         totalItems={operations.length}
         itemsPerPage={ITEMS_PER_PAGE}
