@@ -32,7 +32,7 @@ import {
   AmountIcon,
 } from "components/Icons/Icons";
 import { theme } from "theme/theme";
-import { amountPattern, commentPattern, namePattern } from "utils/patterns";
+import { amountPattern, commentPattern } from "utils/patterns";
 
 const initialState = {
   wallet: "",
