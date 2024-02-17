@@ -1,102 +1,105 @@
-import { Month } from "./Statistics.styled";
+import {
+  Month,
+  HeaderTotal,
+  TabPanelStyled,
+  TabsStyled,
+  TabStyled,
+  TabListStyled,
+} from "./Statistics.styled";
+import { useState } from "react";
 import useOperations from "hooks/useOperations";
 import Diagram from "components/Diagram/Diagram";
-// import { ISearchOperation } from "types/data";
+import monthNames from "utils/months";
+import { ISearchOperation } from "types/data";
+import "react-tabs/style/react-tabs.css";
+import Container from "components/Container";
+
+interface CategorizedAmount {
+  category: string;
+  amount: number;
+}
 
 const Statistics = () => {
   const { operations } = useOperations();
-  const incomesOperations = operations.filter((item) => item.type === "income");
-  // const expensesOperations = operations.filter(
-  //   (item) => item.type === "expense"
-  // );
 
-  const income = Object.entries(
-    incomesOperations.reduce((acc: any, elem: any) => {
-      if (acc.hasOwnProperty(elem.category)) {
-        acc[elem.category] += parseInt(elem.amount, 0);
-      } else {
-        acc[elem.category] = parseInt(elem.amount, 0);
-      }
-      return acc;
-    }, {})
-  ).map(([category, amount]) => ({
-    category,
-    amount: Number(amount), // Explicitly specify the type as number
-  }));
-  console.log(income);
+  const typesOfOperations = (arr: ISearchOperation[], value: string) => {
+    return arr.filter((elem) => elem.type === value);
+  };
 
-  // const expense = Object.entries(
-  //   expensesOperations.reduce((acc: any, elem: any) => {
-  //     if (acc.hasOwnProperty(elem.category)) {
-  //       acc[elem.category] += parseInt(elem.amount, 0);
-  //     } else {
-  //       acc[elem.category] = parseInt(elem.amount, 0);
-  //     }
-  //     return acc;
-  //   }, {})
-  // ).map(([category, amount]) => ({ category, amount }));
+  const calculateCategoryTotal = (
+    operations: ISearchOperation[]
+  ): CategorizedAmount[] => {
+    return Object.entries(
+      operations.reduce((acc, elem) => {
+        const category = elem.category;
+        const amount =
+          typeof elem.amount === "string"
+            ? parseFloat(elem.amount)
+            : elem.amount;
+        acc[category] = (acc[category] || 0) + amount;
+        return acc;
+      }, {} as Record<string, number>)
+    ).map(([category, amount]) => ({
+      category,
+      amount: Number(amount),
+    }));
+  };
 
-  const totalIncomeSum = incomesOperations.reduce(
-    (acc, item) => acc + Number(item.amount),
-    0
-  );
-  console.log("totalIncome", totalIncomeSum);
+  const calculateTotal = (operations: CategorizedAmount[]) => {
+    return operations.reduce((acc, item) => acc + Number(item.amount), 0);
+  };
 
-  // const totalExpenseSum = expensesOperations.reduce(
-  //   (acc, item) => acc + Number(item),
-  //   0
-  // );
+  const incomesOperations = typesOfOperations(operations, "income");
+  const expensesOperations = typesOfOperations(operations, "expense");
+
+  const incomeTotal: CategorizedAmount[] =
+    calculateCategoryTotal(incomesOperations);
+  const expenseTotal: CategorizedAmount[] =
+    calculateCategoryTotal(expensesOperations);
+
+  const totalIncome = calculateTotal(incomesOperations);
+  const totalExpense = calculateTotal(expensesOperations);
+
   const getMonthName = () => {
     const monthIndex = new Date().getMonth();
-    const monthNames = [
-      "Січень",
-      "Лютий",
-      "Березень",
-      "Квітень",
-      "Травень",
-      "Червень",
-      "Липень",
-      "Серпень",
-      "Вересень",
-      "Жовтень",
-      "Листопад",
-      "Грудень",
-    ];
-
     return monthNames[monthIndex];
   };
   const month = getMonthName();
-  return (
-    <>
-      <Month>
-        Місяць: {month}{" "}
-        <div>
-          Всього доходи: <span>{totalIncomeSum} грн</span>
-        </div>
-      </Month>
-      <div>
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <Diagram data={income} title="Доходи"></Diagram>
-        </div>
+  const year = new Date().getFullYear();
 
-        {/* <div>
-          <div>
-            Всього витрати: <span>{totalExpenseSum}</span>
-          </div>
-          {expense.map(({ category, amount }) => (
-            <div key={category}>
-              <div>
-                Категорія: {category}{" "}
-                <span>
-                  {((Number(amount) * 100) / totalExpenseSum).toFixed(1)} %
-                </span>
-              </div>
-              <div>Сума: {amount as number}</div>
-            </div>
-          ))}
-        </div> */}
-      </div>
-    </>
+  const [tabIndex, setTabIndex] = useState(0);
+
+  return (
+    <Container>
+      <Month>
+        Місяць: {month} {year}
+      </Month>
+      <TabsStyled
+        selectedIndex={tabIndex}
+        onSelect={(index: number) => setTabIndex(index)}
+      >
+        <TabListStyled>
+          <TabStyled>Доходи</TabStyled>
+          <TabStyled>Витрати</TabStyled>
+        </TabListStyled>
+
+        <TabPanelStyled>
+          <HeaderTotal>
+            Всього: <span>{totalIncome} грн</span>
+          </HeaderTotal>
+
+          <Diagram data={incomeTotal} title="Доходи"></Diagram>
+        </TabPanelStyled>
+
+        <TabPanelStyled>
+          <HeaderTotal>
+            Всього: <span>{totalExpense} грн</span>
+          </HeaderTotal>
+
+          <Diagram data={expenseTotal} title="Витрати"></Diagram>
+        </TabPanelStyled>
+      </TabsStyled>
+    </Container>
   );
 };
 
