@@ -1,6 +1,6 @@
 import React from "react";
 import { theme } from "theme/theme";
-import { Pie, Cell, Legend, PieChart } from "recharts";
+import { ResponsiveContainer, Pie, Cell, Legend, PieChart } from "recharts";
 import { useMediaQuery } from "react-responsive";
 import { breakpoints } from "theme/theme";
 
@@ -23,11 +23,7 @@ const Diagram: React.FC<DiagramProps> = ({ data, title }) => {
   const totalAmount = data.reduce((sum, entry) => sum + entry.amount, 0);
   return (
     <>
-      <PieChart
-        width={300}
-        height={360}
-        margin={{ top: 30, right: 0, bottom: 20, left: 0 }}
-      >
+      <PieChart width={300} height={380}>
         <Pie
           dataKey="amount"
           isAnimationActive={true}
@@ -50,7 +46,7 @@ const Diagram: React.FC<DiagramProps> = ({ data, title }) => {
         </Pie>
         <Legend
           layout="vertical"
-          iconSize={10}
+          iconSize={9}
           align="left"
           iconType="circle"
           payload={sortedData.map((elem) => ({

@@ -134,6 +134,7 @@ const BtnSubmit = styled.button`
   height: 30px;
   padding: 10px;
   transition: 0.3s;
+  color: ${theme.colors.light};
   &:disabled {
     opacity: 0.5;
   }

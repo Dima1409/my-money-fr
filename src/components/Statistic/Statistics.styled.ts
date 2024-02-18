@@ -1,6 +1,26 @@
 import styled from "styled-components";
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs";
+import { Select, Option } from "components/Forms/IncomeForm/IncomeForm.styled";
 import { theme } from "theme/theme";
+
+const SelectStyled = styled(Select)`
+  width: 120px;
+  margin: 0;
+  margin-left: auto;
+`;
+
+const SelectWrapperStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 auto;
+  width: 200px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
+`;
+
+const OptionStyled = styled(Option)``;
 
 const Month = styled.div`
   text-align: center;
@@ -71,6 +91,9 @@ const TabStyled = styled(Tab)`
 `;
 
 export {
+  SelectStyled,
+  OptionStyled,
+  SelectWrapperStyled,
   Month,
   HeaderTotal,
   TabListStyled,

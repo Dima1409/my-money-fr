@@ -1,4 +1,7 @@
 import {
+  SelectStyled,
+  OptionStyled,
+  SelectWrapperStyled,
   Month,
   HeaderTotal,
   TabPanelStyled,
@@ -6,7 +9,7 @@ import {
   TabStyled,
   TabListStyled,
 } from "./Statistics.styled";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useOperations from "hooks/useOperations";
 import Diagram from "components/Diagram/Diagram";
 import monthNames from "utils/months";
@@ -21,6 +24,55 @@ interface CategorizedAmount {
 
 const Statistics = () => {
   const { operations } = useOperations();
+
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonthIndex = currentDate.getMonth();
+  const currentMonth = monthNames[currentMonthIndex];
+
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
+  const [selectedYear, setSelectedYear] = useState(currentYear);
+
+  //
+  const [incomeTotalDiagram, setIncomeTotalDiagram] = useState<
+    CategorizedAmount[]
+  >([]);
+  const [expenseTotalDiagram, setExpenseTotalDiagram] = useState<
+    CategorizedAmount[]
+  >([]);
+
+  useEffect(() => {
+    const filterOperationsByTypeAndDate = (type: string) =>
+      typesOfOperations(operations, type).filter(
+        (operation) =>
+          new Date(operation.createdAt).getMonth() ===
+            monthNames.indexOf(selectedMonth) &&
+          new Date(operation.createdAt).getFullYear() === selectedYear
+      );
+
+    const incomesForSelectedMonthYear = filterOperationsByTypeAndDate("income");
+    const expensesForSelectedMonthYear =
+      filterOperationsByTypeAndDate("expense");
+
+    const newIncomeTotalDiagram = calculateCategoryTotal(
+      incomesForSelectedMonthYear
+    );
+    const newExpenseTotalDiagram = calculateCategoryTotal(
+      expensesForSelectedMonthYear
+    );
+
+    setIncomeTotalDiagram(newIncomeTotalDiagram);
+    setExpenseTotalDiagram(newExpenseTotalDiagram);
+  }, [selectedMonth, selectedYear, operations]);
+
+  const handleMonthChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedMonth(event.target.value);
+  };
+
+  const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const yearValue = parseInt(event.target.value, 10);
+    setSelectedYear(isNaN(yearValue) ? currentYear : yearValue);
+  };
 
   const typesOfOperations = (arr: ISearchOperation[], value: string) => {
     return arr.filter((elem) => elem.type === value);
@@ -45,34 +97,51 @@ const Statistics = () => {
     }));
   };
 
+  const incomesOperations = typesOfOperations(operations, "income");
+  const expensesOperations = typesOfOperations(operations, "expense");
+
   const calculateTotal = (operations: CategorizedAmount[]) => {
     return operations.reduce((acc, item) => acc + Number(item.amount), 0);
   };
 
-  const incomesOperations = typesOfOperations(operations, "income");
-  const expensesOperations = typesOfOperations(operations, "expense");
+  const calculateTotalForType = (
+    operations: ISearchOperation[],
+    type: string
+  ): number => {
+    const filteredOperations = operations.filter(
+      (operation) =>
+        operation.type === type &&
+        new Date(operation.createdAt).getMonth() ===
+          monthNames.indexOf(selectedMonth) &&
+        new Date(operation.createdAt).getFullYear() === selectedYear
+    );
 
-  const incomeTotal: CategorizedAmount[] =
-    calculateCategoryTotal(incomesOperations);
-  const expenseTotal: CategorizedAmount[] =
-    calculateCategoryTotal(expensesOperations);
-
-  const totalIncome = calculateTotal(incomesOperations);
-  const totalExpense = calculateTotal(expensesOperations);
-
-  const getMonthName = () => {
-    const monthIndex = new Date().getMonth();
-    return monthNames[monthIndex];
+    return calculateTotal(filteredOperations);
   };
-  const month = getMonthName();
-  const year = new Date().getFullYear();
+
+  const totalIncome = calculateTotalForType(incomesOperations, "income");
+  const totalExpense = calculateTotalForType(expensesOperations, "expense");
 
   const [tabIndex, setTabIndex] = useState(0);
 
   return (
     <Container>
       <Month>
-        Місяць: {month} {year}
+        <SelectWrapperStyled>
+          Місяць:{" "}
+          <SelectStyled value={selectedMonth} onChange={handleMonthChange}>
+            {monthNames.map((elem, index) => (
+              <OptionStyled key={index}>{elem}</OptionStyled>
+            ))}
+          </SelectStyled>
+        </SelectWrapperStyled>
+        <SelectWrapperStyled>
+          Рік:{" "}
+          <SelectStyled value={selectedYear} onChange={handleYearChange}>
+            <OptionStyled>{currentYear}</OptionStyled>
+            <OptionStyled>{currentYear - 1}</OptionStyled>
+          </SelectStyled>
+        </SelectWrapperStyled>
       </Month>
       <TabsStyled
         selectedIndex={tabIndex}
@@ -88,15 +157,14 @@ const Statistics = () => {
             Всього: <span>{totalIncome} грн</span>
           </HeaderTotal>
 
-          <Diagram data={incomeTotal} title="Доходи"></Diagram>
+          <Diagram data={incomeTotalDiagram} title="Доходи"></Diagram>
         </TabPanelStyled>
 
         <TabPanelStyled>
           <HeaderTotal>
             Всього: <span>{totalExpense} грн</span>
           </HeaderTotal>
-
-          <Diagram data={expenseTotal} title="Витрати"></Diagram>
+          <Diagram data={expenseTotalDiagram} title="Витрати"></Diagram>
         </TabPanelStyled>
       </TabsStyled>
     </Container>
