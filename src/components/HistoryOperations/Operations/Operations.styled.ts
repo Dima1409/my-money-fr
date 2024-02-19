@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { theme } from "theme/theme";
 import {
   SelectStyled,
-  OptionStyled,
 } from "components/Statistic/Statistics.styled";
 
 const HistorySelect = styled(SelectStyled)`
