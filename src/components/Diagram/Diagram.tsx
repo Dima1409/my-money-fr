@@ -35,7 +35,7 @@ const Diagram: React.FC<DiagramProps> = ({ data, title }) => {
           cx={150}
           cy={100}
           outerRadius={isSmallScreen ? 60 : 90}
-          innerRadius={isSmallScreen ? 30 : 45}
+          innerRadius={isSmallScreen ? 20 : 30}
           fill="#8884d8"
           label={(entry) =>
             `${((entry.value * 100) / totalAmount).toFixed(2)}%`

@@ -63,7 +63,7 @@ const SharedLayout: React.FC = () => {
             <NavListItem>
               <Link to="/statistics">
                 <StatisticIcon color={theme.colors.valid} />
-                Статистика <span style={{ fontSize: "7px" }}>в розробці</span>
+                Статистика
               </Link>
             </NavListItem>
           </>

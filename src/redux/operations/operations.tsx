@@ -20,6 +20,18 @@ const getAllOperations = createAsyncThunk("operation", async (_, thunkAPI) => {
   }
 });
 
+// const getLastSevenDaysOperations = createAsyncThunk(
+//   "operation/last_seven_days",
+//   async (_, thunkAPI) => {
+//     try {
+//       const response = await API.get("/operation");
+//       return response.data.data.result;
+//     } catch (error: any) {
+//       return thunkAPI.rejectWithValue(error.message);
+//     }
+//   }
+// );
+
 const incomeOperations = createAsyncThunk(
   "/operation/add",
   async (credentials: operationsCredentials, thunkAPI) => {

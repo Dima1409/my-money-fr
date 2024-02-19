@@ -1,5 +1,13 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
+import {
+  SelectStyled,
+  OptionStyled,
+} from "components/Statistic/Statistics.styled";
+
+const HistorySelect = styled(SelectStyled)`
+  width: 250px;
+`;
 
 const OperationWrapper = styled.ul`
   margin-top: 10px;
@@ -78,6 +86,7 @@ const BtnDelete = styled.button`
 export {
   OperationWrapper,
   OperationsHeader,
+  HistorySelect,
   OperationSort,
   TypeWrapper,
   Operation,
