@@ -41,8 +41,14 @@ const HeaderTotal = styled.h2`
   margin-bottom: 10px;
   font-family: ${theme.fonts.merriweather};
   ${theme.mq.tablet} {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
   }
+`;
+
+const TotalValue = styled.span`
+  font-family: ${theme.fonts.open_sans};
+  font-size: ${theme.fontSizes.bold};
+  font-weight: ${theme.fontWeight.bold};
 `;
 
 const TabListStyled = styled(TabList)`
@@ -96,6 +102,7 @@ export {
   SelectWrapperStyled,
   Month,
   HeaderTotal,
+  TotalValue,
   TabListStyled,
   TabPanelStyled,
   TabsStyled,

@@ -4,6 +4,7 @@ import {
   SelectWrapperStyled,
   Month,
   HeaderTotal,
+  TotalValue,
   TabPanelStyled,
   TabsStyled,
   TabStyled,
@@ -154,7 +155,7 @@ const Statistics = () => {
 
         <TabPanelStyled>
           <HeaderTotal>
-            Всього: <span>{totalIncome} грн</span>
+            Всього: <TotalValue>{totalIncome} грн</TotalValue>
           </HeaderTotal>
 
           <Diagram data={incomeTotalDiagram} title="Доходи"></Diagram>
@@ -162,7 +163,7 @@ const Statistics = () => {
 
         <TabPanelStyled>
           <HeaderTotal>
-            Всього: <span>{totalExpense} грн</span>
+            Всього: <TotalValue>{totalExpense} грн</TotalValue>
           </HeaderTotal>
           <Diagram data={expenseTotalDiagram} title="Витрати"></Diagram>
         </TabPanelStyled>
