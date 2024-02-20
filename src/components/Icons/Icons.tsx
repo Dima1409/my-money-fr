@@ -19,6 +19,8 @@ import {
   FaArrowsRotate,
 } from "react-icons/fa6";
 import { FaWallet, FaAngleUp } from "react-icons/fa";
+import { CgCalendarDates } from "react-icons/cg";
+import { CiTimer } from "react-icons/ci";
 import { theme } from "theme/theme";
 
 interface CustomIconProps {
@@ -113,6 +115,14 @@ const TopIcon: React.FC<{ size?: string; color?: string }> = (props) => (
   <IconWrapper icon={FaAngleUp} {...props} />
 );
 
+const DateIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={CgCalendarDates} {...props} />
+);
+
+const TimeIcon: React.FC<{ size?: string; color?: string }> = (props) => (
+  <IconWrapper icon={CiTimer} {...props} />
+);
+
 export {
   HomeIcon,
   SigInIcon,
@@ -131,4 +141,6 @@ export {
   CloseIcon,
   LogOutIcon,
   TopIcon,
+  DateIcon,
+  TimeIcon,
 };

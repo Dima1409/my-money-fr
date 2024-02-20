@@ -35,7 +35,7 @@ const Diagram: React.FC<DiagramProps> = ({ data, title }) => {
           cx={150}
           cy={100}
           outerRadius={isSmallScreen ? 60 : 90}
-          innerRadius={isSmallScreen ? 20 : 30}
+          innerRadius={isSmallScreen ? 30 : 45}
           fill="#8884d8"
           label={(entry) =>
             `${((entry.value * 100) / totalAmount).toFixed(2)}%`
@@ -58,11 +58,9 @@ const Diagram: React.FC<DiagramProps> = ({ data, title }) => {
             position: "absolute",
             top: "102%",
             left: "50px",
-            borderBottom: `12px solid ${theme.colors.accent}`,
-            borderRadius: `${theme.radii.small}`,
           }}
           payload={sortedData.map((elem) => ({
-            value: `${elem.category} ${elem.amount} грн`,
+            value: `${elem.category}: ${elem.amount} грн`,
             type: "circle",
             color:
               theme.diagramColors[

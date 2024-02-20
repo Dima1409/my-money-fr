@@ -62,6 +62,7 @@ const TabsStyled = styled(Tabs)`
   margin: 0 auto;
   border-bottom: ${theme.borders.normal} ${theme.colors.accent};
   max-width: 1000px;
+  margin-bottom: 200px;
 `;
 const TabPanelStyled = styled(TabPanel)`
   display: flex;

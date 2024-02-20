@@ -6,7 +6,6 @@ import {
   deleteOperation,
   deleteTransferOperation,
 } from "../../../redux/operations/operations";
-import { getAllWallets } from "../../../redux/wallets/operations";
 import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
 import Loader from "components/Loader";
@@ -19,12 +18,20 @@ import {
   OperationInfo,
   OperationResult,
   BtnDelete,
+  BtnEdit,
 } from "../Operations/Operations.styled";
 import {
   DeleteIcon,
   IncomeIcon,
   ExpenseIcon,
   TransferIcon,
+  DateIcon,
+  TimeIcon,
+  WalletIcon,
+  CategoryIcon,
+  AmountIcon,
+  NoteIcon,
+  EditIcon,
 } from "components/Icons/Icons";
 import { theme } from "theme/theme";
 import getBackgroundColor from "../Operations/getBgColor";
@@ -110,7 +117,6 @@ const HistoryOperations: React.FC = () => {
     ).then(() => {
       setDeletingOperation(null);
       dispatchTyped(getAllOperations());
-      dispatchTyped(getAllWallets());
       const updatedList = filteredOperations.filter(
         (operation) => operation._id !== id
       );
@@ -170,37 +176,9 @@ const HistoryOperations: React.FC = () => {
                   }}
                   className={isDeleting ? "deleting" : ""}
                 >
-                  {type === "income" || type === "expense" ? (
-                    <>
-                      <OperationInfo>
-                        Гаманець: <OperationResult>{wallet}</OperationResult>
-                      </OperationInfo>
-                      <OperationInfo>
-                        Категорія: <OperationResult>{category}</OperationResult>
-                      </OperationInfo>
-                      {comment && (
-                        <OperationInfo>
-                          Коментар: <OperationResult>{comment}</OperationResult>
-                        </OperationInfo>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <OperationInfo>
-                        З гаманця:{" "}
-                        <OperationResult>{walletFrom}</OperationResult>
-                      </OperationInfo>
-                      <OperationInfo>
-                        На гаманець:{" "}
-                        <OperationResult>{walletTo}</OperationResult>
-                      </OperationInfo>
-                    </>
-                  )}
                   <OperationInfo>
-                    Сума: <OperationResult>{amount} грн</OperationResult>
-                  </OperationInfo>
-                  <OperationInfo>
-                    Дата:{" "}
+                    Дата:
+                    <DateIcon color={theme.colors.accent} />
                     <OperationResult>
                       {date.getDate().toString().padStart(2, "0")}.
                       {(date.getMonth() + 1).toString().padStart(2, "0")}.
@@ -209,13 +187,53 @@ const HistoryOperations: React.FC = () => {
                     </OperationResult>
                   </OperationInfo>
                   <OperationInfo>
-                    Час:{" "}
+                    Час:
+                    <TimeIcon color={theme.colors.accent} />
                     <OperationResult>
                       {date.getHours().toString().padStart(2, "0")}:
                       {date.getMinutes().toString().padStart(2, "0")}:
                       {date.getSeconds().toString().padStart(2, "0")}
                     </OperationResult>
                   </OperationInfo>
+                  {type === "income" || type === "expense" ? (
+                    <>
+                      <OperationInfo>
+                        Сума:
+                        <AmountIcon color={theme.colors.accent} />{" "}
+                        <OperationResult>{amount} грн</OperationResult>
+                      </OperationInfo>
+                      <OperationInfo>
+                        Гаманець:
+                        <WalletIcon color={theme.colors.accent} />
+                        <OperationResult>{wallet}</OperationResult>
+                      </OperationInfo>
+                      <OperationInfo>
+                        Категорія:
+                        <CategoryIcon color={theme.colors.accent} />{" "}
+                        <OperationResult>{category}</OperationResult>
+                      </OperationInfo>
+                      {comment && (
+                        <OperationInfo>
+                          Коментар:
+                          <NoteIcon color={theme.colors.accent} />{" "}
+                          <OperationResult>{comment}</OperationResult>
+                        </OperationInfo>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      <OperationInfo>
+                        З гаманця:
+                        <WalletIcon color={theme.colors.darkRed} />{" "}
+                        <OperationResult>{walletFrom}</OperationResult>
+                      </OperationInfo>
+                      <OperationInfo>
+                        На гаманець:
+                        <WalletIcon color={theme.colors.valid} />{" "}
+                        <OperationResult>{walletTo}</OperationResult>
+                      </OperationInfo>
+                    </>
+                  )}
                   <BtnDelete
                     onClick={() => handleDelete(_id, type)}
                     disabled={isDeleting}
@@ -226,6 +244,9 @@ const HistoryOperations: React.FC = () => {
                       <DeleteIcon color={theme.colors.darkRed} />
                     )}
                   </BtnDelete>
+                  <BtnEdit>
+                    <EditIcon color={theme.colors.valid} />
+                  </BtnEdit>
                   <TypeWrapper>
                     {type === "income" && (
                       <IncomeIcon color={theme.colors.valid} />
