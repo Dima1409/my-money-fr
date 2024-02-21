@@ -189,13 +189,13 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                     {date.getSeconds().toString().padStart(2, "0")}
                   </OperationResult>
                 </OperationInfo>
+                <OperationInfo>
+                  Сума:
+                  <AmountIcon color={theme.colors.accent} />{" "}
+                  <OperationResult>{amount} грн</OperationResult>
+                </OperationInfo>
                 {type === "income" || type === "expense" ? (
                   <>
-                    <OperationInfo>
-                      Сума:
-                      <AmountIcon color={theme.colors.accent} />{" "}
-                      <OperationResult>{amount} грн</OperationResult>
-                    </OperationInfo>
                     <OperationInfo>
                       Гаманець:
                       <WalletIcon color={theme.colors.accent} />
