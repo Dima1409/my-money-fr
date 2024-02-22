@@ -34,6 +34,8 @@ import {
   EditIcon,
 } from "components/Icons/Icons";
 import { theme } from "theme/theme";
+import useToggle from "hooks/useToggle";
+import Modal from "components/Modal";
 import getBackgroundColor from "../Operations/getBgColor";
 import { isToday, isYesterday } from "utils/dateTodayYesterday";
 import Pagination from "components/pagination/Pagination";
@@ -45,6 +47,13 @@ import {
 
 const ITEMS_PER_PAGE = 10;
 
+const initialState = {
+  wallet: "",
+  category: "",
+  amount: "",
+  comment: "",
+};
+
 const HistoryOperations: React.FC = () => {
   const { operations } = useOperations();
 
@@ -53,6 +62,12 @@ const HistoryOperations: React.FC = () => {
   const { isLoggedIn } = useAuth();
 
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+  const { isOpen, close, toggle } = useToggle();
+  const [editingOperationId, setEditingOperationId] = useState<string | null>(
+    null
+  );
+  const [formData, setFormData] = useState(initialState);
+  // const [editing, setEditing] = useState<boolean>(false);
   const [deletingOperation, setDeletingOperation] = useState<string | null>(
     null
   );
@@ -69,6 +84,37 @@ const HistoryOperations: React.FC = () => {
     const newOption = e.target.value;
     setSelectedOption(newOption);
     setCurrentPage(1);
+  };
+
+  // const onRename = async () => {
+  //   // const id = editingOperationId || "";
+  //   dispatchTyped(editOperation(formData)).then(() =>
+  //     dispatchTyped(getAllOperations())
+  //   );
+  //   onClose();
+  //   setFormData(initialState);
+  // };
+
+  // const onClose = async () => {
+  //   // setEditing(false);
+  //   setEditingOperationId(null);
+  //   setFormData(initialState);
+  // };
+
+  const startEditing = (id: string) => {
+    const currentOperation = operations.find((elem) => elem._id === id);
+    setEditingOperationId(id);
+    // setEditing(true);
+    console.log("currentOperation", currentOperation);
+    console.log("walletCurrentOperation", currentOperation?.wallet);
+    console.log("id", editingOperationId);
+    setFormData({
+      wallet: currentOperation?.wallet || "",
+      category: currentOperation?.category || "",
+      amount: String(currentOperation?.amount) || "",
+      comment: currentOperation?.comment || "",
+    });
+    console.log("data", formData);
   };
 
   useEffect(() => {
@@ -128,140 +174,173 @@ const HistoryOperations: React.FC = () => {
   };
 
   return (
-    <OperationWrapper>
-      <SelectWrapperStyled>
-        <HistorySelect value={selectedOption} onChange={handleOptionChange}>
-          <OptionStyled value="7days">За 7 днів</OptionStyled>
-          <OptionStyled value="month">За Місяць</OptionStyled>
-          <OptionStyled value="year">За Рік</OptionStyled>
-          <OptionStyled value="all">За весь період</OptionStyled>
-        </HistorySelect>
-      </SelectWrapperStyled>
+    <>
+      <OperationWrapper>
+        <SelectWrapperStyled>
+          <HistorySelect value={selectedOption} onChange={handleOptionChange}>
+            <OptionStyled value="7days">За 7 днів</OptionStyled>
+            <OptionStyled value="month">За Місяць</OptionStyled>
+            <OptionStyled value="year">За Рік</OptionStyled>
+            <OptionStyled value="all">За весь період</OptionStyled>
+          </HistorySelect>
+        </SelectWrapperStyled>
 
-      <ButtonToTop></ButtonToTop>
-      <Pagination
-        totalItems={filteredOperations.length}
-        itemsPerPage={ITEMS_PER_PAGE}
-        onPageChange={handlePageChange}
-      />
-      {isLoggedIn &&
-        currentOperations &&
-        currentOperations.map(
-          ({
-            _id,
-            amount,
-            type,
-            category,
-            comment,
-            createdAt,
-            wallet,
-            walletFrom,
-            walletTo,
-          }: ISearchOperation) => {
-            const isDeleting = deletingOperation === _id;
-            const date = new Date(createdAt);
-            let dateNote = "";
+        <ButtonToTop></ButtonToTop>
+        <Pagination
+          totalItems={filteredOperations.length}
+          itemsPerPage={ITEMS_PER_PAGE}
+          onPageChange={handlePageChange}
+        />
+        {isLoggedIn &&
+          currentOperations &&
+          currentOperations.map(
+            ({
+              _id,
+              amount,
+              type,
+              category,
+              comment,
+              createdAt,
+              wallet,
+              walletFrom,
+              walletTo,
+            }: ISearchOperation) => {
+              const isDeleting = deletingOperation === _id;
+              const date = new Date(createdAt);
+              let dateNote = "";
 
-            if (isToday(date)) {
-              dateNote = " (сьогодні)";
-            } else if (isYesterday(date)) {
-              dateNote = " (вчора)";
-            }
-            return (
-              <>
-                <Operation
-                  key={_id}
-                  style={{
-                    backgroundColor: getBackgroundColor(type),
-                  }}
-                  className={isDeleting ? "deleting" : ""}
-                >
-                  <OperationInfo>
-                    Дата:
-                    <DateIcon color={theme.colors.accent} />
-                    <OperationResult>
-                      {date.getDate().toString().padStart(2, "0")}.
-                      {(date.getMonth() + 1).toString().padStart(2, "0")}.
-                      {date.getFullYear()}
-                      {dateNote}
-                    </OperationResult>
-                  </OperationInfo>
-                  <OperationInfo>
-                    Час:
-                    <TimeIcon color={theme.colors.accent} />
-                    <OperationResult>
-                      {date.getHours().toString().padStart(2, "0")}:
-                      {date.getMinutes().toString().padStart(2, "0")}:
-                      {date.getSeconds().toString().padStart(2, "0")}
-                    </OperationResult>
-                  </OperationInfo>
-                  <OperationInfo>
-                    Сума:
-                    <AmountIcon color={theme.colors.accent} />{" "}
-                    <OperationResult>{amount} грн</OperationResult>
-                  </OperationInfo>
-                  {type === "income" || type === "expense" ? (
-                    <>
-                      <OperationInfo>
-                        Гаманець:
-                        <WalletIcon color={theme.colors.accent} />
-                        <OperationResult>{wallet}</OperationResult>
-                      </OperationInfo>
-                      <OperationInfo>
-                        Категорія:
-                        <CategoryIcon color={theme.colors.accent} />{" "}
-                        <OperationResult>{category}</OperationResult>
-                      </OperationInfo>
-                      {comment && (
-                        <OperationInfo>
-                          Коментар:
-                          <NoteIcon color={theme.colors.accent} />{" "}
-                          <OperationResult>{comment}</OperationResult>
-                        </OperationInfo>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <OperationInfo>
-                        З гаманця:
-                        <WalletIcon color={theme.colors.darkRed} />{" "}
-                        <OperationResult>{walletFrom}</OperationResult>
-                      </OperationInfo>
-                      <OperationInfo>
-                        На гаманець:
-                        <WalletIcon color={theme.colors.valid} />{" "}
-                        <OperationResult>{walletTo}</OperationResult>
-                      </OperationInfo>
-                    </>
-                  )}
-                  <BtnDelete
-                    onClick={() => handleDelete(_id, type)}
-                    disabled={isDeleting}
+              if (isToday(date)) {
+                dateNote = " (сьогодні)";
+              } else if (isYesterday(date)) {
+                dateNote = " (вчора)";
+              }
+              return (
+                <>
+                  <Operation
+                    key={_id}
+                    style={{
+                      backgroundColor: getBackgroundColor(type),
+                    }}
+                    className={isDeleting ? "deleting" : ""}
                   >
-                    {isDeleting ? (
-                      <Loader type="spin" width="30px" height="30px" />
+                    <OperationInfo>
+                      Дата:
+                      <DateIcon color={theme.colors.accent} />
+                      <OperationResult>
+                        {date.getDate().toString().padStart(2, "0")}.
+                        {(date.getMonth() + 1).toString().padStart(2, "0")}.
+                        {date.getFullYear()}
+                        {dateNote}
+                      </OperationResult>
+                    </OperationInfo>
+                    <OperationInfo>
+                      Час:
+                      <TimeIcon color={theme.colors.accent} />
+                      <OperationResult>
+                        {date.getHours().toString().padStart(2, "0")}:
+                        {date.getMinutes().toString().padStart(2, "0")}:
+                        {date.getSeconds().toString().padStart(2, "0")}
+                      </OperationResult>
+                    </OperationInfo>
+                    <OperationInfo>
+                      Сума:
+                      <AmountIcon color={theme.colors.accent} />{" "}
+                      <OperationResult>{amount} грн</OperationResult>
+                    </OperationInfo>
+                    {type === "income" || type === "expense" ? (
+                      <>
+                        <OperationInfo>
+                          Гаманець:
+                          <WalletIcon color={theme.colors.accent} />
+                          <OperationResult>{wallet}</OperationResult>
+                        </OperationInfo>
+                        <OperationInfo>
+                          Категорія:
+                          <CategoryIcon color={theme.colors.accent} />{" "}
+                          <OperationResult>{category}</OperationResult>
+                        </OperationInfo>
+                        {comment && (
+                          <OperationInfo>
+                            Коментар:
+                            <NoteIcon color={theme.colors.accent} />{" "}
+                            <OperationResult>{comment}</OperationResult>
+                          </OperationInfo>
+                        )}
+                      </>
                     ) : (
-                      <DeleteIcon color={theme.colors.darkRed} />
+                      <>
+                        <OperationInfo>
+                          З гаманця:
+                          <WalletIcon color={theme.colors.darkRed} />{" "}
+                          <OperationResult>{walletFrom}</OperationResult>
+                        </OperationInfo>
+                        <OperationInfo>
+                          На гаманець:
+                          <WalletIcon color={theme.colors.valid} />{" "}
+                          <OperationResult>{walletTo}</OperationResult>
+                        </OperationInfo>
+                      </>
                     )}
-                  </BtnDelete>
-                  <BtnEdit>
-                    <EditIcon color={theme.colors.valid} />
-                  </BtnEdit>
-                  <TypeWrapper>
-                    {type === "income" && (
-                      <IncomeIcon color={theme.colors.valid} />
-                    )}
-                    {type === "expense" && (
-                      <ExpenseIcon color={theme.colors.invalid} />
-                    )}
-                    {!type && <TransferIcon color={theme.colors.accent} />}
-                  </TypeWrapper>
-                </Operation>
-              </>
-            );
-          }
-        )}
-    </OperationWrapper>
+                    <BtnDelete
+                      onClick={() => handleDelete(_id, type)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? (
+                        <Loader type="spin" width="30px" height="30px" />
+                      ) : (
+                        <DeleteIcon color={theme.colors.darkRed} />
+                      )}
+                    </BtnDelete>
+                    <BtnEdit
+                      onClick={() => {
+                        startEditing(_id);
+                        toggle();
+                      }}
+                    >
+                      <EditIcon color={theme.colors.valid} />
+                    </BtnEdit>
+                    <TypeWrapper>
+                      {type === "income" && (
+                        <IncomeIcon color={theme.colors.valid} />
+                      )}
+                      {type === "expense" && (
+                        <ExpenseIcon color={theme.colors.invalid} />
+                      )}
+                      {!type && <TransferIcon color={theme.colors.accent} />}
+                    </TypeWrapper>
+                  </Operation>
+                </>
+              );
+            }
+          )}
+      </OperationWrapper>
+      {isOpen && (
+        <Modal
+          onClick={() => {
+            close();
+          }}
+        >
+          <form autoComplete="off">
+            <label>
+              wallet
+              <input name="wallet" value={formData.wallet}></input>
+            </label>
+            <label>
+              amount
+              <input name="amount" value={formData.amount}></input>
+            </label>
+            <label>
+              category
+              <input name="category" value={formData.category}></input>
+            </label>
+            <label>
+              comment
+              <input name="comment" value={formData.comment}></input>
+            </label>
+          </form>
+        </Modal>
+      )}
+    </>
   );
 };
 export default HistoryOperations;

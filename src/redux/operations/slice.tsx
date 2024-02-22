@@ -5,6 +5,7 @@ import {
   expensesOperation,
   transfersOperation,
   deleteOperation,
+  editOperation,
 } from "./operations";
 
 interface Operation {
@@ -85,16 +86,26 @@ const OperationsSlice = createSlice({
           state.operations.splice(index, 1);
         }
       )
+      .addCase(
+        editOperation.fulfilled,
+        (state: OperationsState, action: PayloadAction<Operation>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.operations.push(action.payload);
+        }
+      )
       .addCase(getAllOperations.pending, handlePending)
       .addCase(incomeOperations.pending, handlePending)
       .addCase(expensesOperation.pending, handlePending)
       .addCase(deleteOperation.pending, handlePending)
       .addCase(transfersOperation.pending, handlePending)
+      .addCase(editOperation.pending, handlePending)
       .addCase(getAllOperations.rejected, handleRejected)
       .addCase(incomeOperations.rejected, handleRejected)
       .addCase(expensesOperation.rejected, handleRejected)
       .addCase(deleteOperation.rejected, handleRejected)
-      .addCase(transfersOperation.rejected, handleRejected);
+      .addCase(transfersOperation.rejected, handleRejected)
+      .addCase(editOperation.rejected, handleRejected);
   },
 });
 

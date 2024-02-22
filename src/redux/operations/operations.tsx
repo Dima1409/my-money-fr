@@ -20,18 +20,6 @@ const getAllOperations = createAsyncThunk("operation", async (_, thunkAPI) => {
   }
 });
 
-// const getLastSevenDaysOperations = createAsyncThunk(
-//   "operation/last_seven_days",
-//   async (_, thunkAPI) => {
-//     try {
-//       const response = await API.get("/operation");
-//       return response.data.data.result;
-//     } catch (error: any) {
-//       return thunkAPI.rejectWithValue(error.message);
-//     }
-//   }
-// );
-
 const incomeOperations = createAsyncThunk(
   "/operation/add",
   async (credentials: operationsCredentials, thunkAPI) => {
@@ -81,12 +69,24 @@ const deleteOperation = createAsyncThunk(
 );
 
 const deleteTransferOperation = createAsyncThunk(
-  "/operation//transfer/:id",
+  "/operation/transfer/:id",
   async (id: operationsCredentials, thunkAPI) => {
     try {
       const response = await API.delete(`/operation/transfer/${id}`);
       return response.data.data.result;
     } catch (error: any) {
+      throw thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+const editOperation = createAsyncThunk(
+  "/operations/edit/:id",
+  async (credentials: operationsCredentials, thunkAPI) => {
+    try {
+      const response = await API.patch(`/operation/edit/${credentials}`);
+      return response.data.data.result;
+    } catch (error) {
       throw thunkAPI.rejectWithValue(error);
     }
   }
@@ -99,4 +99,5 @@ export {
   transfersOperation,
   deleteOperation,
   deleteTransferOperation,
+  editOperation,
 };
