@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 import {
   getAllOperations,
   deleteOperation,
   deleteTransferOperation,
+  editOperation,
 } from "../../../redux/operations/operations";
 import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
@@ -44,14 +45,17 @@ import {
   SelectWrapperStyled,
   OptionStyled,
 } from "components/Statistic/Statistics.styled";
+import { getAllWallets } from "../../../redux/wallets/operations";
 
 const ITEMS_PER_PAGE = 10;
 
 const initialState = {
+  id: "",
   wallet: "",
   category: "",
   amount: "",
   comment: "",
+  type: "",
 };
 
 const HistoryOperations: React.FC = () => {
@@ -63,11 +67,7 @@ const HistoryOperations: React.FC = () => {
 
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const { isOpen, close, toggle } = useToggle();
-  const [editingOperationId, setEditingOperationId] = useState<string | null>(
-    null
-  );
   const [formData, setFormData] = useState(initialState);
-  // const [editing, setEditing] = useState<boolean>(false);
   const [deletingOperation, setDeletingOperation] = useState<string | null>(
     null
   );
@@ -86,35 +86,41 @@ const HistoryOperations: React.FC = () => {
     setCurrentPage(1);
   };
 
-  // const onRename = async () => {
-  //   // const id = editingOperationId || "";
-  //   dispatchTyped(editOperation(formData)).then(() =>
-  //     dispatchTyped(getAllOperations())
-  //   );
-  //   onClose();
-  //   setFormData(initialState);
-  // };
+  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
 
-  // const onClose = async () => {
-  //   // setEditing(false);
-  //   setEditingOperationId(null);
-  //   setFormData(initialState);
-  // };
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatchTyped(
+      editOperation({
+        id: formData.id,
+        wallet: formData.wallet,
+        category: formData.category,
+        amount: formData.amount,
+        comment: formData.comment,
+        type: formData.type,
+      })
+    )
+      .then(() => dispatchTyped(getAllOperations()))
+      .finally(() => dispatchTyped(getAllWallets()));
+    close();
+  };
 
   const startEditing = (id: string) => {
     const currentOperation = operations.find((elem) => elem._id === id);
-    setEditingOperationId(id);
-    // setEditing(true);
-    console.log("currentOperation", currentOperation);
-    console.log("walletCurrentOperation", currentOperation?.wallet);
-    console.log("id", editingOperationId);
     setFormData({
+      id: currentOperation?._id || "",
       wallet: currentOperation?.wallet || "",
       category: currentOperation?.category || "",
       amount: String(currentOperation?.amount) || "",
       comment: currentOperation?.comment || "",
+      type: currentOperation?.type || "",
     });
-    console.log("data", formData);
   };
 
   useEffect(() => {
@@ -320,23 +326,43 @@ const HistoryOperations: React.FC = () => {
             close();
           }}
         >
-          <form autoComplete="off">
+          <form onSubmit={handleSubmit} autoComplete="off">
             <label>
               wallet
-              <input name="wallet" value={formData.wallet}></input>
+              <input
+                name="wallet"
+                value={formData.wallet}
+                onChange={handleInputChange}
+              ></input>
             </label>
             <label>
               amount
-              <input name="amount" value={formData.amount}></input>
+              <input
+                name="amount"
+                value={formData.amount}
+                onChange={handleInputChange}
+              ></input>
             </label>
             <label>
               category
-              <input name="category" value={formData.category}></input>
+              <input
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+              ></input>
             </label>
             <label>
               comment
-              <input name="comment" value={formData.comment}></input>
+              <input
+                name="comment"
+                value={formData.comment}
+                onChange={handleInputChange}
+              ></input>
             </label>
+            <button type="button" onClick={() => close()}>
+              close
+            </button>
+            <button type="submit">ok</button>
           </form>
         </Modal>
       )}

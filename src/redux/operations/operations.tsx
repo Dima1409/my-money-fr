@@ -9,6 +9,7 @@ interface operationsCredentials {
   comment?: string;
   walletFrom?: string;
   walletTo?: string;
+  type?: string;
 }
 
 const getAllOperations = createAsyncThunk("operation", async (_, thunkAPI) => {
@@ -84,7 +85,13 @@ const editOperation = createAsyncThunk(
   "/operations/edit/:id",
   async (credentials: operationsCredentials, thunkAPI) => {
     try {
-      const response = await API.patch(`/operation/edit/${credentials}`);
+      const response = await API.patch(`/operation/edit/${credentials.id}`, {
+        amount: credentials.amount,
+        wallet: credentials.wallet,
+        category: credentials.category,
+        comment: credentials.comment,
+        type: credentials.type,
+      });
       return response.data.data.result;
     } catch (error) {
       throw thunkAPI.rejectWithValue(error);
