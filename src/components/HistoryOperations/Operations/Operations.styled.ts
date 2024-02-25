@@ -121,11 +121,10 @@ const SelectEdit = styled(Select)`
   padding: 0;
   margin: 0;
   margin-left: auto;
-  background-color: ${theme.colors.accentActive};
+  color: ${theme.colors.dark};
+  background-color: ${theme.colors.light};
+  width: 140px;
   ${theme.mq.tablet} {
-    width: 150px;
-  }
-  ${theme.mq.desktop} {
     width: 150px;
   }
   &:hover {
@@ -140,11 +139,17 @@ const InputEdit = styled(Input)`
   padding: 0;
   margin: 0;
   margin-left: auto;
-  background-color: ${theme.colors.accentActive};
-  ${theme.mq.tablet} {
-    width: 150px;
+  color: ${theme.colors.dark};
+  background-color: ${theme.colors.light};
+  border: ${theme.borders.normal} transparent;
+  width: 140px;
+  &:valid {
+    border-color: ${theme.colors.valid};
   }
-  ${theme.mq.desktop} {
+  &:invalid {
+    border-color: ${theme.colors.invalid};
+  }
+  ${theme.mq.tablet} {
     width: 150px;
   }
   &:hover {

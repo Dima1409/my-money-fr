@@ -186,7 +186,7 @@ const ExpenseForm: React.FC = () => {
                   formData.amount === "" ||
                   formData.category === "" ||
                   formData.wallet === "" ||
-                  !isCommentValid
+                  (!isCommentValid && formData.comment !== "")
                 }
               >
                 <DoneIcon color={theme.colors.valid} />

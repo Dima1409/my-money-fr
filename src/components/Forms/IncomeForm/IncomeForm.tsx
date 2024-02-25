@@ -134,10 +134,7 @@ const IncomeForm: React.FC = () => {
                     (category: ISearchCategory) => category.type === "income"
                   )
                   .map(({ _id, name }: ISearchCategory) => (
-                    <Option
-                      key={_id}
-                      value={name}
-                    >
+                    <Option key={_id} value={name}>
                       {name}
                     </Option>
                   ))}
@@ -187,7 +184,7 @@ const IncomeForm: React.FC = () => {
                   formData.amount === "" ||
                   formData.category === "" ||
                   formData.wallet === "" ||
-                  !isCommentValid
+                  (!isCommentValid && formData.comment !== "")
                 }
               >
                 <DoneIcon color={theme.colors.valid} />

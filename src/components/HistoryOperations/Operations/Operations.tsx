@@ -52,6 +52,7 @@ import { FormEdit } from "components/WalletsList/WalletsList.styled";
 import useWallets from "hooks/useWallets";
 import useCategory from "hooks/useCategory";
 import { ISearchWallet, ISearchCategory } from "types/data";
+import { amountPattern, commentPattern } from "utils/patterns";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -72,6 +73,8 @@ interface OperationsProps {
 const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
   const { wallets } = useWallets();
   const { categories } = useCategory();
+
+  const [isCommentValid, setIsCommentValid] = useState(true);
 
   const [selectedOption, setSelectedOption] = useState("7days");
 
@@ -96,14 +99,18 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
     setCurrentPage(1);
   };
 
-  const handleInputChange = async (
+  const handleInputChange = (
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    if (name === "comment") {
+      const isValid = commentPattern.test(value);
+      setIsCommentValid(isValid);
+    }
+    setFormData((prevData) => ({
+      ...prevData,
       [name]: value,
-    });
+    }));
   };
 
   useEffect(() => {
@@ -347,10 +354,12 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
             <SelectLabel>
               Сума
               <InputEdit
+                style={{ borderColor: "transparent" }}
                 type="number"
                 name="amount"
                 value={formData.amount}
                 onChange={handleInputChange}
+                pattern={amountPattern.source}
               ></InputEdit>
             </SelectLabel>
             <SelectLabel>
@@ -370,9 +379,11 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
             <SelectLabel>
               Коментар
               <InputEdit
+                type="text"
                 name="comment"
                 value={formData.comment}
                 onChange={handleInputChange}
+                pattern={commentPattern.source}
               ></InputEdit>
             </SelectLabel>
             <SelectLabel>
@@ -391,7 +402,18 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                 onChange={handleInputChange}
               ></InputEdit>
             </SelectLabel>
-            <BtnSubmit type="submit">ok</BtnSubmit>
+            <BtnSubmit
+              disabled={
+                !amountPattern.test(formData.amount) ||
+                formData.amount === "" ||
+                formData.category === "" ||
+                formData.wallet === "" ||
+                (!isCommentValid && formData.comment !== "")
+              }
+              type="submit"
+            >
+              ok
+            </BtnSubmit>
           </FormEdit>
         </Modal>
       )}
