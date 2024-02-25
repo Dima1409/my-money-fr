@@ -155,7 +155,7 @@ const CategoryList: React.FC<CategoryListProps> = ({
             itemsPerPage={ITEMS_PER_PAGE}
             onPageChange={handlePageChange}
           />
-          {currentCategories.map(({ _id, name }) => (
+          {currentCategories.map(({ _id, name, type }) => (
             <WalletsContainer key={_id}>
               {editingCategoryId === _id ? (
                 <FormEdit autoComplete="off">
@@ -196,7 +196,16 @@ const CategoryList: React.FC<CategoryListProps> = ({
                 </FormEdit>
               ) : (
                 <WalletsWrapper>
-                  <LabelList>{name}</LabelList>
+                  <LabelList
+                    style={{
+                      color:
+                        type === "income"
+                          ? theme.colors.valid
+                          : theme.colors.darkRed,
+                    }}
+                  >
+                    {name}
+                  </LabelList>
                   <BtnDelete onClick={(e) => handleDelete(e, _id)}>
                     <DeleteIcon />
                   </BtnDelete>

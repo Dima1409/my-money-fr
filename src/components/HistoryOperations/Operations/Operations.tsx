@@ -1,5 +1,5 @@
 import { ISearchOperation } from "types/data";
-import { useState } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import {
@@ -7,6 +7,7 @@ import {
   deleteOperation,
   deleteTransferOperation,
 } from "../../../redux/operations/operations";
+import { editOperation } from "../../../redux/operations/operations";
 import { theme } from "theme/theme";
 import getBackgroundColor from "./getBgColor";
 import {
@@ -18,7 +19,13 @@ import {
   TypeWrapper,
   BtnDelete,
   BtnEdit,
+  SelectLabel,
+  SelectEdit,
+  OptionEdit,
+  InputEdit,
+  BtnSubmit,
 } from "./Operations.styled";
+import Modal from "components/Modal";
 import Loader from "components/Loader";
 import {
   DeleteIcon,
@@ -40,17 +47,37 @@ import {
   OptionStyled,
 } from "components/Statistic/Statistics.styled";
 import { useEffect } from "react";
+import useToggle from "hooks/useToggle";
+import { FormEdit } from "components/WalletsList/WalletsList.styled";
+import useWallets from "hooks/useWallets";
+import useCategory from "hooks/useCategory";
+import { ISearchWallet, ISearchCategory } from "types/data";
 
 const ITEMS_PER_PAGE = 10;
+
+const initialState = {
+  id: "",
+  wallet: "",
+  category: "",
+  amount: "",
+  comment: "",
+  type: "",
+  updatedAt: "",
+};
 
 interface OperationsProps {
   operationsType: ISearchOperation[];
 }
 
 const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
+  const { wallets } = useWallets();
+  const { categories } = useCategory();
+
   const [selectedOption, setSelectedOption] = useState("7days");
 
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
+  const { isOpen, close, toggle } = useToggle();
+  const [formData, setFormData] = useState(initialState);
   const [deletingOperation, setDeletingOperation] = useState<string | null>(
     null
   );
@@ -69,22 +96,60 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
     setCurrentPage(1);
   };
 
+  const handleInputChange = async (
+    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   useEffect(() => {
     if (selectedOption) {
       dispatchTyped(getAllOperations());
     }
   }, [dispatchTyped, selectedOption]);
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatchTyped(
+      editOperation({
+        id: formData.id,
+        wallet: formData.wallet,
+        category: formData.category,
+        amount: formData.amount,
+        comment: formData.comment,
+        type: formData.type,
+      })
+    ).then(() => dispatchTyped(getAllOperations()));
+    close();
+  };
+
+  const startEditing = (id: string) => {
+    const currentOperation = operationsType.find((elem) => elem._id === id);
+    setFormData({
+      id: currentOperation?._id || "",
+      wallet: currentOperation?.wallet || "",
+      category: currentOperation?.category || "",
+      amount: String(currentOperation?.amount) || "",
+      comment: currentOperation?.comment || "",
+      type: currentOperation?.type || "",
+      updatedAt: currentOperation?.updatedAt || "",
+    });
+  };
+
   const sortedOperations = [...operationsType]?.sort(
     (a: ISearchOperation, b: ISearchOperation) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
 
   const filteredOperations =
     selectedOption === "all"
       ? sortedOperations
       : sortedOperations.filter((operation) => {
-          const operationDate = new Date(operation.createdAt);
+          const operationDate = new Date(operation.updatedAt);
           if (selectedOption === "7days") {
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -148,13 +213,13 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
             type,
             category,
             comment,
-            createdAt,
+            updatedAt,
             wallet,
             walletFrom,
             walletTo,
           }: ISearchOperation) => {
             const isDeleting = deletingOperation === _id;
-            const date = new Date(createdAt);
+            const date = new Date(updatedAt);
             let dateNote = "";
 
             if (isToday(date)) {
@@ -238,7 +303,12 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                     <DeleteIcon color={theme.colors.darkRed} />
                   )}
                 </BtnDelete>
-                <BtnEdit>
+                <BtnEdit
+                  onClick={() => {
+                    startEditing(_id);
+                    toggle();
+                  }}
+                >
                   <EditIcon color={theme.colors.valid} />
                 </BtnEdit>
                 <TypeWrapper>
@@ -255,6 +325,76 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
           }
         )}
       </OperationWrapper>
+      {isOpen && (
+        <Modal
+          onClick={() => {
+            close();
+          }}
+        >
+          <FormEdit onSubmit={handleSubmit} autoComplete="off">
+            <SelectLabel>
+              Гаманець
+              <SelectEdit
+                name="wallet"
+                value={formData.wallet}
+                onChange={handleInputChange}
+              >
+                {wallets?.map(({ _id, name }: ISearchWallet) => (
+                  <OptionEdit key={_id}>{name}</OptionEdit>
+                ))}
+              </SelectEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Сума
+              <InputEdit
+                type="number"
+                name="amount"
+                value={formData.amount}
+                onChange={handleInputChange}
+              ></InputEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Категорія
+              <SelectEdit
+                name="category"
+                value={formData.category}
+                onChange={handleInputChange}
+              >
+                {categories?.map(({ _id, name, type }: ISearchCategory) =>
+                  type === formData.type ? (
+                    <OptionEdit key={_id}>{name}</OptionEdit>
+                  ) : null
+                )}
+              </SelectEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Коментар
+              <InputEdit
+                name="comment"
+                value={formData.comment}
+                onChange={handleInputChange}
+              ></InputEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Дата
+              <InputEdit
+                type="date"
+                name="updatedAt"
+                value={`${new Date(formData.updatedAt)
+                  .getFullYear()
+                  .toString()}-${(new Date(formData.updatedAt).getMonth() + 1)
+                  .toString()
+                  .padStart(2, "0")}-${new Date(formData.updatedAt)
+                  .getDate()
+                  .toString()
+                  .padStart(2, "0")}`}
+                onChange={handleInputChange}
+              ></InputEdit>
+            </SelectLabel>
+            <BtnSubmit type="submit">ok</BtnSubmit>
+          </FormEdit>
+        </Modal>
+      )}
     </>
   );
 };

@@ -22,8 +22,11 @@ const Modal = styled.div`
   border-radius: ${theme.radii.normal};
   max-width: calc(100vw - 20px);
   max-height: calc(100vh - 20px);
+  margin: 10px;
   ${theme.mq.tablet} {
-    padding: 55px 250px;
+    width: 500px;
+    padding: 55px 40px;
+    margin: 40px;
   }
 `;
 const ButtonClose = styled.button`

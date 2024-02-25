@@ -134,7 +134,10 @@ const IncomeForm: React.FC = () => {
                     (category: ISearchCategory) => category.type === "income"
                   )
                   .map(({ _id, name }: ISearchCategory) => (
-                    <Option key={_id} value={name}>
+                    <Option
+                      key={_id}
+                      value={name}
+                    >
                       {name}
                     </Option>
                   ))}

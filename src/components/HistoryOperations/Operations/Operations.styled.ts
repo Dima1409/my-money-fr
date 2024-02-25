@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import { theme } from "theme/theme";
 import { SelectStyled } from "components/Statistic/Statistics.styled";
+import {
+  SelectWrapper,
+  Select,
+  Option,
+  ButtonSubmit,
+} from "components/Forms/IncomeForm/IncomeForm.styled";
+import { Input } from "components/Forms/IncomeForm/IncomeForm.styled";
 
 const HistorySelect = styled(SelectStyled)`
   width: 250px;
@@ -97,9 +104,61 @@ const BtnDelete = styled.button`
 `;
 
 const BtnEdit = styled(BtnDelete)`
-  bottom: 10px;
-  right: 60px;
+  bottom: 60px;
+  right: 10px;
   border: ${theme.borders.normal} ${theme.colors.valid};
+`;
+
+const SelectLabel = styled(SelectWrapper)`
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const SelectEdit = styled(Select)`
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  margin-left: auto;
+  background-color: ${theme.colors.accentActive};
+  ${theme.mq.tablet} {
+    width: 150px;
+  }
+  ${theme.mq.desktop} {
+    width: 150px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const OptionEdit = styled(Option)``;
+
+const InputEdit = styled(Input)`
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  margin-left: auto;
+  background-color: ${theme.colors.accentActive};
+  ${theme.mq.tablet} {
+    width: 150px;
+  }
+  ${theme.mq.desktop} {
+    width: 150px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const BtnSubmit = styled(ButtonSubmit)`
+  width: 90px;
+  background-color: ${theme.colors.incomeHeader};
+  color: ${theme.colors.light};
+  &:disabled {
+    opacity: 0.7;
+  }
 `;
 
 export {
@@ -113,4 +172,9 @@ export {
   OperationResult,
   BtnDelete,
   BtnEdit,
+  SelectLabel,
+  SelectEdit,
+  OptionEdit,
+  InputEdit,
+  BtnSubmit,
 };

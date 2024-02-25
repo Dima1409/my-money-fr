@@ -7,10 +7,12 @@ import {
   deleteTransferOperation,
   editOperation,
 } from "../../../redux/operations/operations";
+import { getAllWallets } from "../../../redux/wallets/operations";
+import { getAll } from "../../../redux/categories/operations";
 import useOperations from "hooks/useOperations";
 import useAuth from "../../../hooks/useAuth";
 import Loader from "components/Loader";
-import { ISearchOperation } from "types/data";
+import { ISearchOperation, ISearchWallet, ISearchCategory } from "types/data";
 import {
   OperationWrapper,
   Operation,
@@ -20,6 +22,11 @@ import {
   OperationResult,
   BtnDelete,
   BtnEdit,
+  SelectLabel,
+  SelectEdit,
+  OptionEdit,
+  InputEdit,
+  BtnSubmit,
 } from "../Operations/Operations.styled";
 import {
   DeleteIcon,
@@ -45,7 +52,9 @@ import {
   SelectWrapperStyled,
   OptionStyled,
 } from "components/Statistic/Statistics.styled";
-import { getAllWallets } from "../../../redux/wallets/operations";
+import { FormEdit } from "components/WalletsList/WalletsList.styled";
+import useWallets from "hooks/useWallets";
+import useCategory from "hooks/useCategory";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -56,15 +65,16 @@ const initialState = {
   amount: "",
   comment: "",
   type: "",
+  updatedAt: "",
 };
 
 const HistoryOperations: React.FC = () => {
   const { operations } = useOperations();
-
-  const [selectedOption, setSelectedOption] = useState("7days");
-
+  const { wallets } = useWallets();
+  const { categories } = useCategory();
   const { isLoggedIn } = useAuth();
 
+  const [selectedOption, setSelectedOption] = useState("7days");
   const dispatchTyped = useDispatch<ThunkDispatch<any, any, any>>();
   const { isOpen, close, toggle } = useToggle();
   const [formData, setFormData] = useState(initialState);
@@ -86,13 +96,22 @@ const HistoryOperations: React.FC = () => {
     setCurrentPage(1);
   };
 
-  const handleInputChange = async (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = async (
+    e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    dispatchTyped(getAll());
+    if (selectedOption) {
+      dispatchTyped(getAllOperations());
+    }
+  }, [dispatchTyped, selectedOption]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -120,25 +139,20 @@ const HistoryOperations: React.FC = () => {
       amount: String(currentOperation?.amount) || "",
       comment: currentOperation?.comment || "",
       type: currentOperation?.type || "",
+      updatedAt: currentOperation?.updatedAt || "",
     });
   };
 
-  useEffect(() => {
-    if (selectedOption) {
-      dispatchTyped(getAllOperations());
-    }
-  }, [dispatchTyped, selectedOption]);
-
   const sortedOperations = [...operations]?.sort(
     (a: ISearchOperation, b: ISearchOperation) =>
-      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
   );
 
   const filteredOperations =
     selectedOption === "all"
       ? sortedOperations
       : sortedOperations.filter((operation) => {
-          const operationDate = new Date(operation.createdAt);
+          const operationDate = new Date(operation.updatedAt);
           if (selectedOption === "7days") {
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -206,13 +220,13 @@ const HistoryOperations: React.FC = () => {
               type,
               category,
               comment,
-              createdAt,
+              updatedAt,
               wallet,
               walletFrom,
               walletTo,
             }: ISearchOperation) => {
               const isDeleting = deletingOperation === _id;
-              const date = new Date(createdAt);
+              const date = new Date(updatedAt);
               let dateNote = "";
 
               if (isToday(date)) {
@@ -326,44 +340,68 @@ const HistoryOperations: React.FC = () => {
             close();
           }}
         >
-          <form onSubmit={handleSubmit} autoComplete="off">
-            <label>
-              wallet
-              <input
+          <FormEdit onSubmit={handleSubmit} autoComplete="off">
+            <SelectLabel>
+              Гаманець
+              <SelectEdit
                 name="wallet"
                 value={formData.wallet}
                 onChange={handleInputChange}
-              ></input>
-            </label>
-            <label>
-              amount
-              <input
+              >
+                {wallets?.map(({ _id, name }: ISearchWallet) => (
+                  <OptionEdit key={_id}>{name}</OptionEdit>
+                ))}
+              </SelectEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Сума
+              <InputEdit
+                type="number"
                 name="amount"
                 value={formData.amount}
                 onChange={handleInputChange}
-              ></input>
-            </label>
-            <label>
-              category
-              <input
+              ></InputEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Категорія
+              <SelectEdit
                 name="category"
                 value={formData.category}
                 onChange={handleInputChange}
-              ></input>
-            </label>
-            <label>
-              comment
-              <input
+              >
+                {categories?.map(({ _id, name, type }: ISearchCategory) =>
+                  type === formData.type ? (
+                    <OptionEdit key={_id}>{name}</OptionEdit>
+                  ) : null
+                )}
+              </SelectEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Коментар
+              <InputEdit
                 name="comment"
                 value={formData.comment}
                 onChange={handleInputChange}
-              ></input>
-            </label>
-            <button type="button" onClick={() => close()}>
-              close
-            </button>
-            <button type="submit">ok</button>
-          </form>
+              ></InputEdit>
+            </SelectLabel>
+            <SelectLabel>
+              Дата
+              <InputEdit
+                type="date"
+                name="updatedAt"
+                value={`${new Date(formData.updatedAt)
+                  .getFullYear()
+                  .toString()}-${(new Date(formData.updatedAt).getMonth() + 1)
+                  .toString()
+                  .padStart(2, "0")}-${new Date(formData.updatedAt)
+                  .getDate()
+                  .toString()
+                  .padStart(2, "0")}`}
+                onChange={handleInputChange}
+              ></InputEdit>
+            </SelectLabel>
+            <BtnSubmit type="submit">ok</BtnSubmit>
+          </FormEdit>
         </Modal>
       )}
     </>

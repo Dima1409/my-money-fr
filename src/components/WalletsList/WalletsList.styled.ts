@@ -154,6 +154,7 @@ const InfoWallets = styled.div`
   width: 250px;
   ${theme.mq.tablet} {
     width: 420px;
+    margin: 0 auto;
   }
 `;
 
