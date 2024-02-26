@@ -59,6 +59,8 @@ const ITEMS_PER_PAGE = 10;
 const initialState = {
   id: "",
   wallet: "",
+  walletFrom: "",
+  walletTo: "",
   category: "",
   amount: "",
   comment: "",
@@ -73,6 +75,10 @@ interface OperationsProps {
 const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
   const { wallets } = useWallets();
   const { categories } = useCategory();
+
+  const transferOperations: ISearchOperation[] = operationsType.filter(
+    (elem: ISearchOperation) => !elem.type
+  );
 
   const [isCommentValid, setIsCommentValid] = useState(true);
 
@@ -139,6 +145,8 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
     setFormData({
       id: currentOperation?._id || "",
       wallet: currentOperation?.wallet || "",
+      walletFrom: currentOperation?.walletFrom || "",
+      walletTo: currentOperation?.walletTo || "",
       category: currentOperation?.category || "",
       amount: String(currentOperation?.amount) || "",
       comment: currentOperation?.comment || "",
@@ -339,81 +347,154 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
           }}
         >
           <FormEdit onSubmit={handleSubmit} autoComplete="off">
-            <SelectLabel>
-              Гаманець
-              <SelectEdit
-                name="wallet"
-                value={formData.wallet}
-                onChange={handleInputChange}
-              >
-                {wallets?.map(({ _id, name }: ISearchWallet) => (
-                  <OptionEdit key={_id}>{name}</OptionEdit>
-                ))}
-              </SelectEdit>
-            </SelectLabel>
-            <SelectLabel>
-              Сума
-              <InputEdit
-                style={{ borderColor: "transparent" }}
-                type="number"
-                name="amount"
-                value={formData.amount}
-                onChange={handleInputChange}
-                pattern={amountPattern.source}
-              ></InputEdit>
-            </SelectLabel>
-            <SelectLabel>
-              Категорія
-              <SelectEdit
-                name="category"
-                value={formData.category}
-                onChange={handleInputChange}
-              >
-                {categories?.map(({ _id, name, type }: ISearchCategory) =>
-                  type === formData.type ? (
-                    <OptionEdit key={_id}>{name}</OptionEdit>
-                  ) : null
-                )}
-              </SelectEdit>
-            </SelectLabel>
-            <SelectLabel>
-              Коментар
-              <InputEdit
-                type="text"
-                name="comment"
-                value={formData.comment}
-                onChange={handleInputChange}
-                pattern={commentPattern.source}
-              ></InputEdit>
-            </SelectLabel>
-            <SelectLabel>
-              Дата
-              <InputEdit
-                type="date"
-                name="updatedAt"
-                value={`${new Date(formData.updatedAt)
-                  .getFullYear()
-                  .toString()}-${(new Date(formData.updatedAt).getMonth() + 1)
-                  .toString()
-                  .padStart(2, "0")}-${new Date(formData.updatedAt)
-                  .getDate()
-                  .toString()
-                  .padStart(2, "0")}`}
-                onChange={handleInputChange}
-              ></InputEdit>
-            </SelectLabel>
-            <BtnSubmit
-              disabled={
-                !amountPattern.test(formData.amount) ||
-                formData.amount === "" ||
-                formData.category === "" ||
-                formData.wallet === "" ||
-                (!isCommentValid && formData.comment !== "")
-              }
-              type="submit"
-            >
-              ok
-            </BtnSubmit>
+            {transferOperations.length ? (
+              <>
+                <SelectLabel>
+                  З гаманця
+                  <SelectEdit
+                    name="walletFrom"
+                    value={formData.walletFrom}
+                    onChange={handleInputChange}
+                  >
+                    {wallets?.map(({ _id, name }: ISearchWallet) => (
+                      <OptionEdit key={_id}>{name}</OptionEdit>
+                    ))}
+                  </SelectEdit>
+                </SelectLabel>
+                <SelectLabel>
+                  На гаманець
+                  <SelectEdit
+                    name="walletTo"
+                    value={formData.walletTo}
+                    onChange={handleInputChange}
+                  >
+                    {wallets?.map(({ _id, name }: ISearchWallet) => (
+                      <OptionEdit key={_id}>{name}</OptionEdit>
+                    ))}
+                  </SelectEdit>
+                </SelectLabel>
+                <SelectLabel>
+                  Сума
+                  <InputEdit
+                    style={{ borderColor: "transparent" }}
+                    type="number"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleInputChange}
+                    pattern={amountPattern.source}
+                  ></InputEdit>
+                </SelectLabel>
+                <SelectLabel>
+                  Дата
+                  <InputEdit
+                    type="date"
+                    name="updatedAt"
+                    value={`${new Date(formData.updatedAt)
+                      .getFullYear()
+                      .toString()}-${(
+                      new Date(formData.updatedAt).getMonth() + 1
+                    )
+                      .toString()
+                      .padStart(2, "0")}-${new Date(formData.updatedAt)
+                      .getDate()
+                      .toString()
+                      .padStart(2, "0")}`}
+                    onChange={handleInputChange}
+                  ></InputEdit>
+                </SelectLabel>
+                <BtnSubmit
+                  disabled={
+                    !amountPattern.test(formData.amount) ||
+                    formData.amount === "" ||
+                    formData.walletFrom === "" ||
+                    formData.walletTo === ""
+                  }
+                  type="submit"
+                >
+                  ok
+                </BtnSubmit>
+              </>
+            ) : (
+              <>
+                <SelectLabel>
+                  Гаманець
+                  <SelectEdit
+                    name="wallet"
+                    value={formData.wallet}
+                    onChange={handleInputChange}
+                  >
+                    {wallets?.map(({ _id, name }: ISearchWallet) => (
+                      <OptionEdit key={_id}>{name}</OptionEdit>
+                    ))}
+                  </SelectEdit>
+                </SelectLabel>
+                <SelectLabel>
+                  Сума
+                  <InputEdit
+                    style={{ borderColor: "transparent" }}
+                    type="number"
+                    name="amount"
+                    value={formData.amount}
+                    onChange={handleInputChange}
+                    pattern={amountPattern.source}
+                  ></InputEdit>
+                </SelectLabel>
+                <SelectLabel>
+                  Категорія
+                  <SelectEdit
+                    name="category"
+                    value={formData.category}
+                    onChange={handleInputChange}
+                  >
+                    {categories?.map(({ _id, name, type }: ISearchCategory) =>
+                      type === formData.type ? (
+                        <OptionEdit key={_id}>{name}</OptionEdit>
+                      ) : null
+                    )}
+                  </SelectEdit>
+                </SelectLabel>
+                <SelectLabel>
+                  Коментар
+                  <InputEdit
+                    type="text"
+                    name="comment"
+                    value={formData.comment}
+                    onChange={handleInputChange}
+                    pattern={commentPattern.source}
+                  ></InputEdit>
+                </SelectLabel>
+                <SelectLabel>
+                  Дата
+                  <InputEdit
+                    type="date"
+                    name="updatedAt"
+                    value={`${new Date(formData.updatedAt)
+                      .getFullYear()
+                      .toString()}-${(
+                      new Date(formData.updatedAt).getMonth() + 1
+                    )
+                      .toString()
+                      .padStart(2, "0")}-${new Date(formData.updatedAt)
+                      .getDate()
+                      .toString()
+                      .padStart(2, "0")}`}
+                    onChange={handleInputChange}
+                  ></InputEdit>
+                </SelectLabel>
+                <BtnSubmit
+                  disabled={
+                    !amountPattern.test(formData.amount) ||
+                    formData.amount === "" ||
+                    formData.category === "" ||
+                    formData.wallet === "" ||
+                    (!isCommentValid && formData.comment !== "")
+                  }
+                  type="submit"
+                >
+                  ok
+                </BtnSubmit>
+              </>
+            )}
           </FormEdit>
         </Modal>
       )}
