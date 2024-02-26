@@ -6,8 +6,9 @@ import {
   getAllOperations,
   deleteOperation,
   deleteTransferOperation,
+  editOperation,
+  editOperationTransfer,
 } from "../../../redux/operations/operations";
-import { editOperation } from "../../../redux/operations/operations";
 import { theme } from "theme/theme";
 import getBackgroundColor from "./getBgColor";
 import {
@@ -53,20 +54,7 @@ import useWallets from "hooks/useWallets";
 import useCategory from "hooks/useCategory";
 import { ISearchWallet, ISearchCategory } from "types/data";
 import { amountPattern, commentPattern } from "utils/patterns";
-
-const ITEMS_PER_PAGE = 10;
-
-const initialState = {
-  id: "",
-  wallet: "",
-  walletFrom: "",
-  walletTo: "",
-  category: "",
-  amount: "",
-  comment: "",
-  type: "",
-  updatedAt: "",
-};
+import { ITEMS_PER_PAGE, initialState } from "../helpersOperations";
 
 interface OperationsProps {
   operationsType: ISearchOperation[];
@@ -75,10 +63,6 @@ interface OperationsProps {
 const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
   const { wallets } = useWallets();
   const { categories } = useCategory();
-
-  const transferOperations: ISearchOperation[] = operationsType.filter(
-    (elem: ISearchOperation) => !elem.type
-  );
 
   const [isCommentValid, setIsCommentValid] = useState(true);
 
@@ -91,6 +75,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
     null
   );
 
+  const [currentOperationType, setCurrentOperationType] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
@@ -109,6 +94,17 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
+    if (name === "walletFrom" && value === formData.walletTo) {
+      setFormData((prevData) => ({
+        ...prevData,
+        walletTo: "",
+      }));
+    } else if (name === "walletTo" && value === formData.walletFrom) {
+      setFormData((prevData) => ({
+        ...prevData,
+        walletFrom: "",
+      }));
+    }
     if (name === "comment") {
       const isValid = commentPattern.test(value);
       setIsCommentValid(isValid);
@@ -128,20 +124,28 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatchTyped(
-      editOperation({
-        id: formData.id,
-        wallet: formData.wallet,
-        category: formData.category,
-        amount: formData.amount,
-        comment: formData.comment,
-        type: formData.type,
-      })
+      currentOperationType
+        ? editOperation({
+            id: formData.id,
+            wallet: formData.wallet,
+            category: formData.category,
+            amount: formData.amount,
+            comment: formData.comment,
+            type: formData.type,
+          })
+        : editOperationTransfer({
+            id: formData.id,
+            walletFrom: formData.walletFrom,
+            walletTo: formData.walletTo,
+            amount: formData.amount,
+          })
     ).then(() => dispatchTyped(getAllOperations()));
     close();
   };
 
   const startEditing = (id: string) => {
     const currentOperation = operationsType.find((elem) => elem._id === id);
+    setCurrentOperationType(currentOperation?.type || "");
     setFormData({
       id: currentOperation?._id || "",
       wallet: currentOperation?.wallet || "",
@@ -151,20 +155,21 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
       amount: String(currentOperation?.amount) || "",
       comment: currentOperation?.comment || "",
       type: currentOperation?.type || "",
+      createdAt: currentOperation?.createdAt || "",
       updatedAt: currentOperation?.updatedAt || "",
     });
   };
 
   const sortedOperations = [...operationsType]?.sort(
     (a: ISearchOperation, b: ISearchOperation) =>
-      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
   const filteredOperations =
     selectedOption === "all"
       ? sortedOperations
       : sortedOperations.filter((operation) => {
-          const operationDate = new Date(operation.updatedAt);
+          const operationDate = new Date(operation.createdAt);
           if (selectedOption === "7days") {
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -228,18 +233,20 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
             type,
             category,
             comment,
+            createdAt,
             updatedAt,
             wallet,
             walletFrom,
             walletTo,
           }: ISearchOperation) => {
             const isDeleting = deletingOperation === _id;
-            const date = new Date(updatedAt);
+            const dateCreate = new Date(createdAt);
+            const dateUpdate = new Date(updatedAt);
             let dateNote = "";
 
-            if (isToday(date)) {
+            if (isToday(dateCreate)) {
               dateNote = " (сьогодні)";
-            } else if (isYesterday(date)) {
+            } else if (isYesterday(dateCreate)) {
               dateNote = " (вчора)";
             }
             return (
@@ -254,9 +261,9 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   Дата:
                   <DateIcon color={theme.colors.accent} />
                   <OperationResult>
-                    {date.getDate().toString().padStart(2, "0")}.
-                    {(date.getMonth() + 1).toString().padStart(2, "0")}.
-                    {date.getFullYear()}
+                    {dateCreate.getDate().toString().padStart(2, "0")}.
+                    {(dateCreate.getMonth() + 1).toString().padStart(2, "0")}.
+                    {dateCreate.getFullYear()}
                     {dateNote}
                   </OperationResult>
                 </OperationInfo>
@@ -264,11 +271,28 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   Час:
                   <TimeIcon color={theme.colors.accent} />
                   <OperationResult>
-                    {date.getHours().toString().padStart(2, "0")}:
-                    {date.getMinutes().toString().padStart(2, "0")}:
-                    {date.getSeconds().toString().padStart(2, "0")}
+                    {dateCreate.getHours().toString().padStart(2, "0")}:
+                    {dateCreate.getMinutes().toString().padStart(2, "0")}:
+                    {dateCreate.getSeconds().toString().padStart(2, "0")}
                   </OperationResult>
                 </OperationInfo>
+                {createdAt !== updatedAt && (
+                  <OperationInfo>
+                    Змінено:
+                    <DateIcon color={theme.colors.accent} />
+                    <OperationResult>
+                      {dateUpdate.getDate().toString().padStart(2, "0")}.
+                      {(dateUpdate.getMonth() + 1).toString().padStart(2, "0")}.
+                      {dateUpdate.getFullYear()}
+                    </OperationResult>
+                    в{" "}
+                    <OperationResult>
+                      {dateUpdate.getHours().toString().padStart(2, "0")}:
+                      {dateUpdate.getMinutes().toString().padStart(2, "0")}:
+                      {dateUpdate.getSeconds().toString().padStart(2, "0")}
+                    </OperationResult>
+                  </OperationInfo>
+                )}
                 <OperationInfo>
                   Сума:
                   <AmountIcon color={theme.colors.accent} />{" "}
@@ -347,7 +371,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
           }}
         >
           <FormEdit onSubmit={handleSubmit} autoComplete="off">
-            {transferOperations.length ? (
+            {!currentOperationType ? (
               <>
                 <SelectLabel>
                   З гаманця
@@ -356,8 +380,16 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                     value={formData.walletFrom}
                     onChange={handleInputChange}
                   >
+                    <OptionEdit disabled value="">
+                      гаманець
+                    </OptionEdit>
                     {wallets?.map(({ _id, name }: ISearchWallet) => (
-                      <OptionEdit key={_id}>{name}</OptionEdit>
+                      <OptionEdit
+                        key={_id}
+                        disabled={_id === formData.walletTo}
+                      >
+                        {name}
+                      </OptionEdit>
                     ))}
                   </SelectEdit>
                 </SelectLabel>
@@ -368,8 +400,16 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                     value={formData.walletTo}
                     onChange={handleInputChange}
                   >
+                    <OptionEdit disabled value="">
+                      гаманець
+                    </OptionEdit>
                     {wallets?.map(({ _id, name }: ISearchWallet) => (
-                      <OptionEdit key={_id}>{name}</OptionEdit>
+                      <OptionEdit
+                        key={_id}
+                        disabled={_id === formData.walletFrom}
+                      >
+                        {name}
+                      </OptionEdit>
                     ))}
                   </SelectEdit>
                 </SelectLabel>
@@ -388,14 +428,14 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   Дата
                   <InputEdit
                     type="date"
-                    name="updatedAt"
-                    value={`${new Date(formData.updatedAt)
+                    name="createdAt"
+                    value={`${new Date(formData.createdAt)
                       .getFullYear()
                       .toString()}-${(
-                      new Date(formData.updatedAt).getMonth() + 1
+                      new Date(formData.createdAt).getMonth() + 1
                     )
                       .toString()
-                      .padStart(2, "0")}-${new Date(formData.updatedAt)
+                      .padStart(2, "0")}-${new Date(formData.createdAt)
                       .getDate()
                       .toString()
                       .padStart(2, "0")}`}
@@ -407,11 +447,12 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                     !amountPattern.test(formData.amount) ||
                     formData.amount === "" ||
                     formData.walletFrom === "" ||
-                    formData.walletTo === ""
+                    formData.walletTo === "" ||
+                    formData.walletFrom === formData.walletTo
                   }
                   type="submit"
                 >
-                  ok
+                  змінити
                 </BtnSubmit>
               </>
             ) : (
@@ -467,14 +508,14 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   Дата
                   <InputEdit
                     type="date"
-                    name="updatedAt"
-                    value={`${new Date(formData.updatedAt)
+                    name="createdAt"
+                    value={`${new Date(formData.createdAt)
                       .getFullYear()
                       .toString()}-${(
-                      new Date(formData.updatedAt).getMonth() + 1
+                      new Date(formData.createdAt).getMonth() + 1
                     )
                       .toString()
-                      .padStart(2, "0")}-${new Date(formData.updatedAt)
+                      .padStart(2, "0")}-${new Date(formData.createdAt)
                       .getDate()
                       .toString()
                       .padStart(2, "0")}`}
@@ -491,7 +532,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
                   }
                   type="submit"
                 >
-                  ok
+                  змінити
                 </BtnSubmit>
               </>
             )}

@@ -6,6 +6,7 @@ import {
   deleteOperation,
   deleteTransferOperation,
   editOperation,
+  editOperationTransfer,
 } from "../../../redux/operations/operations";
 import { getAllWallets } from "../../../redux/wallets/operations";
 import { getAll } from "../../../redux/categories/operations";
@@ -56,20 +57,7 @@ import { FormEdit } from "components/WalletsList/WalletsList.styled";
 import useWallets from "hooks/useWallets";
 import useCategory from "hooks/useCategory";
 import { amountPattern, commentPattern } from "utils/patterns";
-
-const ITEMS_PER_PAGE = 10;
-
-const initialState = {
-  id: "",
-  wallet: "",
-  walletFrom: "",
-  walletTo: "",
-  category: "",
-  amount: "",
-  comment: "",
-  type: "",
-  updatedAt: "",
-};
+import { ITEMS_PER_PAGE, initialState } from "../helpersOperations";
 
 const HistoryOperations: React.FC = () => {
   const { operations } = useOperations();
@@ -106,6 +94,17 @@ const HistoryOperations: React.FC = () => {
     e: ChangeEvent<HTMLSelectElement | HTMLInputElement>
   ) => {
     const { name, value } = e.target;
+    if (name === "walletFrom" && value === formData.walletTo) {
+      setFormData((prevData) => ({
+        ...prevData,
+        walletTo: "",
+      }));
+    } else if (name === "walletTo" && value === formData.walletFrom) {
+      setFormData((prevData) => ({
+        ...prevData,
+        walletFrom: "",
+      }));
+    }
     if (name === "comment") {
       const isValid = commentPattern.test(value);
       setIsCommentValid(isValid);
@@ -125,15 +124,23 @@ const HistoryOperations: React.FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     dispatchTyped(
-      editOperation({
-        id: formData.id,
-        wallet: formData.wallet,
-        category: formData.category,
-        amount: formData.amount,
-        comment: formData.comment,
-        type: formData.type,
-      })
+      currentOperationType
+        ? editOperation({
+            id: formData.id,
+            wallet: formData.wallet,
+            category: formData.category,
+            amount: formData.amount,
+            comment: formData.comment,
+            type: formData.type,
+          })
+        : editOperationTransfer({
+            id: formData.id,
+            walletFrom: formData.walletFrom,
+            walletTo: formData.walletTo,
+            amount: formData.amount,
+          })
     )
       .then(() => dispatchTyped(getAllOperations()))
       .finally(() => dispatchTyped(getAllWallets()));
@@ -152,20 +159,21 @@ const HistoryOperations: React.FC = () => {
       amount: String(currentOperation?.amount) || "",
       comment: currentOperation?.comment || "",
       type: currentOperation?.type || "",
+      createdAt: currentOperation?.createdAt || "",
       updatedAt: currentOperation?.updatedAt || "",
     });
   };
 
   const sortedOperations = [...operations]?.sort(
     (a: ISearchOperation, b: ISearchOperation) =>
-      new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime()
+      new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
   const filteredOperations =
     selectedOption === "all"
       ? sortedOperations
       : sortedOperations.filter((operation) => {
-          const operationDate = new Date(operation.updatedAt);
+          const operationDate = new Date(operation.createdAt);
           if (selectedOption === "7days") {
             const sevenDaysAgo = new Date();
             sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
@@ -233,18 +241,20 @@ const HistoryOperations: React.FC = () => {
               type,
               category,
               comment,
+              createdAt,
               updatedAt,
               wallet,
               walletFrom,
               walletTo,
             }: ISearchOperation) => {
               const isDeleting = deletingOperation === _id;
-              const date = new Date(updatedAt);
+              const dateCreate = new Date(createdAt);
+              const dateUpdate = new Date(updatedAt);
               let dateNote = "";
 
-              if (isToday(date)) {
+              if (isToday(dateCreate)) {
                 dateNote = " (сьогодні)";
-              } else if (isYesterday(date)) {
+              } else if (isYesterday(dateCreate)) {
                 dateNote = " (вчора)";
               }
               return (
@@ -260,9 +270,11 @@ const HistoryOperations: React.FC = () => {
                       Дата:
                       <DateIcon color={theme.colors.accent} />
                       <OperationResult>
-                        {date.getDate().toString().padStart(2, "0")}.
-                        {(date.getMonth() + 1).toString().padStart(2, "0")}.
-                        {date.getFullYear()}
+                        {dateCreate.getDate().toString().padStart(2, "0")}.
+                        {(dateCreate.getMonth() + 1)
+                          .toString()
+                          .padStart(2, "0")}
+                        .{dateCreate.getFullYear()}
                         {dateNote}
                       </OperationResult>
                     </OperationInfo>
@@ -270,11 +282,30 @@ const HistoryOperations: React.FC = () => {
                       Час:
                       <TimeIcon color={theme.colors.accent} />
                       <OperationResult>
-                        {date.getHours().toString().padStart(2, "0")}:
-                        {date.getMinutes().toString().padStart(2, "0")}:
-                        {date.getSeconds().toString().padStart(2, "0")}
+                        {dateCreate.getHours().toString().padStart(2, "0")}:
+                        {dateCreate.getMinutes().toString().padStart(2, "0")}:
+                        {dateCreate.getSeconds().toString().padStart(2, "0")}
                       </OperationResult>
                     </OperationInfo>
+                    {createdAt !== updatedAt && (
+                      <OperationInfo>
+                        Змінено:
+                        <DateIcon color={theme.colors.accent} />
+                        <OperationResult>
+                          {dateUpdate.getDate().toString().padStart(2, "0")}.
+                          {(dateUpdate.getMonth() + 1)
+                            .toString()
+                            .padStart(2, "0")}
+                          .{dateUpdate.getFullYear()}
+                        </OperationResult>
+                        в{" "}
+                        <OperationResult>
+                          {dateUpdate.getHours().toString().padStart(2, "0")}:
+                          {dateUpdate.getMinutes().toString().padStart(2, "0")}:
+                          {dateUpdate.getSeconds().toString().padStart(2, "0")}
+                        </OperationResult>
+                      </OperationInfo>
+                    )}
                     <OperationInfo>
                       Сума:
                       <AmountIcon color={theme.colors.accent} />{" "}
@@ -363,8 +394,16 @@ const HistoryOperations: React.FC = () => {
                     value={formData.walletFrom}
                     onChange={handleInputChange}
                   >
+                    <OptionEdit disabled value="">
+                      гаманець
+                    </OptionEdit>
                     {wallets?.map(({ _id, name }: ISearchWallet) => (
-                      <OptionEdit key={_id}>{name}</OptionEdit>
+                      <OptionEdit
+                        key={_id}
+                        disabled={_id === formData.walletTo}
+                      >
+                        {name}
+                      </OptionEdit>
                     ))}
                   </SelectEdit>
                 </SelectLabel>
@@ -375,8 +414,16 @@ const HistoryOperations: React.FC = () => {
                     value={formData.walletTo}
                     onChange={handleInputChange}
                   >
+                    <OptionEdit disabled value="">
+                      гаманець
+                    </OptionEdit>
                     {wallets?.map(({ _id, name }: ISearchWallet) => (
-                      <OptionEdit key={_id}>{name}</OptionEdit>
+                      <OptionEdit
+                        key={_id}
+                        disabled={_id === formData.walletFrom}
+                      >
+                        {name}
+                      </OptionEdit>
                     ))}
                   </SelectEdit>
                 </SelectLabel>
@@ -391,34 +438,17 @@ const HistoryOperations: React.FC = () => {
                     pattern={amountPattern.source}
                   ></InputEdit>
                 </SelectLabel>
-                <SelectLabel>
-                  Дата
-                  <InputEdit
-                    type="date"
-                    name="updatedAt"
-                    value={`${new Date(formData.updatedAt)
-                      .getFullYear()
-                      .toString()}-${(
-                      new Date(formData.updatedAt).getMonth() + 1
-                    )
-                      .toString()
-                      .padStart(2, "0")}-${new Date(formData.updatedAt)
-                      .getDate()
-                      .toString()
-                      .padStart(2, "0")}`}
-                    onChange={handleInputChange}
-                  ></InputEdit>
-                </SelectLabel>
                 <BtnSubmit
                   disabled={
                     !amountPattern.test(formData.amount) ||
                     formData.amount === "" ||
                     formData.walletFrom === "" ||
-                    formData.walletTo === ""
+                    formData.walletTo === "" ||
+                    formData.walletFrom === formData.walletTo
                   }
                   type="submit"
                 >
-                  ok
+                  Змінити
                 </BtnSubmit>
               </>
             ) : (
@@ -470,24 +500,6 @@ const HistoryOperations: React.FC = () => {
                     pattern={commentPattern.source}
                   ></InputEdit>
                 </SelectLabel>
-                <SelectLabel>
-                  Дата
-                  <InputEdit
-                    type="date"
-                    name="updatedAt"
-                    value={`${new Date(formData.updatedAt)
-                      .getFullYear()
-                      .toString()}-${(
-                      new Date(formData.updatedAt).getMonth() + 1
-                    )
-                      .toString()
-                      .padStart(2, "0")}-${new Date(formData.updatedAt)
-                      .getDate()
-                      .toString()
-                      .padStart(2, "0")}`}
-                    onChange={handleInputChange}
-                  ></InputEdit>
-                </SelectLabel>
                 <BtnSubmit
                   disabled={
                     !amountPattern.test(formData.amount) ||
@@ -498,7 +510,7 @@ const HistoryOperations: React.FC = () => {
                   }
                   type="submit"
                 >
-                  ok
+                  Змінити
                 </BtnSubmit>
               </>
             )}

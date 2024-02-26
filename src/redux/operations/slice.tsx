@@ -6,15 +6,18 @@ import {
   transfersOperation,
   deleteOperation,
   editOperation,
+  editOperationTransfer,
 } from "./operations";
 
 interface Operation {
   id: string;
   amount: number;
   type?: string;
-  wallet: string;
-  category: string;
-  comment: string;
+  wallet?: string;
+  walletFrom?: string;
+  walletTo?: string;
+  category?: string;
+  comment?: string;
 }
 
 interface OperationsState {
@@ -94,18 +97,28 @@ const OperationsSlice = createSlice({
           state.operations.push(action.payload);
         }
       )
+      .addCase(
+        editOperationTransfer.fulfilled,
+        (state: OperationsState, action: PayloadAction<Operation>) => {
+          state.isLoading = false;
+          state.error = null;
+          state.operations.push(action.payload);
+        }
+      )
       .addCase(getAllOperations.pending, handlePending)
       .addCase(incomeOperations.pending, handlePending)
       .addCase(expensesOperation.pending, handlePending)
       .addCase(deleteOperation.pending, handlePending)
       .addCase(transfersOperation.pending, handlePending)
       .addCase(editOperation.pending, handlePending)
+      .addCase(editOperationTransfer.pending, handlePending)
       .addCase(getAllOperations.rejected, handleRejected)
       .addCase(incomeOperations.rejected, handleRejected)
       .addCase(expensesOperation.rejected, handleRejected)
       .addCase(deleteOperation.rejected, handleRejected)
       .addCase(transfersOperation.rejected, handleRejected)
-      .addCase(editOperation.rejected, handleRejected);
+      .addCase(editOperation.rejected, handleRejected)
+      .addCase(editOperationTransfer.rejected, handleRejected);
   },
 });
 

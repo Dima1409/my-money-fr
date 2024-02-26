@@ -99,6 +99,25 @@ const editOperation = createAsyncThunk(
   }
 );
 
+const editOperationTransfer = createAsyncThunk(
+  "/operations/edit-transfer/:id",
+  async (credentials: operationsCredentials, thunkAPI) => {
+    try {
+      const response = await API.patch(
+        `/operation/edit-transfer/${credentials.id}`,
+        {
+          walletFrom: credentials.walletFrom,
+          walletTo: credentials.walletTo,
+          amount: credentials.amount,
+        }
+      );
+      return response.data.data.result;
+    } catch (error) {
+      throw thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export {
   getAllOperations,
   incomeOperations,
@@ -107,4 +126,5 @@ export {
   deleteOperation,
   deleteTransferOperation,
   editOperation,
+  editOperationTransfer,
 };

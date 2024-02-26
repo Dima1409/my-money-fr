@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { theme } from "theme/theme";
 
 const Form = styled.form`
   border: 1px;
