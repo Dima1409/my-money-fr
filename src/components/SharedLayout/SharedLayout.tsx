@@ -13,18 +13,18 @@ import { NavList, Link, NavListItem } from "./SharedLayout.styled";
 import { theme } from "theme/theme";
 
 const SharedLayout: React.FC = () => {
-  const { isLoggedIn, isRefreshing } = useAuth();
+  const { isLoggedIn } = useAuth();
   return (
     <>
       <NavList>
-        <NavListItem>
-          <Link to="/">
-            <HomeIcon color={theme.colors.light} />
-            Головна
-          </Link>
-        </NavListItem>
-        {!isLoggedIn && !isRefreshing && (
+        {!isLoggedIn && (
           <>
+            <NavListItem>
+              <Link to="/">
+                <HomeIcon color={theme.colors.light} />
+                Головна
+              </Link>
+            </NavListItem>
             <NavListItem>
               <Link to="/register">
                 <SigInIcon color={theme.colors.light} />
@@ -42,6 +42,12 @@ const SharedLayout: React.FC = () => {
 
         {isLoggedIn && (
           <>
+            <NavListItem>
+              <Link to="/">
+                <HomeIcon color={theme.colors.light} />
+                Головна
+              </Link>
+            </NavListItem>
             <NavListItem>
               <Link to="/incomes">
                 <IncomeIcon color={theme.colors.green} />

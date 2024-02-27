@@ -24,9 +24,11 @@ const LazyPage: React.FC<{ children: ReactNode }> = ({ children }) => (
 
 const App: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+
   useEffect(() => {
     dispatch(refreshUser());
   }, [dispatch]);
+
   return (
     <Container>
       <Routes>

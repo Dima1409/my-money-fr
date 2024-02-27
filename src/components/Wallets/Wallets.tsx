@@ -48,7 +48,13 @@ const Wallets: React.FC = () => {
     slidesToShow = 8;
     slidesToScroll = 8;
   }
-  const settings = sliderSettings(slidesToShow, slidesToScroll);
+  const settings = sliderSettings(
+    slidesToShow,
+    slidesToScroll,
+    true,
+    5000,
+    false
+  );
 
   useEffect(() => {
     dispatchTyped(getAllWallets());

@@ -10,6 +10,16 @@ const HeaderWelcome = styled.h2`
   text-align: center;
 `;
 
+const WrapperStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SliderInfo = styled.p`
+  color: ${theme.colors.accent};
+`;
+
 const Description = styled.span`
   margin: 40px 0;
   display: block;
@@ -18,4 +28,4 @@ const Description = styled.span`
   font-family: ${theme.fonts.comfortaa};
 `;
 
-export { HeaderWelcome, Description };
+export { HeaderWelcome, WrapperStyled, SliderInfo, Description };
