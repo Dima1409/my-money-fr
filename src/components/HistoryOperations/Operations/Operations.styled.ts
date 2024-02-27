@@ -8,9 +8,17 @@ import {
   ButtonSubmit,
 } from "components/Forms/IncomeForm/IncomeForm.styled";
 import { Input } from "components/Forms/IncomeForm/IncomeForm.styled";
+import { ToastContainer } from "react-toastify";
 
 const HistorySelect = styled(SelectStyled)`
   width: 250px;
+`;
+
+const ToastStyledContainer = styled(ToastContainer)`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 const OperationWrapper = styled.ul`
@@ -38,6 +46,7 @@ const Operation = styled.li`
     font-size: ${theme.fontSizes.normal};
   }
   ${theme.mq.desktop} {
+    position: relative;
     max-width: 600px;
   }
 `;
@@ -168,6 +177,7 @@ const BtnSubmit = styled(ButtonSubmit)`
 
 export {
   OperationWrapper,
+  ToastStyledContainer,
   OperationsHeader,
   HistorySelect,
   OperationSort,
