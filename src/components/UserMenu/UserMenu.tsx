@@ -35,6 +35,13 @@ const UserMenu: React.FC = () => {
   const [showUserInfo, setShowUserInfo] = useState(false);
   const { isOpen, close, toggle } = useToggle();
 
+  const handleLogOut = async () => {
+    const shouldLogout = window.confirm("Вийти з облікового запису?");
+    if (shouldLogout) {
+      dispatch(logout());
+    }
+  };
+
   const handleSubmit = async (values: typeof initialState) => {
     dispatch(
       editUser({
@@ -67,7 +74,7 @@ const UserMenu: React.FC = () => {
           >
             <EditIcon color={theme.colors.transfers} />
           </EditButton>
-          <Logout onClick={() => dispatch(logout())}>
+          <Logout onClick={handleLogOut}>
             <LogOutIcon color={theme.colors.red} />
           </Logout>
         </UserWrapper>

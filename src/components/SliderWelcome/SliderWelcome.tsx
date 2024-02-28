@@ -10,6 +10,7 @@ import WalletModal from "../../images/desktop/add-wallet-desktop-min.png";
 import TransferPage from "../../images/desktop/transfer-desktop-min.png";
 import History from "../../images/desktop/history-desktop-min.png";
 import StatisticPage from "../../images/desktop/statistic-desktop-min.png";
+import Device from "../../images/desktop/device-min.png";
 import MainImage2x from "../../images/desktop2x/main-page-desktop2x-min.png";
 import IncomePage2x from "../../images/desktop2x/income-page-desktop2x-min.png";
 import UserEditModal2x from "../../images/desktop2x/user-edit-desktop2x-min.png";
@@ -17,7 +18,8 @@ import CategoryModal2x from "../../images/desktop2x/add-category-desktop2x-min.p
 import WalletModal2x from "../../images/desktop2x/add-wallet-desktop2x-min.png";
 import TransferPage2x from "../../images/desktop2x/transfer-desktop2x-min.png";
 import History2x from "../../images/desktop2x/history-desktop2x-min.png";
-import StatisticPage2x from "../../images/desktop/statistic-desktop-min.png";
+import StatisticPage2x from "../../images/desktop2x/statistic-desktop2x-min.png";
+import Device2x from "../../images/desktop2x/device2x-min.png";
 
 const SliderWelcome: React.FC = () => {
   const mainImageSrc = useRetinaDisplay(MainImage, MainImage2x);
@@ -28,7 +30,10 @@ const SliderWelcome: React.FC = () => {
   const transferImageSrc = useRetinaDisplay(TransferPage, TransferPage2x);
   const historyImageSrc = useRetinaDisplay(History, History2x);
   const statisticImageSrc = useRetinaDisplay(StatisticPage, StatisticPage2x);
+  const deviceImageSrc = useRetinaDisplay(Device, Device2x);
+
   const settings = sliderSettings(1, 1, true, 5000, true);
+
   return (
     <SliderWrapper {...settings}>
       <WrapperStyled>
@@ -43,7 +48,7 @@ const SliderWelcome: React.FC = () => {
       </WrapperStyled>
       <WrapperStyled>
         <SliderInfo>Редагування гаманців</SliderInfo>
-        <ImageStyled src={userEditImageSrc} alt="wallets edit modal" />
+        <ImageStyled src={walletImageSrc} alt="wallets edit modal" />
       </WrapperStyled>
       <WrapperStyled>
         <SliderInfo>Редагування категорій</SliderInfo>
@@ -51,7 +56,7 @@ const SliderWelcome: React.FC = () => {
       </WrapperStyled>
       <WrapperStyled>
         <SliderInfo>Редагування профілю користувача</SliderInfo>
-        <ImageStyled src={walletImageSrc} alt="user edit modal" />
+        <ImageStyled src={userEditImageSrc} alt="user edit modal" />
       </WrapperStyled>
       <WrapperStyled>
         <SliderInfo>Функція переказу коштів між рахунками</SliderInfo>
@@ -64,6 +69,12 @@ const SliderWelcome: React.FC = () => {
       <WrapperStyled>
         <SliderInfo>Діаграма статистики за тиждень, місяць, рік</SliderInfo>
         <ImageStyled src={statisticImageSrc} alt="statistic page" />
+      </WrapperStyled>
+      <WrapperStyled>
+        <SliderInfo>
+          Адаптований для мобільних пристроїв та планшетів
+        </SliderInfo>
+        <ImageStyled src={deviceImageSrc} alt="device" height={200} />
       </WrapperStyled>
     </SliderWrapper>
   );
