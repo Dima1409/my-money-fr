@@ -8,16 +8,9 @@ const HeaderWelcome = styled.h2`
   font-family: ${theme.fonts.merriweather};
   color: ${theme.colors.accent};
   text-align: center;
-`;
-
-const WrapperStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const SliderInfo = styled.p`
-  color: ${theme.colors.accent};
+  ${theme.mq.tablet} {
+    font-size: ${theme.fontSizes.extraBold};
+  }
 `;
 
 const Description = styled.span`
@@ -28,4 +21,4 @@ const Description = styled.span`
   font-family: ${theme.fonts.comfortaa};
 `;
 
-export { HeaderWelcome, WrapperStyled, SliderInfo, Description };
+export { HeaderWelcome, Description };
