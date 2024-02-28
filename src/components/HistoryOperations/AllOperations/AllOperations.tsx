@@ -80,6 +80,8 @@ const HistoryOperations: React.FC = () => {
   const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
   const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
 
+  const [initialFormData, setInitialFormData] = useState(initialState);
+
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
@@ -151,6 +153,18 @@ const HistoryOperations: React.FC = () => {
     const currentOperation = operations.find((elem) => elem._id === id);
     setCurrentOperationType(currentOperation?.type || "");
     setFormData({
+      id: currentOperation?._id || "",
+      wallet: currentOperation?.wallet || "",
+      walletFrom: currentOperation?.walletFrom || "",
+      walletTo: currentOperation?.walletTo || "",
+      category: currentOperation?.category || "",
+      amount: String(currentOperation?.amount) || "",
+      comment: currentOperation?.comment || "",
+      type: currentOperation?.type || "",
+      createdAt: currentOperation?.createdAt || "",
+      updatedAt: currentOperation?.updatedAt || "",
+    });
+    setInitialFormData({
       id: currentOperation?._id || "",
       wallet: currentOperation?.wallet || "",
       walletFrom: currentOperation?.walletFrom || "",
@@ -447,7 +461,8 @@ const HistoryOperations: React.FC = () => {
                     formData.amount === "" ||
                     formData.walletFrom === "" ||
                     formData.walletTo === "" ||
-                    formData.walletFrom === formData.walletTo
+                    formData.walletFrom === formData.walletTo ||
+                    JSON.stringify(formData) === JSON.stringify(initialFormData)
                   }
                   type="submit"
                 >
@@ -509,7 +524,8 @@ const HistoryOperations: React.FC = () => {
                     formData.amount === "" ||
                     formData.category === "" ||
                     formData.wallet === "" ||
-                    (!isCommentValid && formData.comment !== "")
+                    (!isCommentValid && formData.comment !== "") ||
+                    JSON.stringify(formData) === JSON.stringify(initialFormData)
                   }
                   type="submit"
                 >
