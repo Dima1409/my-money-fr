@@ -60,6 +60,7 @@ const authSlice = createSlice({
         };
         state.token = null;
         state.isLoggedIn = false;
+        state.isRefreshing = false;
         state.isPending = false;
         state.error = null;
       })

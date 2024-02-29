@@ -11,13 +11,17 @@ import {
 } from "components/Icons/Icons";
 import { NavList, Link, NavListItem } from "./SharedLayout.styled";
 import { theme } from "theme/theme";
+import Loader from "components/Loader";
 
 const SharedLayout: React.FC = () => {
-  const { isLoggedIn, isRefreshing, user } = useAuth();
+  const { isLoggedIn, isRefreshing } = useAuth();
+  if (isRefreshing) {
+    return <Loader type="spin" color={theme.colors.spinner}></Loader>;
+  }
   return (
     <>
       <NavList>
-        {!isLoggedIn && !isRefreshing && !user ? (
+        {!isLoggedIn && (
           <>
             <NavListItem>
               <Link to="/">
@@ -38,7 +42,9 @@ const SharedLayout: React.FC = () => {
               </Link>
             </NavListItem>
           </>
-        ) : (
+        )}
+
+        {isLoggedIn && (
           <>
             <NavListItem>
               <Link to="/">

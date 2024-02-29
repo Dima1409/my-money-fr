@@ -9,6 +9,7 @@ import {
   editOperation,
   editOperationTransfer,
 } from "../../../redux/operations/operations";
+import { getAllWallets } from "../../../redux/wallets/operations";
 import { theme } from "theme/theme";
 import getBackgroundColor from "./getBgColor";
 import {
@@ -117,6 +118,7 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
   };
 
   useEffect(() => {
+    dispatchTyped(getAllWallets());
     if (selectedOption) {
       dispatchTyped(getAllOperations());
     }
@@ -140,7 +142,9 @@ const Operations: React.FC<OperationsProps> = ({ operationsType }) => {
             walletTo: formData.walletTo,
             amount: formData.amount,
           })
-    ).then(() => dispatchTyped(getAllOperations()));
+    )
+      .then(() => dispatchTyped(getAllOperations()))
+      .finally(() => dispatchTyped(getAllWallets));
     close();
   };
 

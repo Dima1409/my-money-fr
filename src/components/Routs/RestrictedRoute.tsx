@@ -1,17 +1,20 @@
 import { Navigate } from "react-router-dom";
-import Hooks from "hooks";
+import useAuth from "hooks/useAuth";
 import React, { ComponentType } from "react";
 
 interface RestrictedRoutesProps {
+  redirectTo: string;
   component: ComponentType;
-  redirectTo?: string;
 }
 
 const RestrictedRoute: React.FC<RestrictedRoutesProps> = ({
+  redirectTo,
   component: Component,
-  redirectTo = "/",
 }) => {
-  const { isLoggedIn } = Hooks.useAuth();
+  const { isLoggedIn, isRefreshing } = useAuth();
+  if (isRefreshing) {
+    return null;
+  }
   return isLoggedIn ? <Navigate to={redirectTo} /> : <Component />;
 };
 

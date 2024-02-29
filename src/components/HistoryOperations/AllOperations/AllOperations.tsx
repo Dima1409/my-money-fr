@@ -119,6 +119,7 @@ const HistoryOperations: React.FC = () => {
 
   useEffect(() => {
     dispatchTyped(getAll());
+    dispatchTyped(getAllWallets());
     if (selectedOption) {
       dispatchTyped(getAllOperations());
     }
