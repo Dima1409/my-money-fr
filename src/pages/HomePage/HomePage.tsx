@@ -8,17 +8,16 @@ import { theme } from "theme/theme";
 import SliderWelcome from "components/SliderWelcome";
 
 const HomePage: React.FC = () => {
-  const { isLoggedIn, user } = useAuth();
+  const { isLoggedIn, isRefreshing, user } = useAuth();
   return (
     <>
-      {isLoggedIn && user && (
+      {isLoggedIn || user || !isRefreshing ? (
         <>
           <UserMenu />
           <Wallets />
           <AllOperations />
         </>
-      )}
-      {!isLoggedIn && (
+      ) : (
         <>
           <HeaderWelcome>Вітаємо в менеджері фінансів</HeaderWelcome>
           <Description>

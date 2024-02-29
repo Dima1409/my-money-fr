@@ -13,11 +13,11 @@ import { NavList, Link, NavListItem } from "./SharedLayout.styled";
 import { theme } from "theme/theme";
 
 const SharedLayout: React.FC = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isRefreshing, user } = useAuth();
   return (
     <>
       <NavList>
-        {!isLoggedIn && (
+        {!isLoggedIn && !isRefreshing && !user ? (
           <>
             <NavListItem>
               <Link to="/">
@@ -38,9 +38,7 @@ const SharedLayout: React.FC = () => {
               </Link>
             </NavListItem>
           </>
-        )}
-
-        {isLoggedIn && (
+        ) : (
           <>
             <NavListItem>
               <Link to="/">
