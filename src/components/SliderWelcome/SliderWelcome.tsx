@@ -37,13 +37,11 @@ const SliderWelcome: React.FC = () => {
   return (
     <SliderWrapper {...settings}>
       <WrapperStyled>
-        <SliderInfo>
-          Метою створення додатку є контроль доходів і витрат
-        </SliderInfo>
+        <SliderInfo>Контроль доходів і витрат</SliderInfo>
         <ImageStyled src={mainImageSrc} alt="main page" />
       </WrapperStyled>
       <WrapperStyled>
-        <SliderInfo>Додавання, видалення та редагування операцій</SliderInfo>
+        <SliderInfo>Створення та редагування операцій</SliderInfo>
         <ImageStyled src={incomeImageSrc} alt="income page" />
       </WrapperStyled>
       <WrapperStyled>
@@ -59,11 +57,11 @@ const SliderWelcome: React.FC = () => {
         <ImageStyled src={userEditImageSrc} alt="user edit modal" />
       </WrapperStyled>
       <WrapperStyled>
-        <SliderInfo>Функція переказу коштів між рахунками</SliderInfo>
+        <SliderInfo>Переказ коштів між рахунками</SliderInfo>
         <ImageStyled src={transferImageSrc} alt="transfer page" />
       </WrapperStyled>
       <WrapperStyled>
-        <SliderInfo>Історія операцій з вибором періоду</SliderInfo>
+        <SliderInfo>Історія операцій з періодами</SliderInfo>
         <ImageStyled src={historyImageSrc} alt="history" />
       </WrapperStyled>
       <WrapperStyled>
@@ -71,9 +69,7 @@ const SliderWelcome: React.FC = () => {
         <ImageStyled src={statisticImageSrc} alt="statistic page" />
       </WrapperStyled>
       <WrapperStyled>
-        <SliderInfo>
-          Адаптований для мобільних пристроїв та планшетів
-        </SliderInfo>
+        <SliderInfo>Мобільний, планшет або комп'ютер</SliderInfo>
         <ImageStyled src={deviceImageSrc} alt="device" height={200} />
       </WrapperStyled>
     </SliderWrapper>
