@@ -76,7 +76,7 @@ const App: React.FC = () => {
                     <IncomePage />
                   </LazyPage>
                 )}
-                redirectTo="/incomes"
+                redirectTo="/"
               />
             }
           ></Route>
@@ -89,7 +89,7 @@ const App: React.FC = () => {
                     <ExpensesPage />
                   </LazyPage>
                 )}
-                redirectTo="/expenses"
+                redirectTo="/"
               />
             }
           ></Route>
@@ -102,7 +102,7 @@ const App: React.FC = () => {
                     <TransferPage />
                   </LazyPage>
                 )}
-                redirectTo="/transfers"
+                redirectTo="/"
               />
             }
           ></Route>
