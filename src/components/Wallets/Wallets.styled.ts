@@ -1,11 +1,29 @@
 import styled from "styled-components";
 import Slider from "react-slick";
 import { theme } from "theme/theme";
+import { BtnSubmit } from "components/HistoryOperations/Operations/Operations.styled";
+import { FormEdit, LabelName } from "components/WalletsList/WalletsList.styled";
+import { InputEdit } from "components/HistoryOperations/Operations/Operations.styled";
 
 const WalletsWrapper = styled.div`
   background-color: ${theme.colors.background};
   border-radius: ${theme.radii.normal};
   padding: 10px 4px;
+`;
+
+const StyledForm = styled(FormEdit)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const StyledLabel = styled(LabelName)`
+  text-align: center;
+`;
+
+const StyledInput = styled(InputEdit)`
+  margin: 8px 0;
 `;
 
 const InfoWallets = styled.p`
@@ -53,6 +71,7 @@ const SliderWrapper = styled(Slider)`
 
 const Wallet = styled.div`
   && {
+    position: relative;
     border: 1px solid ${theme.colors.light};
     border-radius: ${theme.radii.normal};
     background-color: ${theme.colors.accent};
@@ -64,6 +83,20 @@ const Wallet = styled.div`
       font-size: ${theme.fontSizes.small};
     }
   }
+`;
+
+const EditSum = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: ${theme.borders.normal} ${theme.colors.light};
+  width: 22px;
+  height: 22px;
+  background-color: transparent;
+  border-radius: ${theme.radii.round};
+  position: absolute;
+  top: 6px;
+  right: 6px;
 `;
 
 const SumWallets = styled.div`
@@ -90,11 +123,20 @@ const WalletResult = styled.div`
   font-size: ${theme.fontSizes.normal};
 `;
 
+const SubmitStyled = styled(BtnSubmit)`
+  max-width: 60px;
+`;
+
 export {
   WalletsWrapper,
+  StyledForm,
+  StyledLabel,
+  StyledInput,
   InfoWallets,
   SliderWrapper,
   Wallet,
+  EditSum,
   SumWallets,
   WalletResult,
+  SubmitStyled,
 };
