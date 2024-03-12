@@ -3,8 +3,8 @@ import API from "Services/AxiosConfig";
 
 interface Wallets {
   id?: string;
-  name: string;
-  total?: number;
+  name?: string;
+  total?: string;
 }
 
 const getAllWallets = createAsyncThunk("wallets", async (_, thunkAPI) => {
@@ -54,4 +54,24 @@ const editWallet = createAsyncThunk(
   }
 );
 
-export { getAllWallets, createNewWallets, deleteWallet, editWallet };
+const editWalletTotal = createAsyncThunk(
+  "/wallets/edit-total",
+  async (credentials: Wallets, thunkAPI) => {
+    try {
+      const response = await API.put(`/wallets/${credentials.id}`, {
+        total: credentials.total,
+      });
+      return response.data.data.result;
+    } catch (error: any) {
+      throw thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export {
+  getAllWallets,
+  createNewWallets,
+  deleteWallet,
+  editWallet,
+  editWalletTotal,
+};

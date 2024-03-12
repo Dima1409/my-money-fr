@@ -85,20 +85,6 @@ const Wallet = styled.div`
   }
 `;
 
-const EditSum = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: ${theme.borders.normal} ${theme.colors.light};
-  width: 22px;
-  height: 22px;
-  background-color: transparent;
-  border-radius: ${theme.radii.round};
-  position: absolute;
-  top: 6px;
-  right: 6px;
-`;
-
 const SumWallets = styled.div`
   display: flex;
   justify-content: space-around;
@@ -135,7 +121,6 @@ export {
   InfoWallets,
   SliderWrapper,
   Wallet,
-  EditSum,
   SumWallets,
   WalletResult,
   SubmitStyled,

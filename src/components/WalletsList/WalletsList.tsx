@@ -222,6 +222,7 @@ const WalletsList: React.FC<WalletsListProps> = ({ wallets }) => {
                 wallets.some(
                   (wallet) =>
                     wallet._id !== editingWalletId &&
+                    wallet.name &&
                     wallet.name.toLowerCase() === formData.name.toLowerCase()
                 )
               }

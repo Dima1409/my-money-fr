@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, FormEvent } from "react";
 import {
   WalletsWrapper,
   StyledForm,
@@ -7,7 +7,6 @@ import {
   InfoWallets,
   SliderWrapper,
   Wallet,
-  EditSum,
   SumWallets,
   WalletResult,
   SubmitStyled,
@@ -20,9 +19,9 @@ import { sliderSettings } from "utils/sliderSettings";
 import { useEffect } from "react";
 import Loader from "components/Loader";
 import { useDispatch } from "react-redux";
-import { getAllWallets } from "../../redux/wallets/operations";
+import { getAllWallets, editWalletTotal } from "../../redux/wallets/operations";
 import { ThunkDispatch } from "@reduxjs/toolkit";
-import { EditIcon, DoneIcon } from "components/Icons/Icons";
+import { DoneIcon } from "components/Icons/Icons";
 import useWallets from "hooks/useWallets";
 import { breakpoints, theme } from "theme/theme";
 import useToggle from "hooks/useToggle";
@@ -54,7 +53,6 @@ const Wallets: React.FC = () => {
     const currentWallet: ISearchWallet = wallets.find(
       (elem: any) => elem._id === id
     );
-    console.log(currentWallet);
     setFormData({
       id: currentWallet?._id || "",
       total: String(currentWallet?.total) || "",
@@ -67,17 +65,16 @@ const Wallets: React.FC = () => {
     });
   };
 
-  // const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-
-  //   dispatchTyped(
-  //     editWalletById({
-  //       id: formData.id,
-  //       total: formData.total,
-  //     })
-  //   ).then(() => dispatchTyped(getAllWallets()));
-  //   close();
-  // };
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatchTyped(
+      editWalletTotal({
+        id: formData.id,
+        total: formData.total,
+      })
+    ).then(() => dispatchTyped(getAllWallets()));
+    close();
+  };
 
   const isSmallScreen = useMediaQuery({
     query: `(max-width: ${breakpoints.tablet}px)`,
@@ -118,7 +115,7 @@ const Wallets: React.FC = () => {
   let totalSum = 0;
   if (wallets && wallets.length > 0) {
     totalSum = wallets.reduce(
-      (acc: number, wallet: ISearchWallet) => acc + (wallet.total ?? 0),
+      (acc: number, wallet: ISearchWallet) => acc + (Number(wallet.total) ?? 0),
       0
     );
   }
@@ -136,17 +133,15 @@ const Wallets: React.FC = () => {
             !isError &&
             wallets.map(({ _id, name, total }: ISearchWallet) => {
               return (
-                <Wallet key={_id}>
+                <Wallet
+                  key={_id}
+                  onClick={() => {
+                    startEditing(_id || "");
+                    toggle();
+                  }}
+                >
                   <WalletResult>{name}:</WalletResult>
                   <WalletResult>{total} грн</WalletResult>
-                  <EditSum
-                    onClick={() => {
-                      startEditing(_id || "");
-                      toggle();
-                    }}
-                  >
-                    <EditIcon color={theme.colors.light}></EditIcon>
-                  </EditSum>
                 </Wallet>
               );
             })
@@ -163,9 +158,9 @@ const Wallets: React.FC = () => {
             close();
           }}
         >
-          <StyledForm autoComplete="off">
+          <StyledForm autoComplete="off" onSubmit={handleSubmit}>
             <StyledLabel htmlFor="total">
-              Нова сума "{formData.name}:"
+              Редагувати залишок <WalletResult>"{formData.name}"</WalletResult>
               <StyledInput
                 onChange={handleInputChange}
                 name="total"
