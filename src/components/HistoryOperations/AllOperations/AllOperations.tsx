@@ -216,19 +216,19 @@ const HistoryOperations: React.FC = () => {
     const shouldDelete = window.confirm("Видалити запис?");
     if (shouldDelete) {
       setDeletingOperation(id);
-      dispatchTyped(
-        type ? deleteOperation(id) : deleteTransferOperation(id)
-      ).then(() => {
-        setDeletingOperation(null);
-        dispatchTyped(getAllOperations());
-        const updatedList = filteredOperations.filter(
-          (operation) => operation._id !== id
-        );
-        const totalPages = Math.ceil(updatedList.length / ITEMS_PER_PAGE);
-        if (currentPage > totalPages) {
-          setCurrentPage(totalPages);
-        }
-      });
+      dispatchTyped(type ? deleteOperation(id) : deleteTransferOperation(id))
+        .then(() => {
+          setDeletingOperation(null);
+          dispatchTyped(getAllOperations());
+          const updatedList = filteredOperations.filter(
+            (operation) => operation._id !== id
+          );
+          const totalPages = Math.ceil(updatedList.length / ITEMS_PER_PAGE);
+          if (currentPage > totalPages) {
+            setCurrentPage(totalPages);
+          }
+        })
+        .finally(() => dispatchTyped(getAllWallets()));
     }
   };
 

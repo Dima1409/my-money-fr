@@ -141,7 +141,7 @@ const Wallets: React.FC = () => {
                   }}
                 >
                   <WalletResult>{name}:</WalletResult>
-                  <WalletResult>{total} грн</WalletResult>
+                  <WalletResult>{Number(total).toFixed(2)} грн</WalletResult>
                 </Wallet>
               );
             })
@@ -149,7 +149,7 @@ const Wallets: React.FC = () => {
         </SliderWrapper>
         <SumWallets>
           <WalletResult>Загально:</WalletResult>
-          <WalletResult>{totalSum} грн</WalletResult>
+          <WalletResult>{Number(totalSum).toFixed(2)} грн</WalletResult>
         </SumWallets>
       </WalletsWrapper>
       {isOpen && (

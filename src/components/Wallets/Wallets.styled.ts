@@ -24,6 +24,7 @@ const StyledLabel = styled(LabelName)`
 
 const StyledInput = styled(InputEdit)`
   margin: 8px 0;
+  border: ${theme.colors.accent};
 `;
 
 const InfoWallets = styled.p`
@@ -79,8 +80,14 @@ const Wallet = styled.div`
     color: ${theme.colors.light};
     padding: 10px 0;
     margin-bottom: 10px;
+    transition: ${theme.transitions.durations.default};
+    &:hover,
+    &:focus {
+      cursor: pointer;
+    }
     & > div {
       font-size: ${theme.fontSizes.small};
+      word-wrap: break-word;
     }
   }
 `;
