@@ -4,8 +4,10 @@ import { theme } from "theme/theme";
 
 const UserWrapper = styled.div`
   display: flex;
-  align-items: center;
+  align-items: end;
+  margin: 0 auto;
   margin-bottom: 10px;
+  max-width: 600px;
 `;
 
 const User = styled.p`
@@ -18,6 +20,67 @@ const User = styled.p`
   margin-right: 10px;
   ${theme.mq.tablet} {
     font-size: ${theme.fontSizes.bold};
+  }
+`;
+
+const AvatarContainer = styled.div`
+  width: 100px;
+  height: 100px;
+  border-radius: ${theme.radii.normal};
+`;
+
+const AvatarWrapper = styled.div`
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "center";
+  align-items: "center";
+  padding-top: "40px";
+  padding-bottom: "40px";
+  & > div > div {
+    margin: 0 auto;
+  }
+  & > p {
+    color: ${theme.colors.light};
+    text-align: right;
+    margin: 10px 0;
+  }
+  & > button {
+    margin: 0 auto;
+  }
+`;
+
+const UserAvatar = styled.img`
+  margin-right: auto;
+  margin-left: 0;
+  border: ${theme.borders.normal};
+  object-fit: cover;
+  border: none;
+  border-radius: ${theme.radii.normal};
+  box-shadow: 0 0 1px ${theme.colors.accentActive};
+  transition: ${theme.transitions.durations.default};
+  width: 100%;
+  height: 100%;
+  &:hover,
+  &:focus {
+    cursor: pointer;
+  }
+`;
+
+const DeleteAvatar = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 40px;
+  border: ${theme.borders.normal} ${theme.colors.light};
+  border-radius: ${theme.radii.normal};
+  color: ${theme.colors.light};
+  background-color: transparent;
+  transition: ${theme.transitions.durations.default};
+  &:hover,
+  &:focus {
+    cursor: pointer;
+    box-shadow: 0 0 4px ${theme.colors.light};
   }
 `;
 
@@ -62,4 +125,14 @@ const EditButton = styled(Logout)`
   margin-right: 6px;
 `;
 
-export { UserWrapper, User, Logout, InputEdit, EditButton };
+export {
+  UserWrapper,
+  User,
+  AvatarContainer,
+  AvatarWrapper,
+  DeleteAvatar,
+  UserAvatar,
+  Logout,
+  InputEdit,
+  EditButton,
+};

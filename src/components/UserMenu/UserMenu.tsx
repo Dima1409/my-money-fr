@@ -1,13 +1,24 @@
 import useAuth from "hooks/useAuth";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
+import Avatar from "react-avatar-edit";
 import {
   UserWrapper,
   User,
+  AvatarContainer,
+  AvatarWrapper,
+  UserAvatar,
   Logout,
   EditButton,
   InputEdit,
+  DeleteAvatar,
 } from "./userMenu.styled";
-import { logout, editUser } from "../../redux/auth/operations";
+import {
+  logout,
+  editUser,
+  refreshUser,
+  updateUserAvatar,
+  deleteAvatar,
+} from "../../redux/auth/operations";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "@reduxjs/toolkit";
 import { theme } from "theme/theme";
@@ -22,18 +33,60 @@ import {
 } from "components/WalletsList/WalletsList.styled";
 import { Formik } from "formik";
 import FormValidation from "components/FormValidation";
+import useRetinaDisplay from "hooks/useRetina/useRetinaDisplay";
+import AvatarImage from "../../images/desktop/avatar-min.png";
+import AvatarImage2x from "../../images/desktop2x/avatar2x-min.png";
 
 const UserMenu: React.FC = () => {
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
+  const onBeforeFileLoad = (elem: ChangeEvent<HTMLInputElement>) => {
+    if (elem.target.files && elem.target.files[0].size > 200 * 1024) {
+      alert("Максимум 200 kB!");
+      elem.target.value = "";
+    }
+  };
   const { isLoggedIn, user } = useAuth();
   const { validationUpdate, InputError } = FormValidation;
-  const { name, email } = user;
+  const { name, email, avatarURL } = user;
   const initialState = {
     name: user.name,
     email: user.email,
   };
   const [showUserInfo, setShowUserInfo] = useState(false);
+  const [showAvatarInfo, setShowAvatarInfo] = useState(false);
+  const [avatar, setAvatar] = useState(avatarURL);
   const { isOpen, close, toggle } = useToggle();
+  const avatarImageSrc = useRetinaDisplay(AvatarImage, AvatarImage2x);
+  const imageExtensions = ["png", "jpg", "jpeg", "webp"];
+
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) {
+      return;
+    }
+
+    const splitToFindExtension = e.target.value.split(".");
+    const fileExtension = splitToFindExtension[splitToFindExtension.length - 1];
+
+    if (!imageExtensions.includes(fileExtension)) {
+      window.alert("Avatar should be an image: png, jpg, jpeg, webp");
+      return;
+    }
+
+    const imgFile = files[0];
+
+    if (imgFile) {
+      const value = { avatarURL: imgFile };
+      setAvatar(value);
+      await dispatch(updateUserAvatar({ value }));
+      dispatch(refreshUser());
+    }
+  };
+
+  const deleteUserAvatar = async () => {
+    await dispatch(deleteAvatar());
+    dispatch(refreshUser());
+  };
 
   const handleLogOut = async () => {
     const shouldLogout = window.confirm("Вийти з облікового запису?");
@@ -56,15 +109,30 @@ const UserMenu: React.FC = () => {
     <>
       {isLoggedIn && (
         <UserWrapper>
-          <User>{user.name}</User>
-          {user.avatarURL && (
-            <img
-              src={user.avatarURL}
-              alt="User Avatar"
-              className="user-avatar"
-              width={150}
-            />
+          {user.avatarURL ? (
+            <AvatarContainer>
+              <UserAvatar
+                onClick={() => {
+                  setShowAvatarInfo(true);
+                  toggle();
+                }}
+                src={avatar}
+                alt="User Avatar"
+              />
+            </AvatarContainer>
+          ) : (
+            <AvatarContainer>
+              <UserAvatar
+                onClick={() => {
+                  setShowAvatarInfo(true);
+                  toggle();
+                }}
+                src={avatarImageSrc}
+                alt="user-avatar"
+              />
+            </AvatarContainer>
           )}
+          <User>{user.name}</User>
           <EditButton
             type="button"
             onClick={() => {
@@ -83,9 +151,30 @@ const UserMenu: React.FC = () => {
         <Modal
           onClick={() => {
             setShowUserInfo(false);
+            setShowAvatarInfo(false);
             close();
           }}
         >
+          {showAvatarInfo && user && (
+            <>
+              <AvatarWrapper onChange={handleFileChange}>
+                <Avatar
+                  width={240}
+                  height={180}
+                  exportSize={10}
+                  onBeforeFileLoad={onBeforeFileLoad}
+                  mimeTypes="image/jpeg, image/png, image/jpg, image/webp"
+                  label="Виберіть новий файл"
+                />
+                <p>*максимум 200kB</p>
+                {avatar && (
+                  <DeleteAvatar onClick={deleteUserAvatar}>
+                    <p>Видалити аватар</p>
+                  </DeleteAvatar>
+                )}
+              </AvatarWrapper>
+            </>
+          )}
           {showUserInfo && user && (
             <InfoWallets>
               <Formik

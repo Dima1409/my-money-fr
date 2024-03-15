@@ -75,8 +75,15 @@ const authSlice = createSlice({
           state.error = null;
         }
       )
-      .addCase(updateUserAvatar.fulfilled, handleFulfilled)
-      .addCase(deleteAvatar.fulfilled, handleFulfilled)
+      .addCase(
+        updateUserAvatar.fulfilled,
+        (state: typeof initialState, action: any) => {
+          state.user.avatarURL = action.payload;
+        }
+      )
+      .addCase(deleteAvatar.fulfilled, (state: typeof initialState) => {
+        state.user.avatarURL = null;
+      })
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.user.email = action.payload.email;
         state.user.name = action.payload.name;
